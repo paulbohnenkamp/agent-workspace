@@ -26,6 +26,7 @@ Use these docs for the current architecture model. Use `docs/adr/` for durable d
 ## Visual References
 
 - [UI Domain Mapping](ui-domain-mapping.md)
+- [UI Feedback Refinements](../../images/03-ui-feedback.png)
 - [Decision Workspace Original](../../images/architecture/originals/decision-workspace.png)
 - [Decision Workspace Annotated](../../images/architecture/annotated/decision-workspace.png)
 - [Agent - Skill - Tool Hierarchy](../../images/architecture/derived/agent-skill-tool-hierarchy.svg)

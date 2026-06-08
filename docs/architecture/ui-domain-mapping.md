@@ -16,6 +16,7 @@ The goal is not to claim that every visible panel is exactly one persisted domai
 - Original: [Partner Workspace Original](../../images/architecture/originals/partner-workspace.png)
 - Generic base: [Partner Workspace Generic Base](../../images/architecture/derived/partner-workspace-generic.png)
 - Annotated: [Partner Workspace Annotated](../../images/architecture/annotated/partner-workspace.png)
+- UI feedback overlay: [UI Feedback Refinements](../../images/03-ui-feedback.png)
 
 ## Core Reading
 
@@ -47,6 +48,13 @@ Reference: [Decision Workspace Annotated](../../images/architecture/annotated/de
 
 This screen leans heavily toward a single primary output with supporting knowledge sources and explicit approval actions.
 
+Interaction guidance for this layout:
+
+- keep the work-item context fixed at the top
+- allow the lower execution region to collapse when work is complete
+- keep approval controls anchored rather than buried in scrollable history
+- visually map thread requests to output-section updates
+
 ## Partner Workspace Mapping
 
 Reference: [Partner Workspace Annotated](../../images/architecture/annotated/partner-workspace.png)
@@ -61,6 +69,15 @@ Reference: [Partner Workspace Annotated](../../images/architecture/annotated/par
 - `Work Item Data`: operational details such as products, renewal date, value, and trend
 
 This screen is more operational than the decision screen. It centers on a live work item that can produce multiple outputs and multiple actions at once.
+
+Interaction guidance for this layout:
+
+- preserve the work-item header as fixed context
+- treat agent activity and run visibility as expandable operational context
+- keep quick actions anchored and visible during long thread sessions
+- reflect thread-driven updates directly in the related output panel
+
+The UI feedback overlay is an exploratory artifact that visualizes these refinements directly on top of the generic partner workspace shell.
 
 ## Important Caveat
 

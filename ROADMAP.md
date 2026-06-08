@@ -35,6 +35,7 @@ Core references:
 - architecture visuals exist for:
   - decision workspace
   - partner workspace
+  - UI feedback refinement overlay
   - agent-skill-tool hierarchy
 - initial ADRs exist for the most important architecture decisions
 

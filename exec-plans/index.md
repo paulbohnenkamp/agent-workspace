@@ -78,4 +78,5 @@ The active plan set can be considered complete when:
 - the core architecture docs are internally consistent
 - the Microsoft terminology layer is stable
 - the first vertical is clearly configuration on top of the platform
+- the UI guidance artifacts are linked from the architecture docs
 - the remaining open questions are either resolved or intentionally deferred into ADRs

@@ -69,6 +69,20 @@ Workspace
   |- Run History
 ```
 
+## Interaction Guidance
+
+The visual hierarchy should reinforce the cognitive flow of the workspace:
+
+1. `Work Item` stays fixed and visible as the top-level context.
+2. `Thread -> Output -> Knowledge Source` forms the main left-to-right reading path.
+3. `Agent Activity` and `Run History` explain the lower-level execution state that is moving the output forward.
+
+In practice, this means:
+
+- the work-item header should remain stable while users move between thread, output, and references
+- the output should remain the visual center of gravity
+- execution-state surfaces should support inspection without permanently consuming prime screen real estate
+
 ## Composition Rules
 
 1. A workspace may contain multiple outputs.
@@ -110,6 +124,38 @@ Workspace collaboration can happen on several layers:
 - agents collaborate with other agents through tasks, runs, and output handoffs
 
 The platform should treat these as explicit interactions, not implicit prompt state.
+
+## Layout Recommendations
+
+### Collapsible Execution Surface
+
+`Agent Activity` and `Run History` are often transient.
+
+Recommendation:
+
+- treat the lower execution area as an expandable or collapsible drawer
+- expand it while work is in progress
+- allow it to collapse once execution settles so the primary output can reclaim more vertical space
+
+### Anchored Actions
+
+High-value actions such as approval, export, publish, or escalation should remain visible without requiring the user to scroll through thread history.
+
+Recommendation:
+
+- anchor critical actions either:
+  - in a sticky bottom action bar, or
+  - pinned near the upper-right area of the primary output
+
+### Thread-To-Output Traceability
+
+A thread interaction that requests a change to a specific output section should visibly map to the output surface.
+
+Recommendation:
+
+- changing sections should show loading, updating, or highlighted states
+- output updates should reflect which region is currently being modified
+- the user should not have to infer whether the thread request affected the output
 
 ## Open Questions
 

@@ -36,6 +36,14 @@ Suggested sections:
 - knowledge sources
 - next steps
 
+## Interaction Notes
+
+- the decision case should stay fixed as the top-level context
+- the thread should act as the request surface, not the system of record
+- the output should remain the visual center of gravity
+- approval actions should stay anchored and visible
+- execution-state surfaces such as agent activity and run timeline should be collapsible when idle
+
 ## Why This Works As A Workspace Type
 
 Nothing in the flow above requires `decision` to be a foundational platform object.
