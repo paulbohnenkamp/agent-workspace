@@ -1,6 +1,6 @@
 # Agent Workspace Platform
 
-This repository is an architecture baseline for an agent-driven workspace platform using Microsoft-aligned terminology updated against Microsoft Build announcements from **June 2, 2026** and current Microsoft documentation reviewed on **June 8, 2026**.
+This repository is an architecture baseline for an agent-driven workspace platform.
 
 The core idea is:
 
