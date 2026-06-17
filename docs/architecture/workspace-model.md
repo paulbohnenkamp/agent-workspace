@@ -14,7 +14,7 @@ It is not just a chat screen. It is the operating context for work.
 - track active tasks
 - host threads
 - organize outputs
-- surface knowledge sources and agent activity
+- surface knowledge sources and derived agent state
 - expose available actions
 
 ## Base Shape
@@ -60,13 +60,12 @@ A workspace type may define:
 ```text
 Workspace
   |- Work Item Header
-  |- Task Queue
-  |- Thread
+  |- Work Queue
+  |- AI Assistant
   |- Primary Output
   |- Knowledge Panel
-  |- Agent Activity
+  |- Agents
   |- Actions
-  |- Run History
 ```
 
 ## Interaction Guidance
@@ -74,12 +73,12 @@ Workspace
 The visual hierarchy should reinforce the cognitive flow of the workspace:
 
 1. `Work Item` stays fixed and visible as the top-level context.
-2. `Thread -> Output -> Knowledge Source` forms the main left-to-right reading path.
-3. `Agent Activity` and `Run History` explain the lower-level execution state that is moving the output forward.
+2. `AI Assistant -> Output -> Knowledge Source` forms the main left-to-right reading path.
+3. `Agents` and run-derived state explain the lower-level execution activity that is moving the output forward.
 
 In practice, this means:
 
-- the work-item header should remain stable while users move between thread, output, and references
+- the work-item header should remain stable while users move between the assistant surface, output, and references
 - the output should remain the visual center of gravity
 - execution-state surfaces should support inspection without permanently consuming prime screen real estate
 
@@ -90,7 +89,7 @@ In practice, this means:
 3. One output may be marked as primary for the current flow.
 4. Outputs may link to each other.
 5. A thread may reference tasks, knowledge sources, and outputs, but does not replace them.
-6. Agent activity should be inspectable without exposing every internal reasoning trace.
+6. Agent state should be inspectable without exposing every internal reasoning trace.
 
 ## Primary Output Decision
 
@@ -127,19 +126,19 @@ The platform should treat these as explicit interactions, not implicit prompt st
 
 ## Layout Recommendations
 
-### Collapsible Execution Surface
+### Inspectable Agent State
 
-`Agent Activity` and `Run History` are often transient.
+Visible agent state is often a projection over `Run`, `Task`, and `Action` data rather than its own primary object.
 
 Recommendation:
 
-- treat the lower execution area as an expandable or collapsible drawer
-- expand it while work is in progress
-- allow it to collapse once execution settles so the primary output can reclaim more vertical space
+- treat the visible `Agents` panel as a compact roster or summary surface
+- allow deeper run inspection to expand on demand rather than permanently consuming prime screen real estate
+- keep the main shell centered on work item, assistant, output, knowledge, and actions
 
 ### Anchored Actions
 
-High-value actions such as approval, export, publish, or escalation should remain visible without requiring the user to scroll through thread history.
+High-value actions such as approval, export, publish, or escalation should remain visible without requiring the user to scroll through assistant history.
 
 Recommendation:
 
@@ -149,13 +148,13 @@ Recommendation:
 
 ### Thread-To-Output Traceability
 
-A thread interaction that requests a change to a specific output section should visibly map to the output surface.
+An assistant interaction that requests a change to a specific output section should visibly map to the output surface.
 
 Recommendation:
 
 - changing sections should show loading, updating, or highlighted states
 - output updates should reflect which region is currently being modified
-- the user should not have to infer whether the thread request affected the output
+- the user should not have to infer whether the assistant request affected the output
 
 ## Open Questions
 

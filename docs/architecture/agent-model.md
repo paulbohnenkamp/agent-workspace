@@ -108,7 +108,7 @@ The individual tools execute concrete operations such as:
 
 ## Visual Reference
 
-- [Agent - Skill - Tool Hierarchy](../../images/architecture/derived/agent-skill-tool-hierarchy.svg)
+- [Agent - Skill - Tool Hierarchy](../../images/diagrams/agent-skill-tool-hierarchy.svg)
 
 ## Multi-Agent Coordination
 

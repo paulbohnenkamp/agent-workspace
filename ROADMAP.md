@@ -23,6 +23,7 @@ Core references:
 
 - [Architecture Index](docs/architecture/index.md)
 - [Domain Model](docs/architecture/domain-model.md)
+- [Workspace Composition Model](docs/architecture/workspace-composition-model.md)
 - [Agent Model](docs/architecture/agent-model.md)
 - [Skill Model](docs/architecture/skill-model.md)
 
@@ -32,47 +33,46 @@ Core references:
 - Microsoft-aligned terminology is in place
 - the `Agent -> Skill -> Tool` hierarchy is explicit
 - primary-output and cross-workspace reference rules are documented
+- shared workspace visual system rules are documented
+- manual object-to-panel mappings exist for the current workspace originals
 - architecture visuals exist for:
   - decision workspace
   - partner workspace
-  - UI feedback refinement overlay
+  - HR workspace
+  - finance workspace
   - agent-skill-tool hierarchy
 - initial ADRs exist for the most important architecture decisions
 
 References:
 
-- [Execution Plan Index](exec-plans/index.md)
 - [ADR Index](docs/adr/README.md)
-
-## What Is Active Now
-
-The active plan set is tracked in:
-
-- [Execution Plan Index](exec-plans/index.md)
+- [Workspace Visual System](docs/architecture/workspace-visual-system.md)
+- [Workspace Object-Panel Mapping](docs/architecture/workspace-object-panel-mapping.md)
 
 At the moment, the remaining work is concentrated in:
 
-- `02-output-architecture.md`
-- `03-workspace-architecture.md`
-- `04-agent-skill-tool-architecture.md`
-- `05-first-vertical.md`
+- output refinement
+- workspace composition refinement
+- agent, skill, and tool boundary refinement
+- additional vertical pressure-testing
 
 ## What Should Happen Next
 
 Recommended next sequence:
 
-1. finish `02-output-architecture.md`
+1. tighten output guidance
    - tighten output-splitting rules
    - define when an output is rendered as a Page versus another output experience
-2. finish `03-workspace-architecture.md`
+2. refine workspace composition guidance
    - settle run-history visibility
-   - clarify cross-workspace queue behavior
-3. finish `04-agent-skill-tool-architecture.md`
+   - clarify cross-workspace queue behavior and right-rail conventions
+   - keep the manual object-to-panel mapping aligned as visuals evolve
+3. refine agent, skill, and tool guidance
    - decide what deserves a first-class skill
    - decide whether skill changes imply run boundaries
-4. advance `05-first-vertical.md`
-   - pressure-test the model further with the first vertical
-   - strengthen skill-selection configuration in the vertical
+4. pressure-test more verticals
+   - strengthen skill-selection configuration in the verticals
+   - confirm the shared shell continues to hold across additional workspace families
 5. capture any durable decisions as ADRs
 
 ## Where To Look
@@ -80,15 +80,11 @@ Recommended next sequence:
 For architecture:
 
 - [docs/architecture/index.md](docs/architecture/index.md)
+- [docs/architecture/workspace-object-panel-mapping.md](docs/architecture/workspace-object-panel-mapping.md)
 
 For decisions and tradeoffs:
 
 - [docs/adr/README.md](docs/adr/README.md)
-
-For plan status and next work:
-
-- [exec-plans/index.md](exec-plans/index.md)
-- [PLANS.md](PLANS.md)
 
 For repo-level guidance to future agents:
 

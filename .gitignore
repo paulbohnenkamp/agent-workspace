@@ -1,0 +1,8 @@
+.DS_Store
+
+# Private application and resume materials
+internal_docs/
+
+# Working planning artifacts not intended for the public repo cut
+exec-plans/
+PLANS.md

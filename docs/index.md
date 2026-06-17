@@ -4,11 +4,8 @@ This folder is the entry point for repository documentation.
 
 ## Structure
 
-- [Architecture](architecture/): system design, domain model, workspace model, skill and tool hierarchy, outputs, UI mapping, and source references
+- [Architecture](architecture/): system design, domain model, workspace model, runtime events, skill and tool hierarchy, outputs, UI mapping, and source references
 - [ADR](adr/): architecture decision records
-- [Internal](internal/): internal notes, prep material, and working documents not intended as stable external docs
-- [Execution Plans](../exec-plans/README.md): structured plans for what to do in this repository
-- [Execution Plan Index](../exec-plans/index.md): active-plan status, accomplishments, and remaining work
 - [Roadmap](../ROADMAP.md): fastest orientation for architecture state, completed work, and next steps
 
 ## Recommended Reading Order
@@ -16,9 +13,10 @@ This folder is the entry point for repository documentation.
 1. [Architecture Index](architecture/index.md)
 2. architecture model docs
 3. [ADR Index](adr/README.md)
-4. vertical workspace docs
-5. [Execution Plan Guide](../PLANS.md)
-6. [Roadmap](../ROADMAP.md)
+4. [Workspace Visual System](architecture/workspace-visual-system.md)
+5. [Workspace Object-Panel Mapping](architecture/workspace-object-panel-mapping.md)
+6. vertical workspace docs
+7. [Roadmap](../ROADMAP.md)
 
 ## Notes
 

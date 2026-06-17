@@ -267,7 +267,7 @@ Workspace
   |- Tasks
   |- Threads
   |- Actions
-  |- Agent Activity
+  |- Derived Agent State Views
 
 Work Item
   |- Business Context
@@ -299,7 +299,7 @@ Skill
 Run
   |- may be triggered by Action
 
-Agent Activity
+Derived Agent State Views
   |- derived from Runs, Tasks, Actions, and Messages
 ```
 
@@ -324,8 +324,8 @@ First-class persisted objects:
 
 Derived or projected concepts:
 
-- `Agent Activity` should usually be a projection over runs, tasks, actions, and messages rather than its own primary persistence root.
-- UI regions such as `Knowledge Panel`, `Run History`, or `Task Queue` are views over persisted objects, not separate domain objects.
+- visible agent-state surfaces such as `Agents (x)` should usually be projections over runs, tasks, actions, and messages rather than their own primary persistence root.
+- UI regions such as `Knowledge Panel`, `AI Assistant`, `Work Queue`, or `Task Queue` are views over persisted objects, not separate domain objects.
 
 ## Boundary Rules
 
