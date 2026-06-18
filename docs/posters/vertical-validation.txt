@@ -1,0 +1,10 @@
+Decision Workspace
+Finance Workspace
+HR Workspace
+Partner Workspace
+        ↓
+Different definitions
+        ↓
+Same platform nouns
+        ↓
+Same runtime

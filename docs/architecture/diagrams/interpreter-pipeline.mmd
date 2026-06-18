@@ -1,0 +1,15 @@
+flowchart TD
+    DEF[Definition]
+    N[Normalization]
+    B[Binding Resolution]
+    POL[Policy Evaluation]
+    L[Layout Resolution]
+    C[Component Tree Generation]
+    R[Workspace Runtime]
+
+    DEF --> N
+    N --> B
+    B --> POL
+    POL --> L
+    L --> C
+    C --> R

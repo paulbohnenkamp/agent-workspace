@@ -1,0 +1,13 @@
+Definition
+↓
+Normalization
+↓
+Binding Resolution
+↓
+Policy Evaluation
+↓
+Layout Resolution
+↓
+Component Tree
+↓
+Runtime

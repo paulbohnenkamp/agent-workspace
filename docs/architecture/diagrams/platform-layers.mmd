@@ -1,0 +1,13 @@
+flowchart TD
+    A[Applications]
+    D[Workspace Definition Packages]
+    I[Workspace Interpreter]
+    R[Workspace Runtime]
+    P[Persistence]
+    INF[Infrastructure]
+
+    A --> D
+    D --> I
+    I --> R
+    R --> P
+    P --> INF

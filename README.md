@@ -1,121 +1,321 @@
-# Agent Workspace Platform
+# Agent Workspace Platform (AWP)
 
-This repository is an architecture baseline for an agent-driven workspace platform.
+Agent Workspace Platform, or `AWP`, is a metadata-driven platform for building collaborative AI workspaces.
 
-The core idea is:
+It is not a single application for one workflow. It is a reusable platform for defining workspace types, interpreting those definitions into UI and runtime behavior, and supporting durable human-agent collaboration around business work.
 
-- people work inside a `Workspace`
-- work is organized around a `Work Item`
-- agents reason, plan, and coordinate
-- skills package domain expertise and workflow logic
-- tools execute bounded capabilities
-- threads, messages, and runs drive interaction
-- the system produces durable `Outputs`
-- outputs are grounded in `Knowledge Sources`
-- actions and tasks move work forward
+## What AWP Is
 
-This is intentionally not a single-purpose decision application. The goal is to define a platform that can express decision work, research, planning, and operational workflows.
-## Core Thesis
+An Agent Workspace Platform is a system that lets teams define workspaces declaratively instead of hard-coding a new application for every domain.
 
-The durable thing the user keeps is not the chat transcript and not the raw model response. It is the output.
+In AWP:
 
-Models will change. Agent implementations will change. Skills and tools will change. The output is the unit the user reviews, edits, shares, approves, exports, and acts on.
+- work happens inside a durable `Workspace`
+- each workspace is organized around a `WorkItem`
+- agents and humans collaborate through shared state
+- durable results are preserved as `Artifacts`
+- actions, runs, threads, and knowledge sources remain inspectable
+- the experience is composed from definitions, not bespoke page logic
 
-**Metadata-driven composition** (not static UI components) means different workspace shells can share the same core domain model. Decision, partner, HR, and finance workspaces all use the same `Output`, `Agent`, `Skill`, `Tool`, `Knowledge Source`, `Action`, and `Task` objects, but the UI, zones, and component bindings are defined via configuration metadata, not hard-coded screens. This design is inspired by the wizard framework pattern and enables both reusability and extensibility without rebuilding the platform for each workflow type.
+The central architecture is:
 
-The architecture docs explain the model. The ADRs explain why the durable architecture decisions were made.
+```text
+WorkspaceDefinition
+        ↓
+Workspace Interpreter
+        ↓
+Workspace Runtime
+        ↓
+Workspace Shell
+```
 
-## Platform Objects
+## Why It Exists
 
-- `Workspace`: the collaboration boundary
-- `Work Item`: the business case or object under active work
-- `Output`: the durable result produced in the workspace
-- `Agent`: the reasoning and orchestration component
-- `Skill`: a reusable domain workflow package
-- `Tool`: a bounded capability invoked by a skill
-- `Knowledge Source`: grounding and supporting source material
-- `Action`: a proposed or executable next step
-- `Task`: a tracked unit of work
-- `Thread`: the interaction session
-- `Message`: an item within a thread
-- `Run`: an execution of an agent over a thread
+Most agent products stop at chat, prompt orchestration, or workflow automation. AWP exists to support a more durable model of work:
 
-## Repo Structure
+- business work is larger than a single prompt
+- the thing users keep is usually not the conversation, but the resulting artifact
+- review, approval, traceability, and follow-up actions need first-class treatment
+- different teams need different workspace shapes, but should not require separate applications
+
+AWP is meant to support operational, analytical, and review-heavy workflows through one platform model.
+
+## Core Principles
+
+- `Workspace-centric`: work happens inside durable collaboration containers.
+- `Artifact-centric`: the durable result of work is an artifact, not a chat transcript.
+- `Human + agent collaboration`: both people and agents operate through shared workspace state.
+- `Metadata-driven composition`: workspace experiences are assembled from definitions.
+- `Definition/runtime separation`: definitions describe work; runtimes execute work.
+- `Declarative workspace definitions`: new workspace types are definition packages, not new apps.
+- `Durable state and versioning`: artifacts, definitions, runs, and actions can be persisted and audited.
+
+## Platform Layers
+
+```text
+Applications
+        ↓
+Workspace Definition Packages
+        ↓
+Workspace Interpreter
+        ↓
+Workspace Runtime
+        ↓
+Persistence
+        ↓
+Infrastructure
+```
+
+What each layer does:
+
+- `Applications`: product surfaces built on top of the platform
+- `Workspace Definition Packages`: declarative workspace, artifact, playbook, and agent definitions
+- `Workspace Interpreter`: validates definitions and turns them into component trees and bindings
+- `Workspace Runtime`: manages live state, execution, activity, and collaboration
+- `Persistence`: stores definitions, instances, artifacts, runs, actions, and events
+- `Infrastructure`: the underlying hosting, storage, and service environment
+
+## First-Class Concepts
+
+The current documentation treats these as first-class platform objects:
+
+- `WorkspaceDefinition`
+- `WorkspaceInstance`
+- `WorkItem`
+- `ArtifactDefinition`
+- `ArtifactInstance`
+- `KnowledgeSource`
+- `Action`
+- `Thread`
+- `Run`
+- `PlaybookDefinition`
+- `PlaybookInstance`
+- `AgentDefinition`
+- `AgentSession`
+- `SkillDefinition`
+- `ToolDefinition`
+- `Participant`
+- `Event`
+- `WorkspaceState`
+- shell `Zones`
+- `Bindings`
+- `Policies`
+- `Permissions`
+
+## Definition Vs Runtime
+
+AWP separates what a workspace is from what is happening inside it.
+
+Definition-side objects:
+
+- `WorkspaceDefinition`
+- `ArtifactDefinition`
+- `PlaybookDefinition`
+- `AgentDefinition`
+- `SkillDefinition`
+- `ToolDefinition`
+
+Runtime-side objects:
+
+- `WorkspaceInstance`
+- `WorkItem`
+- `ArtifactInstance`
+- `KnowledgeSource`
+- `Action`
+- `Thread`
+- `Run`
+- `PlaybookInstance`
+- `AgentSession`
+- `Event`
+- `Participant`
+
+This separation matters because:
+
+- definitions can be versioned and reused
+- runtimes can execute and persist live work independently
+- one runtime can render many workspace types
+
+## Workspace Definition Language (WDL)
+
+`WDL` is the declarative format for describing workspace experiences.
+
+At a minimum, a workspace definition describes:
+
+- workspace identity and version
+- zones in the workspace shell
+- bindings from zones to object kinds
+- artifact types
+- action types
+- playbook references
+- policies and permissions
+
+Minimal example:
+
+```yaml
+workspace:
+  id: partner-operations-v1
+  type: partner
+  version: 1
+  displayName: Partner Operations Workspace
+  layout: operational
+
+zones:
+  - key: queue
+    component: queue_view
+  - key: artifact_surface
+    component: artifact_surface
+
+bindings:
+  - zone: queue
+    objectKind: work_item
+    view: renewal_queue
+  - zone: artifact_surface
+    objectKind: artifact
+    view: renewal_analysis
+
+artifacts:
+  - type: renewal-analysis
+
+actions:
+  - type: schedule-call
+
+playbooks:
+  - type: renewal-review
+
+policies: []
+permissions: []
+```
+
+The interpreter is expected to validate, normalize, and resolve this metadata into a runtime-ready component tree.
+
+## Workspace Shell
+
+The canonical workspace shell is composed from zones such as:
+
+- `Header`
+- `Queue`
+- `Assistant Surface`
+- `Artifact Surface`
+- `Knowledge Panel`
+- `Agent Panel`
+- `Action Panel`
+- `Activity Timeline`
+- `Modal Surface`
+
+The shell must be able to render multiple workspace types without hard-coded domain pages.
+
+## Vertical Workspace Examples
+
+The repository includes vertical examples that pressure-test the same platform against different business domains:
+
+- [Decision Workspace](docs/verticals/decision-workspace.md)
+- [Partner Workspace](docs/verticals/partner-workspace.md)
+- [HR Workspace](docs/verticals/hr-workspace.md)
+- [Finance Workspace](docs/verticals/finance-workspace.md)
+
+These examples are intended to prove:
+
+- one platform can support both operational and review-heavy work
+- vertical language can stay in definitions instead of the platform core
+- the same runtime can render different workspace types
+
+## Repository Structure
 
 ```text
 docs/
-  index.md
+  README.md
   architecture/
-    index.md
-    domain-model.md
-    workspace-model.md
-    workspace-composition-model.md
-    workspace-visual-system.md
-    workspace-object-panel-mapping.md
-    work-item-model.md
-    output-model.md
-    agent-model.md
-    skill-model.md
-    knowledge-source-model.md
-    action-model.md
-    ui-domain-mapping.md
-  adr/
-verticals/
-  decision-workspace.md
-  partner-workspace.md
-  hr-workspace.md
-  finance-workspace.md
-images/
-  originals/
-  diagrams/
+    diagrams/
+    workspace-shell.md
+    canonical-domain-model.md
+  images/
+    diagrams/
+    originals/
+  posters/
+  specification/v1/
+  verticals/
+
+schemas/
+  agent-definition.schema.json
+  agent-session.schema.json
+  workspace-definition.schema.json
+  workspace-instance.schema.json
+  workspace-state.schema.json
+  work-item.schema.json
+  artifact-definition.schema.json
+  artifact-instance.schema.json
+  knowledge-source.schema.json
+  action.schema.json
+  thread.schema.json
+  playbook-definition.schema.json
+  playbook-instance.schema.json
+  run.schema.json
+  skill-definition.schema.json
+  tool-definition.schema.json
+  event.schema.json
+  participant.schema.json
+  component-tree.schema.json
+  policies.schema.json
+  permissions.schema.json
+  examples/
+
 AGENTS.md
+ARCHITECTURE_FREEZE.md
+CANONICAL_MODEL.md
+DECISIONS.md
+GLOSSARY.md
+IMPLEMENTATION_CONTRACT.md
 README.md
 ROADMAP.md
+SCHEMA_INVENTORY.md
 LICENSE
 ```
 
-## Documents
+Recommended reading order for a first pass:
 
-- [Roadmap](ROADMAP.md)
-- [Docs Index](docs/index.md)
-- [Architecture Index](docs/architecture/index.md)
-- [Domain Model](docs/architecture/domain-model.md)
-- [Workspace Model](docs/architecture/workspace-model.md)
-- [Workspace Composition Model](docs/architecture/workspace-composition-model.md)
-- [Workspace Visual System](docs/architecture/workspace-visual-system.md)
-- [Workspace Object-Panel Mapping](docs/architecture/workspace-object-panel-mapping.md)
-- [Work Item Model](docs/architecture/work-item-model.md)
-- [Output Model](docs/architecture/output-model.md)
-- [Agent Model](docs/architecture/agent-model.md)
-- [Skill Model](docs/architecture/skill-model.md)
-- [Knowledge Source Model](docs/architecture/knowledge-source-model.md)
-- [Action Model](docs/architecture/action-model.md)
-- [Partner Workspace](verticals/partner-workspace.md)
-- [HR Workspace](verticals/hr-workspace.md)
-- [Finance Workspace](verticals/finance-workspace.md)
-- [Decision Workspace](verticals/decision-workspace.md)
-- [ADR Index](docs/adr/README.md)
+1. [docs/README.md](docs/README.md)
+2. [docs/specification/v1/README.md](docs/specification/v1/README.md)
+3. [docs/specification/v1/metamodel.md](docs/specification/v1/metamodel.md)
+4. [docs/specification/v1/interpreter.md](docs/specification/v1/interpreter.md)
+5. [docs/specification/v1/runtime-state.md](docs/specification/v1/runtime-state.md)
+6. [docs/architecture/README.md](docs/architecture/README.md)
+7. [docs/verticals/README.md](docs/verticals/README.md)
+8. [CANONICAL_MODEL.md](CANONICAL_MODEL.md)
+9. [IMPLEMENTATION_CONTRACT.md](IMPLEMENTATION_CONTRACT.md)
+10. [schemas/workspace-definition.schema.json](schemas/workspace-definition.schema.json)
 
-## Principles
+## Development Phases
 
-1. `Output` is the center of the durable user experience.
-2. `Work Item` gives the workspace its business context.
-3. `Agent`, `Skill`, and `Tool` are distinct concepts.
-4. `Thread`, `Message`, and `Run` are first-class runtime concepts.
-5. `Knowledge Source` should be first-class, not implied.
-6. Industry-specific language should be configuration where possible.
+The current documentation points to this implementation sequence:
 
-## Current State
+1. `Definitions and schemas`
+   - validate and refine schemas
+   - use `/schemas` as source of truth
+2. `Types`
+   - generate or author platform types from schemas
+3. `Interpreter`
+   - accept `WorkspaceDefinition`
+   - output a normalized component tree
+4. `Runtime state`
+   - implement `WorkspaceState` and its sub-state models
+5. `Workspace shell`
+   - build reusable shell zones and components
 
-This repo is architecture-first. It does not yet commit to:
+The repo is currently architecture-frozen and implementation-ready at the specification level. The next steps are to use the frozen model and schema inventory to implement the interpreter/runtime path without splitting into domain-specific apps.
 
-- implementation framework
-- database schema
-- hosting platform
-- authentication strategy
-- UI framework
+## Key References
 
-Those choices should follow the domain model, not lead it.
+- [Docs Overview](docs/README.md)
+- [Specification v1](docs/specification/v1/README.md)
+- [Typed Metamodel](docs/specification/v1/metamodel.md)
+- [Interpreter Spec](docs/specification/v1/interpreter.md)
+- [Runtime State](docs/specification/v1/runtime-state.md)
+- [Architecture Overview](docs/architecture/README.md)
+- [Vertical Workspaces](docs/verticals/README.md)
+- [Architecture Freeze](ARCHITECTURE_FREEZE.md)
+- [Canonical Model](CANONICAL_MODEL.md)
+- [Implementation Contract](IMPLEMENTATION_CONTRACT.md)
+- [Schema Inventory](SCHEMA_INVENTORY.md)
 
 ## License
 

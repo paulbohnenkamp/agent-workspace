@@ -1,0 +1,7 @@
+sequenceDiagram
+    User->>Platform: Open workspace
+    Platform->>DefinitionStore: Load WorkspaceDefinition
+    DefinitionStore-->>Platform: Definition
+    Platform->>Interpreter: Interpret definition
+    Interpreter->>Runtime: Bind runtime state
+    Runtime-->>User: Render workspace shell

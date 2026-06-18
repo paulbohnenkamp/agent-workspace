@@ -1,91 +1,124 @@
 # Roadmap
 
-This document is the fastest way for a future agent to understand:
+This document describes the next implementation step after the v1 architecture freeze.
 
-- the current architecture shape
-- what has already been completed
-- what remains to do next
-- where to look for deeper detail
+The architecture is frozen enough to begin building.
 
-## Current Architecture State
+The next phase is not more documentation work. The next phase is implementation pressure against the frozen model.
 
-The platform currently centers on:
+## Current State
 
-- `Workspace` as the collaboration boundary
-- `Work Item` as the business case in motion
-- `Output` as the durable result
-- `Thread`, `Message`, and `Run` as interaction and execution objects
-- `Knowledge Source` as grounding
-- `Action` and `Task` as workflow objects
-- `Agent -> Skill -> Tool` as the capability hierarchy
+The repository has completed:
 
-Core references:
+- architecture discovery
+- terminology consolidation
+- canonical model freeze
+- implementation contract freeze
+- schema inventory definition
+- vertical definition normalization
 
-- [Architecture Index](docs/architecture/index.md)
-- [Domain Model](docs/architecture/domain-model.md)
-- [Workspace Composition Model](docs/architecture/workspace-composition-model.md)
-- [Agent Model](docs/architecture/agent-model.md)
-- [Skill Model](docs/architecture/skill-model.md)
+Primary references for the frozen state:
 
-## What Is Completed
+- [ARCHITECTURE_FREEZE.md](ARCHITECTURE_FREEZE.md)
+- [CANONICAL_MODEL.md](CANONICAL_MODEL.md)
+- [DECISIONS.md](DECISIONS.md)
+- [IMPLEMENTATION_CONTRACT.md](IMPLEMENTATION_CONTRACT.md)
+- [SCHEMA_INVENTORY.md](SCHEMA_INVENTORY.md)
 
-- core model objects are defined and documented
-- shared platform terminology is in place
-- the `Agent -> Skill -> Tool` hierarchy is explicit
-- primary-output and cross-workspace reference rules are documented
-- shared workspace visual system rules are documented
-- manual object-to-panel mappings exist for the current workspace originals
-- architecture visuals exist for:
-  - decision workspace
-  - partner workspace
-  - HR workspace
-  - finance workspace
-  - agent-skill-tool hierarchy
-- initial ADRs exist for the most important architecture decisions
+## Next Step
 
-References:
+The immediate next step is implementation with only:
 
-- [ADR Index](docs/adr/README.md)
-- [Workspace Visual System](docs/architecture/workspace-visual-system.md)
-- [Workspace Object-Panel Mapping](docs/architecture/workspace-object-panel-mapping.md)
+- `packages/schemas`
+- `packages/types`
+- `packages/definitions`
+- `packages/interpreter`
 
-At the moment, the remaining work is concentrated in:
+This is the narrowest useful implementation slice.
 
-- output refinement
-- workspace composition refinement
-- agent, skill, and tool boundary refinement
-- additional vertical pressure-testing
+## Why This Is The Next Step
 
-## What Should Happen Next
+These packages are enough to begin testing whether the frozen architecture actually holds under implementation pressure.
 
-Recommended next sequence:
+They allow us to:
 
-1. tighten output guidance
-   - tighten output-splitting rules
-   - define when an output is rendered as a Page versus another output experience
-2. refine workspace composition guidance
-   - settle run-history visibility
-   - clarify cross-workspace queue behavior and right-rail conventions
-   - keep the manual object-to-panel mapping aligned as visuals evolve
-3. refine agent, skill, and tool guidance
-   - decide what deserves a first-class skill
-   - decide whether skill changes imply run boundaries
-4. pressure-test more verticals
-   - strengthen skill-selection configuration in the verticals
-   - confirm the shared shell continues to hold across additional workspace families
-5. capture any durable decisions as ADRs
+- formalize the schema set
+- derive or author stable platform types
+- define reusable definition packages
+- implement the first-pass interpreter from `WorkspaceDefinition` to `ComponentTree`
 
-## Where To Look
+They do not yet require:
 
-For architecture:
+- runtime execution code
+- shell component implementation
+- application-specific behavior
+- infrastructure decisions
 
-- [docs/architecture/index.md](docs/architecture/index.md)
-- [docs/architecture/workspace-object-panel-mapping.md](docs/architecture/workspace-object-panel-mapping.md)
+## What To Build In This Step
 
-For decisions and tradeoffs:
+### `packages/schemas`
 
-- [docs/adr/README.md](docs/adr/README.md)
+- move or mirror the canonical JSON schemas into implementation-ready package form
+- validate schema completeness against [SCHEMA_INVENTORY.md](SCHEMA_INVENTORY.md)
 
-For repo-level guidance to future agents:
+### `packages/types`
 
-- [AGENTS.md](AGENTS.md)
+- generate or author TypeScript types from the frozen schemas
+- preserve the canonical object boundaries from [CANONICAL_MODEL.md](CANONICAL_MODEL.md)
+
+### `packages/definitions`
+
+- establish the package shape for workspace, artifact, playbook, and agent definitions
+- include canonical definition examples for vertical workspaces
+
+### `packages/interpreter`
+
+- accept canonical `WorkspaceDefinition`
+- validate input against schema
+- normalize historical variants into canonical shape
+- resolve bindings
+- generate a first-pass `ComponentTree`
+
+## What Not To Do Yet
+
+Do not start with:
+
+- `packages/runtime`
+- `packages/state`
+- `packages/components`
+- separate vertical applications
+- speculative architecture expansion
+- new platform root concepts
+
+## Guiding Constraint
+
+Decision Workspace, Finance Workspace, HR Workspace, and Partner Workspace are `WorkspaceDefinitions` rendered by one runtime.
+
+Do not build separate applications for them.
+
+Prefer fewer, more generic platform abstractions.
+
+Do not introduce new platform root concepts when an existing abstraction can be specialized.
+
+## Discovery Rule For The Next Phase
+
+Let implementation pressure, not more documentation work, drive the next architectural discoveries.
+
+If implementation reveals gaps, capture only the minimum necessary decisions to keep the model coherent.
+
+The default posture is:
+
+1. implement against the frozen model
+2. observe where the model resists implementation
+3. adjust only when the pressure is concrete
+
+## Success Condition
+
+This phase is successful when:
+
+- the schema set is implementation-ready
+- the type layer reflects the canonical model
+- definitions can be represented in package form
+- the interpreter can consume canonical workspace definitions and emit a normalized component tree
+
+At that point, runtime state and shell implementation can begin with materially better guidance than further speculative documentation would provide.
