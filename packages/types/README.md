@@ -1,253 +1,298 @@
 # @awp/types
 
-TypeScript type definitions for Agent Workspace Platform.
+TypeScript type definitions for Agent Platform.
 
-This package provides the canonical type system for the platform, organized into three categories matching the architecture: definitions, runtime, and interpreter types.
+This package provides the canonical type system for the platform. **There is no Definition/Instance split**—definitions are filesystem packages, runtime state is kept in runtime types.
+
+## Key Change: No Definition/Instance Split
+
+**Old Model (Phase 1):**
+```
+WorkspaceDefinition + WorkspaceInstance
+ArtifactDefinition + ArtifactInstance  
+AgentDefinition + AgentSession
+PlaybookDefinition + PlaybookInstance
+```
+
+**New Model (Phase 2):**
+```
+Tool, Skill, Agent, Project (filesystem packages)
+  ↓
+PackageMetadata (kind, id, name, version, sourcePath)
+
+Artifact, Run, Thread, AgentSession (runtime state)
+  ↓
+ProjectState (complete runtime state of a project)
+```
+
+Definitions are YAML files on disk. Runtime objects are live execution state.
 
 ## Usage
 
 ```typescript
 import {
-  WorkspaceDefinition,
-  WorkspaceInstance,
-  ComponentTree,
-  ArtifactDefinition,
-  Run,
+  Project,       // Filesystem package definition
+  Agent,         // Filesystem package definition  
+  Tool,          // Filesystem package definition
+  Run,           // Runtime execution record
+  Artifact,      // Runtime outcome
+  Thread,        // Runtime conversation
+  ProjectState,  // Complete runtime state
 } from '@awp/types';
 
-const workspace: WorkspaceDefinition = {
-  workspace: {
-    id: 'my-workspace',
-    type: 'decision',
-    version: 1,
-  },
-  zones: [],
-  bindings: [],
+// Define an agent (filesystem package)
+const agent: Agent = {
+  kind: 'agent',
+  id: 'decision-analyzer',
+  name: 'Decision Analyzer',
+  version: '1.0.0',
+  sourcePath: 'agents/decision-analyzer/agent.yaml',
+  instructions: 'You are a decision analyst...',
+  tools: [
+    { id: 'search-tool', name: 'Search', required: true },
+  ],
+};
+
+// Runtime execution
+const run: Run = {
+  id: 'run-001',
+  projectId: 'proj-001',
+  agentId: 'decision-analyzer',
+  status: 'running',
+  startedAt: new Date().toISOString(),
+  targetKind: 'tool',
+  targetId: 'search-tool',
 };
 ```
 
 ## Type Categories
 
-### Definitions (src/definitions.ts)
+### Package Definitions (src/definitions.ts)
 
-Declarative, versioned, portable blueprints for workspace elements.
+Filesystem packages with metadata.
 
 **Base**
-- `DefinitionMetadata` - Common versioning and metadata for all definitions
+- `PackageMetadata` - Common metadata for all packages (kind, id, name, version, sourcePath)
 
-**Definitions**
-- `WorkspaceDefinition` - Complete workspace type and composition
-- `ArtifactDefinition` - Durable artifact type definition with sections and relationships
-- `PlaybookDefinition` - Process definition with activities and transitions
-- `AgentDefinition` - Agent role with skills, tools, and constraints
-- `SkillDefinition` - Reusable capability invoked by agents or playbooks
-- `ToolDefinition` - Bounded callable capability with parameters
+**Package Types**
+- `Tool` - External capability (API, MCP, connector, function, service)
+- `Skill` - Reusable know-how (composes tools and skills)
+- `Agent` - Actor definition (role, instructions, tools, skills)
+- `Project` - Organizing container (agents, resources, artifacts, channels, schedules)
+- `Channel` - Communication interface (Slack, email, webhook, etc.)
+- `Schedule` - Trigger definition (cron, event, manual)
+- `Resource` - Context data (documents, configs, credentials, data)
+- `Sandbox` - Execution constraints (limits, permissions)
+- `ArtifactType` - Artifact type definition
 
-**Supporting Types**
-- `Zone` - Structural region in workspace shell
-- `Binding` - Connection between zone and object kind/view
-- `ArtifactSection` - Structured section within an artifact
-- `ArtifactRelationship` - Allowed connections between artifacts
-- `PlaybookActivity` - Individual step in a playbook
-- `PlaybookTransition` - Control flow between activities
-- `SkillReference` - Pointer to a skill definition
-- `ToolReference` - Pointer to a tool definition
+**References**
+- `ToolReference`, `SkillReference`, `AgentReference` - Links between packages
+- `ResourceReference`, `ChannelReference`, `ScheduleReference` - Cross-package references
 
-### Runtime (src/runtime.ts)
+**Deprecated Aliases** (for migration)
+- `ToolDefinition` → `Tool`
+- `SkillDefinition` → `Skill`
+- `AgentDefinition` → `Agent`
+- `ProjectDefinition` → `Project`
+- `ArtifactDefinition` → `ArtifactType`
 
-Live or persisted instances that exist during workspace execution.
+### Runtime State (src/runtime.ts)
 
-**Workspace & Items**
-- `WorkspaceInstance` - Live workspace and all its state
-- `WorkItem` - Business anchor for active work with status and assignments
-- `Participant` - Human or agent actor in the workspace
+Live execution objects.
 
-**Artifacts & Knowledge**
-- `ArtifactInstance` - Durable result with versioning and provenance
-- `ArtifactVersion` - Immutable artifact snapshot
-- `KnowledgeSource` - Grounding source for artifacts and work
+**Core Runtime**
+- `Run` - Finite execution instance (tool invocation, skill execution, agent action)
+- `Artifact` - Durable outcome with versioning and audit trail
+- `ArtifactVersion` - Immutable snapshot of artifact
+- `Thread` - Conversation or discussion
+- `Message` - Message in a thread
+- `Event` - Activity record
 
-**Execution & Activity**
-- `Run` - Finite execution instance from playbook, skill, or action
-- `Event` - Canonical activity record with provenance
-- `Thread` - Conversation or discussion context
-- `Action` - Executable or reviewable next step
-
-**Agents & Orchestration**
+**Agents & Collaboration**
 - `AgentSession` - Long-lived agent participation context
-- `PlaybookInstance` - Runtime realization of playbook definition
+- `Participant` - Human or agent actor in a project
+- `Resource` - Context data in a project
 
-**State Management**
-- `WorkspaceState` - Complete runtime state model
-- `BusinessState` - Work items, artifacts, and core work
-- `SelectionState` - User selections within UI
-- `NavigationState` - Current route and focus
-- `ArtifactState` - Artifact-specific state and versioning
-- `AgentState` - Agent sessions and activity
-- `ActionState` - Pending and in-progress actions
-- `ActivityState` - Events and timeline
-- `LayoutState` - Presentation state (visibility, splits)
+**State Container**
+- `ProjectState` - Complete runtime state of a project
+
+**Status Types**
+- `RunStatus` - 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled'
+- `ThreadStatus` - 'active' | 'closed' | 'archived'
+- `ArtifactStatus` - 'draft' | 'active' | 'archived'
+- `ParticipantRole` - 'owner' | 'editor' | 'reviewer' | 'viewer'
+
+**Deprecated Aliases** (for migration)
+- `ArtifactInstance` → `Artifact`
+- `WorkspaceInstance` → `ProjectState`
+- `PlaybookInstance` → `Run`
 
 ### Interpreter (src/interpreter.ts)
 
-Component tree and interpretation structures.
+Component tree and interpretation structures (UI concerns).
 
 **Interpreter Output**
-- `ComponentTree` - Normalized interpreter output ready for shell rendering
-- `RenderedZone` - Zone with selected component
-- `ResolvedBinding` - Binding with resolved component and view
-- `ComponentDefinition` - Renderable UI primitive
-- `ViewDefinition` - Component variant for specific object kind
-- `StateBinding` - Connection between component and workspace state
+- `ComponentTree` - Normalized interpreter output for UI rendering
+- `RenderedZone`, `ResolvedBinding` - Resolved UI structure
+- `ComponentDefinition`, `ViewDefinition` - UI primitives
 
 **Interpretation**
-- `InterpretationResult` - Outcome of interpretation pipeline
-- `InterpretationError` - Error with code and path
-- `InterpreterOptions` - Configuration for interpretation
-- `NormalizedDefinition` - Internal representation after normalization
-- `Normalization` - Tracked schema migration
-- `BindingContext` - Context for binding resolution
-- `ComponentSelection` - Result of binding resolution
-
-**Metadata**
-- `InterpreterMetadata` - Provenance and diagnostics of interpretation
-- `PropDefinition` - Component property definition
-- `PropOption` - Option for a property
+- `InterpretationResult` - Outcome of interpretation
+- `NormalizedDefinition` - Representation after normalization
 
 ## Type Patterns
 
-### Status Enums
+### Package Metadata
 
-Types use union types for status values instead of separate enums:
+All packages include metadata about themselves:
 
 ```typescript
-export type InstanceStatus = 'active' | 'completed' | 'failed' | 'cancelled' | 'archived';
-export type WorkItemStatus = 'open' | 'in_progress' | 'completed' | 'blocked' | 'archived';
-export type ActionStatus = 'pending' | 'in_progress' | 'completed' | 'rejected' | 'archived';
-export type RunStatus = 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled';
+const tool: Tool = {
+  kind: 'tool',
+  id: 'search-api',
+  name: 'Search API',
+  version: '2.1.0',
+  sourcePath: 'agents/my-agent/tools/search-api.yaml',
+  description: 'Search external knowledge...',
+  implementation: { type: 'http', endpoint: '...' },
+};
+```
+
+### Runtime Relationships
+
+Runtime objects link to packages and each other:
+
+```typescript
+const run: Run = {
+  id: 'run-001',
+  projectId: 'proj-001',      // Links to project package
+  agentId: 'agent-001',        // Links to agent package
+  targetKind: 'tool',          // What was invoked
+  targetId: 'search-api',      // ID of what was invoked
+  threadId: 'thread-001',      // Associated thread
+  agentSessionId: 'session-001', // Agent session context
+  status: 'running',
+  startedAt: '2026-06-19T...',
+};
 ```
 
 ### Optional Metadata
 
-Most types include an optional `metadata` field for extension:
+Most types include optional `metadata` for extension:
 
 ```typescript
-interface MyRuntime {
+interface MyObject {
   id: string;
-  type: string;
   metadata?: Record<string, any>;
-}
-```
-
-### IDs and References
-
-Objects use string IDs with referential integrity enforced at runtime. Foreign keys are represented as strings:
-
-```typescript
-interface WorkItem {
-  id: string;
-  workspaceId: string;
-  artifacts?: string[];  // artifact IDs
-}
-```
-
-### Versioning
-
-Definition objects include `version` as a required integer for compatibility tracking:
-
-```typescript
-interface DefinitionMetadata {
-  id: string;
-  type: string;
-  version: number;  // required
 }
 ```
 
 ## Design Principles
 
-### Definition/Runtime Separation
+### Filesystem-First Definitions
 
-The type system maintains strict separation between:
-- **Definitions**: declarative, immutable templates (`WorkspaceDefinition`, `ArtifactDefinition`)
-- **Runtime**: live, mutable instances (`WorkspaceInstance`, `ArtifactInstance`)
+Definitions ARE filesystem packages:
+- Tool is a `tools/tool.yaml` file
+- Skill is a `skills/skill.yaml` file
+- Agent is an `agent.yaml` file
+- Project is a `project.yaml` file
+
+Package metadata includes `sourcePath` for discovery.
+
+### No Definition/Instance Split
+
+The old Definition/Instance pattern is removed:
+- No `ToolDefinition` + separate runtime (Tool is the package)
+- No `AgentDefinition` + `AgentSession` (Agent is the package, AgentSession is runtime context)
+- No `ArtifactDefinition` + `ArtifactInstance` (ArtifactType is definition, Artifact is runtime)
 
 ### Canonical Vocabulary
 
-Types enforce the canonical vocabulary from the implementation contract:
-- No `Output` type (use `Artifact`)
-- No queue root `Task` (use `WorkItem`)
-- No `ComponentType` (use `Component`)
-- No `ZoneKey` (use `Zone`)
+Types use industry-standard agent platform vocabulary:
+- `Project` (not Workspace)
+- `Agent` (not Playbook or Actor)
+- `Tool` (not Capability, Connector, Integration)
+- `Skill` (not Workflow)
+- `Run` (not Execution, Action, Activity)
+- `Artifact` (not Output, Result)
+- `Thread` (not Conversation, Session)
+- `Resource` (not KnowledgeSource)
 
 ### Minimal Interfaces
 
-Types define only required and commonly-used fields. Domain-specific extensions use `metadata` or specialized subtypes.
+Types include required and commonly-used fields. Extensions use `metadata`.
 
-### Referential Integrity
+## Usage Examples
 
-Types represent relationships explicitly:
-- Foreign keys as strings (`workspaceId`, `artifactId`)
-- Collections by ID when needed (`artifacts?: string[]`)
-- Populated objects when available (`workspace?: WorkspaceDefinition`)
-
-## Usage in Applications
-
-### Creating Instances
+### Creating a Package Definition
 
 ```typescript
-const workspace: WorkspaceInstance = {
-  id: 'ws-001',
-  workspaceDefinitionId: 'definition-v1',
-  status: 'active',
-  createdAt: new Date().toISOString(),
-  createdBy: 'user-001',
-  workItems: [],
-  artifacts: [],
-  participants: [],
-  runs: [],
-  actions: [],
-  threads: [],
-  events: [],
-  sessions: [],
-  playbookInstances: [],
+import { Tool, Skill, Agent, Project } from '@awp/types';
+
+const searchTool: Tool = {
+  kind: 'tool',
+  id: 'search',
+  name: 'Web Search',
+  version: '1.0.0',
+  sourcePath: 'agents/analyst/tools/search.yaml',
+  description: 'Search the web for information',
+  implementation: { type: 'http', endpoint: 'https://...' },
+  parameters: { type: 'object', properties: { query: { type: 'string' } } },
+  returns: { type: 'object', properties: { results: { type: 'array' } } },
+};
+
+const analyst: Agent = {
+  kind: 'agent',
+  id: 'decision-analyst',
+  name: 'Decision Analyst',
+  version: '1.0.0',
+  sourcePath: 'agents/decision-analyst/agent.yaml',
+  instructions: 'You analyze strategic decisions...',
+  tools: [{ id: 'search', name: 'Search' }],
+  model: 'claude-opus',
 };
 ```
 
-### Building Definitions
-
-Use `@awp/definitions` builders for fluent definition construction:
+### Creating Runtime State
 
 ```typescript
-import { WorkspaceDefinitionBuilder } from '@awp/definitions';
+import { ProjectState, Run, Artifact, Thread } from '@awp/types';
 
-const def = new WorkspaceDefinitionBuilder('workspace-id', 'workspace-type')
-  .displayName('My Workspace')
-  .addZone('queue', 'Queue')
-  .addBinding('queue', 'work_item', 'queue_view')
-  .build();
-```
+const projectState: ProjectState = {
+  projectId: 'my-project',
+  artifacts: [],
+  runs: [],
+  threads: [],
+  resources: [],
+  agentSessions: [],
+  participants: [],
+  events: [],
+};
 
-### Interpreting Definitions
-
-Use `@awp/interpreter` to transform definitions into component trees:
-
-```typescript
-import { WorkspaceInterpreter } from '@awp/interpreter';
-
-const interpreter = new WorkspaceInterpreter();
-const result = interpreter.interpret(definition);
+const run: Run = {
+  id: 'run-001',
+  projectId: 'my-project',
+  agentId: 'decision-analyst',
+  status: 'running',
+  startedAt: new Date().toISOString(),
+  targetKind: 'tool',
+  targetId: 'search',
+};
 ```
 
 ## Integration with Other Packages
 
-- **@awp/schemas** - JSON Schema definitions; types should align with schemas
-- **@awp/definitions** - Builders operate on these types
-- **@awp/interpreter** - Accepts and produces these types
+- **@awp/schemas** - JSON Schema for validation; types align with schemas
+- **@awp/definitions** - Builders create these package types
+- **@awp/interpreter** - Interprets package definitions
+- **@awp/runtime** - Uses runtime state types
 
-## Future Extensions
+## Migration from Phase 1
 
-Future versions may add:
-- Generic lifecycle types (created, updated, deleted timestamps)
-- Permission and policy type system
-- Fine-grained state sub-types
-- Specialized artifact types for specific domains
+See [ARCHITECTURE_MIGRATION.md](../../ARCHITECTURE_MIGRATION.md) for guidance on moving from Phase 1 (Definition/Instance split) to Phase 2 (filesystem packages + runtime state).
+
+Deprecated type aliases are provided for backward compatibility:
+- `ToolDefinition` → `Tool`
+- `AgentDefinition` → `Agent`
+- `ArtifactInstance` → `Artifact`
+- `WorkspaceInstance` → `ProjectState`

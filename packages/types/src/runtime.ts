@@ -1,27 +1,28 @@
 /**
- * Runtime types for Agent Workspace Platform
+ * Runtime types for Agent Platform
  *
- * Runtime objects are live or persisted instances that exist during
- * workspace execution. They maintain state, execution history, and
- * collaborative context.
+ * Runtime objects are live or persisted instances created during execution.
+ * They maintain state, execution history, and collaborative context.
+ *
+ * There is no Definition/Instance split—definitions are filesystem packages,
+ * runtime objects are live execution state.
  */
 
 /**
- * Status values for runtime instances
+ * Status values for runtime objects
  */
-export type InstanceStatus = 'active' | 'completed' | 'failed' | 'cancelled' | 'archived';
-export type WorkItemStatus = 'open' | 'in_progress' | 'completed' | 'blocked' | 'archived';
-export type ActionStatus = 'pending' | 'in_progress' | 'completed' | 'rejected' | 'archived';
 export type RunStatus = 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled';
+export type ThreadStatus = 'active' | 'closed' | 'archived';
+export type ArtifactStatus = 'draft' | 'active' | 'archived';
 export type ParticipantRole = 'owner' | 'editor' | 'reviewer' | 'viewer';
 
 /**
- * Participant - human or agent actor in the workspace
+ * Participant - human or agent actor in a project
  */
 export interface Participant {
   id: string;
   type: 'human' | 'agent';
-  workspaceId: string;
+  projectId: string;
   role: ParticipantRole;
   name?: string;
   email?: string;
@@ -30,89 +31,89 @@ export interface Participant {
 }
 
 /**
- * Knowledge source - grounding source for artifacts and work
+ * Resource - context data (documents, configs, credentials, datasets)
+ * Represents resources available to agents within a project
  */
-export interface KnowledgeSource {
+export interface Resource {
   id: string;
+  projectId: string;
   type: string;
-  workspaceId: string;
-  title: string;
+  name: string;
   description?: string;
+  content?: any;
   contentHash?: string;
   sourceUrl?: string;
   createdAt: string;
   createdBy: string;
+  metadata?: Record<string, any>;
 }
 
 /**
  * Event - canonical record of runtime activity
+ * Events are named with <object>.<verb> pattern
  */
 export interface Event {
   id: string;
   name: string;
   timestamp: string;
-  workspaceId: string;
+  projectId: string;
   runId?: string;
   artifactId?: string;
-  actionId?: string;
-  sessionId?: string;
+  threadId?: string;
+  agentSessionId?: string;
   participantId?: string;
   payload?: Record<string, any>;
   metadata?: Record<string, any>;
 }
 
 /**
- * Run - finite execution instance for a playbook, skill, or action
+ * Run - finite execution instance
+ * Records a tool invocation, skill execution, or agent action
  */
 export interface Run {
   id: string;
-  workspaceId: string;
+  projectId: string;
+  agentId?: string;
   status: RunStatus;
   startedAt: string;
   completedAt?: string;
-  playbookDefinitionId?: string;
-  skillDefinitionId?: string;
-  toolDefinitionId?: string;
-  sessionId: string;
+  /** What was invoked: tool, skill, agent, schedule */
+  targetKind?: 'tool' | 'skill' | 'agent' | 'schedule';
+  /** ID of what was invoked */
+  targetId?: string;
+  /** Thread this run belongs to */
+  threadId?: string;
+  /** Agent session context */
+  agentSessionId?: string;
+  /** Execution input */
   input?: Record<string, any>;
+  /** Execution output/result */
   output?: Record<string, any>;
+  /** Error if failed */
   error?: string;
-  events: Event[];
+  /** Events emitted during execution */
+  events?: Event[];
+  /** Run metadata */
   metadata?: Record<string, any>;
 }
 
 /**
- * Action - executable or reviewable next step
- */
-export interface Action {
-  id: string;
-  type: string;
-  workspaceId: string;
-  status: ActionStatus;
-  title?: string;
-  description?: string;
-  workItemId?: string;
-  artifactId?: string;
-  runId?: string;
-  assignedTo?: string;
-  createdAt: string;
-  completedAt?: string;
-  metadata?: Record<string, any>;
-}
-
-/**
- * Thread - conversation or discussion context
+ * Thread - conversation or discussion
+ * Links humans and agents discussing artifacts, runs, or project context
  */
 export interface Thread {
   id: string;
-  workspaceId: string;
-  status: InstanceStatus;
-  workItemId?: string;
-  artifactId?: string;
-  sessionId?: string;
+  projectId: string;
+  status: ThreadStatus;
+  /** What is being discussed */
+  targetKind?: 'artifact' | 'run' | 'project';
+  targetId?: string;
+  /** Messages in the thread */
   messages: Message[];
   createdAt: string;
   updatedAt?: string;
+  createdBy: string;
+  participants?: string[];
   metadata?: Record<string, any>;
 }
 
@@ -128,45 +129,53 @@ export interface Message {
 }
 
 /**
- * Agent session - long-lived participation context for an agent
+ * AgentSession - long-lived participation context for an agent in a project
+ * Spans multiple runs and maintains agent-specific context
  */
 export interface AgentSession {
   id: string;
-  agentDefinitionId: string;
-  workspaceId: string;
-  status: InstanceStatus;
+  projectId: string;
+  agentId: string;
+  status: 'active' | 'idle' | 'completed' | 'archived';
   createdAt: string;
   updatedAt?: string;
-  runs: Run[];
-  threads?: Thread[];
+  /** Runs executed in this session */
+  runs?: string[];
+  /** Threads involving this agent */
+  threads?: string[];
+  /** Session-specific context maintained across runs */
   context?: Record<string, any>;
   metadata?: Record<string, any>;
 }
 
 /**
- * Artifact instance - durable result created or edited in a workspace
+ * Artifact - durable result created or edited in a project
+ * Represents a versioned, auditable outcome
  */
-export interface ArtifactInstance {
+export interface Artifact {
   id: string;
+  projectId: string;
   type: string;
-  workspaceId: string;
-  status: InstanceStatus;
-  version: number;
+  status: ArtifactStatus;
   title?: string;
+  /** Current content */
   content: Record<string, any>;
   createdAt: string;
   updatedAt?: string;
   createdBy: string;
-  workItemId?: string;
-  knowledgeSources?: string[];
+  /** Current version number */
+  version: number;
+  /** Resources used to create this artifact */
+  resources?: string[];
+  /** Other artifacts related to this one */
   relatedArtifacts?: string[];
-  actions?: string[];
+  /** Participants who have worked on this artifact */
   participants?: string[];
   metadata?: Record<string, any>;
 }
 
 /**
- * Artifact version - immutable snapshot of artifact at a point in time
+ * ArtifactVersion - immutable snapshot of artifact at a point in time
  */
 export interface ArtifactVersion {
   id: string;
@@ -180,183 +189,46 @@ export interface ArtifactVersion {
 }
 
 /**
- * Work item - business anchor for active work in the workspace
+ * ProjectState - runtime state model for a project
+ * Captures the mutable runtime state of a project execution
  */
-export interface WorkItem {
-  id: string;
-  type: string;
-  workspaceId: string;
-  status: WorkItemStatus;
-  title: string;
-  description?: string;
-  createdAt: string;
-  updatedAt?: string;
-  createdBy: string;
-  assignedTo?: string;
-  dueDate?: string;
-  artifacts?: string[];
-  actions?: string[];
-  knowledgeSources?: string[];
-  threads?: string[];
-  priority?: 'low' | 'medium' | 'high' | 'critical';
-  metadata?: Record<string, any>;
-}
-
-/**
- * Playbook instance - runtime realization of a playbook definition
- */
-export interface PlaybookInstance {
-  id: string;
-  playbookDefinitionId: string;
-  workspaceId: string;
-  status: InstanceStatus;
-  createdAt: string;
-  updatedAt?: string;
+export interface ProjectState {
+  projectId: string;
+  /** Artifacts in this project */
+  artifacts: Artifact[];
+  /** Runs executed in this project */
   runs: Run[];
-  currentActivityId?: string;
-  metadata?: Record<string, any>;
-}
-
-/**
- * Workspace instance - runtime realization of a workspace definition
- */
-export interface WorkspaceInstance {
-  id: string;
-  workspaceDefinitionId: string;
-  status: InstanceStatus;
-  createdAt: string;
-  updatedAt?: string;
-  createdBy: string;
-  workItems: WorkItem[];
-  artifacts: ArtifactInstance[];
-  participants: Participant[];
-  runs: Run[];
-  actions: Action[];
+  /** Threads (conversations) in this project */
   threads: Thread[];
+  /** Resources available in this project */
+  resources: Resource[];
+  /** Agent sessions */
+  agentSessions: AgentSession[];
+  /** Participants */
+  participants: Participant[];
+  /** Events that have occurred */
   events: Event[];
-  sessions: AgentSession[];
-  playbookInstances: PlaybookInstance[];
+  /** Runtime metadata */
   metadata?: Record<string, any>;
 }
 
 /**
- * Workspace state - runtime state model for a workspace
+ * Deprecated type aliases for backward compatibility
+ * These are provided for migration purposes only.
+ * Use the new types above.
  */
-export interface WorkspaceState {
-  /** Current business state - work items, artifacts, actions */
-  businessState: BusinessState;
-  /** Selection state - what is currently selected */
-  selectionState: SelectionState;
-  /** Navigation state - current routes and focus */
-  navigationState: NavigationState;
-  /** Artifact state - artifact-specific runtime state */
-  artifactState: ArtifactState;
-  /** Agent state - agent sessions and activity */
-  agentState: AgentState;
-  /** Action state - pending and in-progress actions */
-  actionState: ActionState;
-  /** Activity state - events and timeline */
-  activityState: ActivityState;
-  /** Layout state - presentation state (visibility, sizes) */
-  layoutState: LayoutState;
-}
 
 /**
- * Business state - work items, artifacts, and core work state
+ * @deprecated Use Artifact instead
  */
-export interface BusinessState {
-  activeWorkItem?: string;
-  workItems: WorkItem[];
-  artifacts: ArtifactInstance[];
-  knowledgeSources: KnowledgeSource[];
-}
+export type ArtifactInstance = Artifact;
 
 /**
- * Selection state - user selections within the workspace
+ * @deprecated Use ProjectState instead (runtime state, no definition/instance split)
  */
-export interface SelectionState {
-  selectedWorkItemId?: string;
-  selectedArtifactId?: string;
-  selectedActionId?: string;
-  selectedParticipantId?: string;
-}
+export type WorkspaceInstance = ProjectState;
 
 /**
- * Navigation state - current route and UI focus
+ * @deprecated Use Run instead
  */
-export interface NavigationState {
-  activeZone?: string;
-  activeSurface?: string;
-  breadcrumbs?: NavBreadcrumb[];
-  modalOpen?: boolean;
-  modalTarget?: string;
-  history?: string[];
-}
-
-/**
- * Navigation breadcrumb for tracking navigation history
- */
-export interface NavBreadcrumb {
-  label: string;
-  path: string;
-  timestamp: string;
-}
-
-/**
- * Artifact state - artifact-specific runtime state
- */
-export interface ArtifactState {
-  editingArtifactId?: string;
-  unsavedChanges?: Record<string, any>;
-  versions: Record<string, ArtifactVersion[]>;
-  activeVersion?: Record<string, number>;
-}
-
-/**
- * Agent state - agent sessions and activity tracking
- */
-export interface AgentState {
-  activeSessions: AgentSession[];
-  runHistory: Run[];
-  lastActivityAt?: string;
-}
-
-/**
- * Action state - pending and in-progress actions
- */
-export interface ActionState {
-  pendingActions: Action[];
-  inProgressActions: Action[];
-  completedActions: Action[];
-}
-
-/**
- * Activity state - events and timeline
- */
-export interface ActivityState {
-  events: Event[];
-  recentActivity: ActivityEntry[];
-  lastEventAt?: string;
-}
-
-/**
- * Activity entry for timeline
- */
-export interface ActivityEntry {
-  id: string;
-  timestamp: string;
-  type: string;
-  actor: string;
-  description: string;
-  metadata?: Record<string, any>;
-}
-
-/**
- * Layout state - runtime presentation state (visibility, splits, etc.)
- */
-export interface LayoutState {
-  panelVisibility?: Record<string, boolean>;
-  splitSizes?: Record<string, number>;
-  pinnedItems?: string[];
-  collapsedSections?: string[];
-}
+export type PlaybookInstance = Run;

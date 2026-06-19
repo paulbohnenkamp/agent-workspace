@@ -1,258 +1,318 @@
 /**
- * Definition types for Agent Workspace Platform
+ * Package definition types for Agent Platform
  *
- * Definition objects are declarative, versioned, and portable templates.
- * They describe the structure and composition of workspace experiences
- * and the capabilities available within them.
+ * Definitions ARE filesystem packages (YAML files).
+ * There is no separate Definition/Instance split.
+ * Runtime state is kept in runtime types (see runtime.ts).
+ *
+ * Each package has metadata including:
+ * - kind: what type of package (tool, skill, agent, project, etc.)
+ * - id: unique identifier
+ * - name: human-readable name
+ * - version: semantic version
+ * - sourcePath: filesystem path to YAML file
  */
 
 /**
- * Versioned metadata common to all definition objects
+ * Package metadata common to all definitions
+ * These fields come from the YAML package or are derived from the filesystem
  */
-export interface DefinitionMetadata {
-  /** Unique identifier for the definition */
+export interface PackageMetadata {
+  /** Package kind: tool, skill, agent, project, channel, schedule, resource, sandbox */
+  kind: 'tool' | 'skill' | 'agent' | 'project' | 'channel' | 'schedule' | 'resource' | 'sandbox';
+  /** Unique identifier within scope */
   id: string;
-  /** Type classifier for the definition */
-  type: string;
-  /** Semantic or integer version */
-  version: number;
-  /** Human-readable display name */
-  displayName?: string;
-  /** Extended description or documentation */
+  /** Display name */
+  name: string;
+  /** Semantic version */
+  version: string;
+  /** Filesystem path to YAML file */
+  sourcePath: string;
+  /** Description or documentation */
   description?: string;
-  /** Timestamp when definition was created */
+  /** Creation timestamp */
   createdAt?: string;
-  /** Timestamp when definition was last modified */
+  /** Last modification timestamp */
   updatedAt?: string;
 }
 
 /**
- * Skill definition - reusable capability invoked by agents or playbooks
+ * Tool package - interface to external capability
+ * Located at: agents/agent-name/tools/tool-name.yaml
  */
-export interface SkillDefinition extends DefinitionMetadata {
-  /** Tool references this skill may invoke */
-  tools?: ToolReference[];
-  /** Capability description or prompt guidance */
-  instructions?: string;
-  /** Input schema for skill invocation */
-  inputSchema?: Record<string, any>;
-  /** Output schema for skill results */
-  outputSchema?: Record<string, any>;
-}
-
-/**
- * Tool definition - bounded callable capability
- */
-export interface ToolDefinition extends DefinitionMetadata {
-  /** Tool implementation or endpoint reference */
-  implementation?: string;
+export interface Tool extends PackageMetadata {
+  kind: 'tool';
+  /** Execution implementation config (API, MCP, connector, function, service) */
+  implementation?: Record<string, any>;
   /** Input parameters schema */
   parameters?: Record<string, any>;
   /** Output schema */
   returns?: Record<string, any>;
-  /** Any retry or execution policy */
+  /** Execution constraints (timeout, retry, etc.) */
   policy?: Record<string, any>;
+  /** Tool-specific metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Agent definition - declarative description of an agent role and capabilities
+ * Skill package - reusable know-how composed from tools and skills
+ * Located at: agents/agent-name/skills/skill-name.yaml
  */
-export interface AgentDefinition extends DefinitionMetadata {
-  /** Role or title for the agent */
-  role?: string;
-  /** Skills this agent can invoke */
-  skills?: SkillReference[];
-  /** Tools this agent can use */
+export interface Skill extends PackageMetadata {
+  kind: 'skill';
+  /** Tool references this skill may invoke */
   tools?: ToolReference[];
-  /** System prompt or behavior guidance */
-  systemPrompt?: string;
-  /** Model or implementation identifier */
-  model?: string;
-  /** Agent-specific policies or constraints */
-  policies?: PolicyReference[];
-}
-
-/**
- * Artifact definition - declarative definition of a durable artifact type
- */
-export interface ArtifactDefinition extends DefinitionMetadata {
-  /** Structured sections that compose the artifact */
-  sections?: ArtifactSection[];
-  /** Relationships this artifact can have with other artifacts */
-  relationships?: ArtifactRelationship[];
-  /** Available actions on this artifact */
-  actions?: ActionReference[];
-  /** Validation schema for artifact content */
-  contentSchema?: Record<string, any>;
-}
-
-/**
- * Artifact section - structural component within an artifact
- */
-export interface ArtifactSection {
-  key: string;
-  title: string;
-  description?: string;
-  type: string;
-  required?: boolean;
-  schema?: Record<string, any>;
-}
-
-/**
- * Artifact relationship - allowed connections between artifact types
- */
-export interface ArtifactRelationship {
-  type: string;
-  targetType: string;
-  cardinality?: 'one-to-one' | 'one-to-many' | 'many-to-many';
-  description?: string;
-}
-
-/**
- * Playbook definition - orchestration/process definition
- */
-export interface PlaybookDefinition extends DefinitionMetadata {
-  /** Sequential or parallel activities in the playbook */
-  activities: PlaybookActivity[];
-  /** Starting activity */
-  startActivity?: string;
-  /** Possible transitions between activities */
-  transitions?: PlaybookTransition[];
-  /** Skills required by the playbook */
+  /** Other skills this skill may invoke */
   skills?: SkillReference[];
-  /** Tools referenced by the playbook */
-  tools?: ToolReference[];
-  /** Input schema for playbook execution */
+  /** Instructions for skill invocation */
+  instructions?: string;
+  /** Input schema */
   inputSchema?: Record<string, any>;
-  /** Output schema for playbook results */
+  /** Output schema */
   outputSchema?: Record<string, any>;
 }
 
 /**
- * Playbook activity - individual step in a playbook
+ * Agent package - actor definition
+ * Located at: agents/agent-name/agent.yaml
  */
-export interface PlaybookActivity {
-  id: string;
-  type: string;
-  title?: string;
-  description?: string;
-  skill?: SkillReference;
-  tool?: ToolReference;
-  parameters?: Record<string, any>;
-  timeout?: number;
-}
-
-/**
- * Playbook transition - control flow between activities
- */
-export interface PlaybookTransition {
-  from: string;
-  to: string;
-  condition?: string;
-  description?: string;
-}
-
-/**
- * Workspace shell zone - structural region in workspace UI
- */
-export interface Zone {
-  key: string;
-  component: string;
-  placement?: string;
-  priority?: string;
-  collapsible?: boolean;
-}
-
-/**
- * Binding - connection between zone and object kind for view selection
- */
-export interface Binding {
-  zone: string;
-  objectKind: string;
-  view: string;
-  selectionMode?: string;
-}
-
-/**
- * Workspace definition - declarative description of workspace type and composition
- */
-export interface WorkspaceDefinition {
-  /** Workspace identity and metadata */
-  workspace: {
-    id: string;
-    type: string;
-    version: number;
-    displayName?: string;
-    layout?: string;
+export interface Agent extends PackageMetadata {
+  kind: 'agent';
+  /** Agent role or title */
+  role?: string;
+  /** Agent instructions (inline in YAML) */
+  instructions?: string;
+  /** Model or implementation identifier */
+  model?: string;
+  /** Tool references */
+  tools?: ToolReference[];
+  /** Skill references */
+  skills?: SkillReference[];
+  /** Execution constraints */
+  constraints?: {
+    maxIterations?: number;
+    timeoutSeconds?: number;
+    sandbox?: Record<string, any>;
   };
-  /** Structural zones in the workspace shell */
-  zones: Zone[];
-  /** Bindings from zones to object kinds and views */
-  bindings: Binding[];
-  /** Artifact types available in this workspace */
-  artifacts?: ArtifactReference[];
-  /** Action types available in this workspace */
-  actions?: TypeReference[];
-  /** Playbook types available in this workspace */
-  playbooks?: TypeReference[];
-  /** Policies governing workspace behavior */
+  /** Agent-specific policies */
   policies?: PolicyReference[];
-  /** Permission rules for workspace access and operations */
-  permissions?: PermissionReference[];
+  /** Agent metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Artifact reference in workspace definition
+ * Project package - organizing container
+ * Located at: project.yaml in project root
  */
-export interface ArtifactReference {
+export interface Project extends PackageMetadata {
+  kind: 'project';
+  /** Agent references */
+  agents?: AgentReference[];
+  /** Resource references */
+  resources?: ResourceReference[];
+  /** Artifact type definitions */
+  artifacts?: ArtifactType[];
+  /** Channel references */
+  channels?: ChannelReference[];
+  /** Schedule references */
+  schedules?: ScheduleReference[];
+  /** Project metadata */
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Channel package - communication interface
+ * Located at: channels/channel-name.yaml
+ */
+export interface Channel extends PackageMetadata {
+  kind: 'channel';
+  /** Channel type: slack, email, http, webhook, etc. */
   type: string;
-  primary?: boolean;
+  /** Connection configuration */
+  config?: Record<string, any>;
+  /** Channel metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Generic type reference
+ * Schedule package - trigger definition
+ * Located at: schedules/schedule-name.yaml
  */
-export interface TypeReference {
+export interface Schedule extends PackageMetadata {
+  kind: 'schedule';
+  /** Schedule type: cron, event, manual, etc. */
   type: string;
+  /** Schedule expression or config */
+  trigger?: Record<string, any>;
+  /** What to execute when triggered */
+  action?: Record<string, any>;
+  /** Schedule metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Policy reference
+ * Resource package - context data
+ * Located at: resources/resource-name.yaml
  */
-export interface PolicyReference {
-  type?: string;
-  id?: string;
+export interface Resource extends PackageMetadata {
+  kind: 'resource';
+  /** Resource type: document, config, credential, data, etc. */
+  type: string;
+  /** Resource content or reference */
+  content?: any;
+  /** Access metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Permission reference
+ * Sandbox package - execution environment constraints
+ * Located at: sandbox/sandbox.yaml
  */
-export interface PermissionReference {
-  type?: string;
-  id?: string;
+export interface Sandbox extends PackageMetadata {
+  kind: 'sandbox';
+  /** Resource limits */
+  limits?: {
+    memoryMb?: number;
+    cpuShares?: number;
+    timeoutSeconds?: number;
+    diskMb?: number;
+  };
+  /** Allowed operations */
+  allow?: string[];
+  /** Forbidden operations */
+  deny?: string[];
+  /** Environment variables */
+  env?: Record<string, string>;
+  /** Sandbox metadata */
+  metadata?: Record<string, any>;
 }
 
 /**
- * Skill reference - pointer to a SkillDefinition
+ * Artifact type - describes what kinds of artifacts a project creates
+ * Part of project.yaml or in artifacts/ directory
  */
-export interface SkillReference {
-  skillId: string;
-  version?: number;
+export interface ArtifactType {
+  /** Kind is always 'artifact-type' */
+  kind: 'artifact-type';
+  /** Artifact type identifier */
+  id: string;
+  /** Display name */
+  name: string;
+  /** Description */
+  description?: string;
+  /** JSON Schema for artifact content */
+  schema?: Record<string, any>;
+  /** Artifact structure */
+  structure?: {
+    sections?: Array<{ name: string; description?: string; schema?: Record<string, any> }>;
+    relationships?: Array<{ name: string; target: string }>;
+  };
 }
 
+// Reference types for linking between packages
+
 /**
- * Tool reference - pointer to a ToolDefinition
+ * Reference to a tool by id
  */
 export interface ToolReference {
-  toolId: string;
-  version?: number;
+  id: string;
+  name?: string;
+  description?: string;
+  required?: boolean;
+  path?: string;
 }
 
 /**
- * Action reference in workspace
+ * Reference to a skill by id
  */
-export interface ActionReference {
-  type: string;
-  title?: string;
+export interface SkillReference {
+  id: string;
+  name?: string;
+  description?: string;
+  path?: string;
+}
+
+/**
+ * Reference to an agent by id
+ */
+export interface AgentReference {
+  id: string;
+  name?: string;
+  description?: string;
+  path?: string;
+}
+
+/**
+ * Reference to a resource by id
+ */
+export interface ResourceReference {
+  id: string;
+  name?: string;
+  type?: string;
+  path?: string;
+}
+
+/**
+ * Reference to a channel by id
+ */
+export interface ChannelReference {
+  id: string;
+  name?: string;
+  type?: string;
+  path?: string;
+}
+
+/**
+ * Reference to a schedule by id
+ */
+export interface ScheduleReference {
+  id: string;
+  name?: string;
+  type?: string;
+  path?: string;
+}
+
+/**
+ * Reference to a policy by id
+ */
+export interface PolicyReference {
+  id: string;
+  name?: string;
   description?: string;
 }
+
+/**
+ * Validation result for packages
+ */
+export interface ValidationResult {
+  valid: boolean;
+  errors: string[];
+  warnings?: string[];
+}
+
+// Deprecated type aliases for backward compatibility (marked for removal)
+
+/**
+ * @deprecated Use Tool instead
+ */
+export type ToolDefinition = Tool;
+
+/**
+ * @deprecated Use Skill instead
+ */
+export type SkillDefinition = Skill;
+
+/**
+ * @deprecated Use Agent instead
+ */
+export type AgentDefinition = Agent;
+
+/**
+ * @deprecated Use Project instead
+ */
+export type ProjectDefinition = Project;
+
+/**
+ * @deprecated Use ArtifactType instead
+ */
+export type ArtifactDefinition = ArtifactType;
