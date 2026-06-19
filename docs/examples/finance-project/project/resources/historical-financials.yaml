@@ -1,0 +1,12 @@
+kind: resource
+id: historical-financials
+name: Historical Financials
+version: 1.0.0
+description: Resource for finance project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [finance]

@@ -1,0 +1,12 @@
+kind: resource
+id: company-strategy
+name: Company Strategic Priorities
+version: 1.0.0
+description: Resource for decision project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [decision]

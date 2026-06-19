@@ -1,0 +1,14 @@
+kind: artifact-type
+id: performance-report
+name: Performance Report
+version: 1.0.0
+description: Performance Report artifact for partner project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [partner]

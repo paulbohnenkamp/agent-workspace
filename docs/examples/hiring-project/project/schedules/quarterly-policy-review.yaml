@@ -1,0 +1,19 @@
+kind: schedule
+id: quarterly-policy-review
+name: Quarterly Policy Review
+version: 1.0.0
+description: Quarterly Policy Review for hiring project
+
+trigger:
+  type: cron
+  expression: "0 14 1 1,4,7,10 *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: policy-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

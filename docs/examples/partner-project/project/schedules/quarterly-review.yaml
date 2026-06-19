@@ -1,0 +1,19 @@
+kind: schedule
+id: quarterly-review
+name: Quarterly Business Review
+version: 1.0.0
+description: Quarterly Business Review for partner project
+
+trigger:
+  type: cron
+  expression: "0 14 1 1,4,7,10 *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: contract-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

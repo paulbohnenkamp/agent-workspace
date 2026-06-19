@@ -1,0 +1,17 @@
+kind: agent
+id: contract-reviewer
+name: Contract Reviewer
+version: 1.0.0
+role: legal-reviewer
+model: claude-opus
+
+instructions: |
+  You are a contract reviewer specialist.
+  
+  Your role: Support partner project processes.
+
+tools: []
+skills: []
+
+metadata:
+  tags: [legal-reviewer]

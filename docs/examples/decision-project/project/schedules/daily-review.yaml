@@ -1,0 +1,19 @@
+kind: schedule
+id: daily-review
+name: Daily Decision Review
+version: 1.0.0
+description: Daily Decision Review for decision project
+
+trigger:
+  type: cron
+  expression: "0 9 * * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: risk-assessor
+
+enabled: true
+
+metadata:
+  tags: [schedule]

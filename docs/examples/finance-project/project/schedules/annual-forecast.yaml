@@ -1,0 +1,19 @@
+kind: schedule
+id: annual-forecast
+name: Annual Forecast
+version: 1.0.0
+description: Annual Forecast for finance project
+
+trigger:
+  type: cron
+  expression: "0 10 1 1 *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: budget-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

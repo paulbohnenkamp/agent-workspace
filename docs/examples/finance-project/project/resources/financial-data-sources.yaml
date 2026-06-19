@@ -1,0 +1,12 @@
+kind: resource
+id: financial-data-sources
+name: Financial Data Sources
+version: 1.0.0
+description: Resource for finance project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [finance]

@@ -1,0 +1,14 @@
+kind: artifact-type
+id: budget-analysis
+name: Budget Analysis
+version: 1.0.0
+description: Budget Analysis artifact for finance project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [finance]

@@ -1,0 +1,12 @@
+kind: resource
+id: decision-criteria
+name: Decision Evaluation Criteria
+version: 1.0.0
+description: Resource for decision project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [decision]

@@ -1,0 +1,19 @@
+kind: schedule
+id: monthly-review
+name: Monthly Strategic Review
+version: 1.0.0
+description: Monthly Strategic Review for decision project
+
+trigger:
+  type: cron
+  expression: "0 16 28-31 * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: risk-assessor
+
+enabled: true
+
+metadata:
+  tags: [schedule]

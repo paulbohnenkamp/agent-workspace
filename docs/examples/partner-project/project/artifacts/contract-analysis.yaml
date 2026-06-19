@@ -1,0 +1,14 @@
+kind: artifact-type
+id: contract-analysis
+name: Contract Analysis
+version: 1.0.0
+description: Contract Analysis artifact for partner project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [partner]

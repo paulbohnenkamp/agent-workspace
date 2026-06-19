@@ -1,0 +1,14 @@
+kind: artifact-type
+id: financial-forecast
+name: Financial Forecast
+version: 1.0.0
+description: Financial Forecast artifact for finance project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [finance]

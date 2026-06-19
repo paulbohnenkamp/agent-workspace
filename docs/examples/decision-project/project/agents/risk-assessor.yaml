@@ -1,0 +1,17 @@
+kind: agent
+id: risk-assessor
+name: Risk Assessor
+version: 1.0.0
+role: risk-analyst
+model: claude-opus
+
+instructions: |
+  You are a risk assessor specialist.
+  
+  Your role: Support decision project processes.
+
+tools: []
+skills: []
+
+metadata:
+  tags: [risk-analyst]

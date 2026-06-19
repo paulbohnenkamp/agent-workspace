@@ -1,0 +1,19 @@
+kind: schedule
+id: daily-sync
+name: Daily Data Sync
+version: 1.0.0
+description: Daily Data Sync for finance project
+
+trigger:
+  type: cron
+  expression: "0 8 * * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: budget-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

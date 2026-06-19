@@ -1,0 +1,17 @@
+kind: agent
+id: options-synthesizer
+name: Options Synthesizer
+version: 1.0.0
+role: decision-synthesizer
+model: claude-opus
+
+instructions: |
+  You are a options synthesizer specialist.
+  
+  Your role: Support decision project processes.
+
+tools: []
+skills: []
+
+metadata:
+  tags: [decision-synthesizer]

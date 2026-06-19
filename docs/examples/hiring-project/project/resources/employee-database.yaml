@@ -1,0 +1,12 @@
+kind: resource
+id: employee-database
+name: Employee Database Connection
+version: 1.0.0
+description: Resource for hiring project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [hiring]

@@ -1,0 +1,19 @@
+kind: schedule
+id: weekly-synthesis
+name: Weekly Synthesis
+version: 1.0.0
+description: Weekly Synthesis for decision project
+
+trigger:
+  type: cron
+  expression: "0 17 * * 5"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: risk-assessor
+
+enabled: true
+
+metadata:
+  tags: [schedule]

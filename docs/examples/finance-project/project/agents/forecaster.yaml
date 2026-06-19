@@ -1,0 +1,17 @@
+kind: agent
+id: forecaster
+name: Forecaster
+version: 1.0.0
+role: forecaster
+model: claude-opus
+
+instructions: |
+  You are a forecaster specialist.
+  
+  Your role: Support finance project processes.
+
+tools: []
+skills: []
+
+metadata:
+  tags: [forecaster]

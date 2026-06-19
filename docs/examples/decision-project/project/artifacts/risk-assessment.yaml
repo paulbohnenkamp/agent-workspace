@@ -1,0 +1,14 @@
+kind: artifact-type
+id: risk-assessment
+name: Risk Assessment
+version: 1.0.0
+description: Risk Assessment artifact for decision project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [decision]

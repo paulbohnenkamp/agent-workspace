@@ -1,0 +1,14 @@
+kind: artifact-type
+id: job-description
+name: Job Description
+version: 1.0.0
+description: Job Description artifact for hiring project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [hiring]

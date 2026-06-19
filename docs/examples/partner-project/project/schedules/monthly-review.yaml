@@ -1,0 +1,19 @@
+kind: schedule
+id: monthly-review
+name: Monthly Relationship Review
+version: 1.0.0
+description: Monthly Relationship Review for partner project
+
+trigger:
+  type: cron
+  expression: "0 10 1 * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: contract-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

@@ -1,0 +1,19 @@
+kind: schedule
+id: monthly-report
+name: Monthly Report Generation
+version: 1.0.0
+description: Monthly Report Generation for finance project
+
+trigger:
+  type: cron
+  expression: "0 9 1 * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: budget-reviewer
+
+enabled: true
+
+metadata:
+  tags: [schedule]

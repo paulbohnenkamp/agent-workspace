@@ -1,0 +1,12 @@
+kind: resource
+id: communication-protocols
+name: Communication Protocols
+version: 1.0.0
+description: Resource for partner project
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [partner]

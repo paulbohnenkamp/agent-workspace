@@ -1,0 +1,14 @@
+kind: artifact-type
+id: policy-compliance-report
+name: Policy Compliance Report
+version: 1.0.0
+description: Policy Compliance Report artifact for hiring project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [hiring]

@@ -1,0 +1,14 @@
+kind: artifact-type
+id: relationship-status-report
+name: Relationship Status Report
+version: 1.0.0
+description: Relationship Status Report artifact for partner project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [partner]

@@ -1,0 +1,14 @@
+kind: artifact-type
+id: candidate-evaluation
+name: Candidate Evaluation
+version: 1.0.0
+description: Candidate Evaluation artifact for hiring project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [hiring]
