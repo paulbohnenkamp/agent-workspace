@@ -17,16 +17,7 @@ See [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) for completion detail
 
 ## Phase 2: Runtime State (Next)
 
-The next phase builds on the validated foundation to implement runtime state management:
-
-- `@awp/runtime` - Workspace state management and lifecycle
-- State persistence and serialization
-- Event model and event sourcing
-- Audit trails and versioning
-
-## Phase 2: Runtime State
-
-Build workspace state management for runtime execution:
+The next phase builds on the validated foundation to implement runtime state management.
 
 ### `packages/runtime`
 
