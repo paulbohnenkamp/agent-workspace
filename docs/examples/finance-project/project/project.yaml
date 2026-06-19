@@ -1,0 +1,43 @@
+kind: project
+id: finance-project
+name: Financial Planning and Analysis
+version: 1.0.0
+description: |
+  Financial planning, analysis, and reporting framework.
+
+  This project demonstrates agent-driven financial management including
+  data gathering, report generation, forecasting, and audit trails.
+
+agents:
+  - id: financial-analyst
+    name: Financial Analyst
+  - id: budget-reviewer
+    name: Budget Reviewer
+  - id: forecaster
+    name: Forecaster
+
+resources:
+  - id: financial-data-sources
+    name: Financial Data Sources
+  - id: budget-structure
+    name: Chart of Accounts
+  - id: historical-financials
+    name: Historical Financials
+  - id: financial-policies
+    name: Financial Policies
+
+schedules:
+  - id: daily-sync
+    name: Daily Data Sync
+  - id: monthly-report
+    name: Monthly Report Generation
+  - id: quarterly-review
+    name: Quarterly Review
+  - id: annual-forecast
+    name: Annual Forecast
+
+metadata:
+  domain: finance
+  complexity: medium-high
+  team: finance
+  tags: [finance, reporting, forecasting, analysis]

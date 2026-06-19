@@ -1,0 +1,41 @@
+kind: project
+id: hiring-project
+name: Talent Management and Hiring
+version: 1.0.0
+description: |
+  Talent management, hiring, and onboarding framework.
+
+  This project demonstrates coordination of recruitment, candidate
+  evaluation, policy compliance, and employee onboarding.
+
+agents:
+  - id: hr-coordinator
+    name: HR Coordinator
+  - id: policy-reviewer
+    name: Policy Reviewer
+  - id: hiring-assistant
+    name: Hiring Manager Assistant
+
+resources:
+  - id: company-structure
+    name: Company Structure
+  - id: hiring-policies
+    name: Hiring Policies
+  - id: compliance-requirements
+    name: Compliance Requirements
+  - id: employee-database
+    name: Employee Database Connection
+
+schedules:
+  - id: weekly-review
+    name: Weekly Hiring Review
+  - id: monthly-onboarding
+    name: Monthly Onboarding Check
+  - id: quarterly-policy
+    name: Quarterly Policy Review
+
+metadata:
+  domain: human-resources
+  complexity: medium
+  team: people-ops
+  tags: [hiring, talent, onboarding, compliance]

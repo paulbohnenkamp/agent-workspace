@@ -1,0 +1,41 @@
+kind: project
+id: partner-project
+name: Partner Relationship Management
+version: 1.0.0
+description: |
+  Partner relationship management and collaboration framework.
+
+  This project demonstrates management of complex partnerships including
+  contract analysis, performance tracking, and relationship coordination.
+
+agents:
+  - id: partner-manager
+    name: Partner Manager
+  - id: contract-reviewer
+    name: Contract Reviewer
+  - id: relationship-analyst
+    name: Relationship Analyst
+
+resources:
+  - id: partner-database
+    name: Partner Database
+  - id: contract-templates
+    name: Contract Templates
+  - id: kpi-definitions
+    name: KPI Definitions
+  - id: communication-protocols
+    name: Communication Protocols
+
+schedules:
+  - id: monthly-review
+    name: Monthly Relationship Review
+  - id: quarterly-review
+    name: Quarterly Business Review
+  - id: annual-strategy
+    name: Annual Strategy Discussion
+
+metadata:
+  domain: partnerships
+  complexity: high
+  team: partnerships
+  tags: [partnerships, contracts, relationships, performance]

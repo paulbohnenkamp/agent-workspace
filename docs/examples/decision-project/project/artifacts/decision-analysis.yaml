@@ -1,0 +1,63 @@
+kind: artifact-type
+id: decision-analysis
+name: Decision Analysis
+description: Comprehensive decision analysis with options, risks, and recommendation
+
+schema:
+  type: object
+  properties:
+    executive_summary:
+      type: string
+      description: One-paragraph summary of decision and recommendation
+
+    decision_context:
+      type: object
+      properties:
+        business_situation:
+          type: string
+        constraints:
+          type: array
+          items: { type: string }
+        stakeholders:
+          type: array
+          items: { type: string }
+
+    options_evaluated:
+      type: array
+      items:
+        type: object
+        properties:
+          option_id: { type: string }
+          name: { type: string }
+          description: { type: string }
+          pros: { type: array, items: { type: string } }
+          cons: { type: array, items: { type: string } }
+          estimated_cost: { type: string }
+          timeline: { type: string }
+
+    risk_assessment:
+      type: object
+      properties:
+        top_risks:
+          type: array
+          items:
+            type: object
+            properties:
+              risk: { type: string }
+              probability: { type: string }
+              impact: { type: string }
+              mitigation: { type: string }
+
+    recommendation:
+      type: object
+      properties:
+        recommended_option: { type: string }
+        rationale: { type: string }
+        next_steps: { type: array, items: { type: string } }
+        implementation_timeline: { type: string }
+
+    stakeholder_approval:
+      type: object
+      properties:
+        status: { type: string, enum: [pending, approved, rejected] }
+        approvers: { type: array, items: { type: string } }
