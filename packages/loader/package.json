@@ -1,0 +1,23 @@
+{
+  "name": "@awp/loader",
+  "version": "1.0.0",
+  "description": "Filesystem package loader for Agent Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@awp/types": "*",
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": ["agent", "package", "loader", "filesystem", "yaml"],
+  "author": "DecisionForge LLC",
+  "license": "Apache-2.0"
+}
