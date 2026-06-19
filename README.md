@@ -4,6 +4,8 @@ A metadata-driven platform for building AI agent systems that support human-agen
 
 It is not a single application for one use case. It is a reusable platform for defining agent capabilities, orchestrating execution, and supporting durable collaboration around shared outcomes.
 
+> **Note:** The platform recently migrated from custom "Workspace/WorkItem/Playbook" vocabulary to industry-standard "Project/Agent/Tool/Skill" terminology. See [ARCHITECTURE_MIGRATION.md](ARCHITECTURE_MIGRATION.md) for details on the evolution and alignment with Claude Projects, Vercel Eve, Microsoft agent frameworks, and MCP patterns.
+
 ## What This Platform Is
 
 A system that lets teams build agent systems declaratively without hard-coding for each domain.
@@ -289,6 +291,7 @@ Keep concepts in the platform core only when they appear across all Projects and
 - [packages/README.md](packages/README.md) - Package overview
 
 **Architecture & Design**
+- [ARCHITECTURE_MIGRATION.md](ARCHITECTURE_MIGRATION.md) - Evolution from custom to industry-standard vocabulary (start here if upgrading)
 - [ARCHITECTURE_FREEZE.md](ARCHITECTURE_FREEZE.md) - Frozen decisions
 - [IMPLEMENTATION_CONTRACT.md](IMPLEMENTATION_CONTRACT.md) - Implementation requirements
 - [SCHEMA_INVENTORY.md](SCHEMA_INVENTORY.md) - Complete schema catalog
