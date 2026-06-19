@@ -94,6 +94,144 @@ const issues = registry.validateReferences();
 const resolution = registry.resolveReferences();
 ```
 
+## Agent Packages
+
+Agent packages have a special filesystem-first structure:
+
+```
+agent-name/
+  agent.yaml                 # Agent definition
+  tools/
+    tool-name.yaml          # Tool packages
+  skills/
+    skill-name.yaml         # Skill packages
+  channels/
+    channel-name.yaml       # Channel packages
+  schedules/
+    schedule-name.yaml      # Schedule packages
+  sandbox/
+    sandbox.yaml            # Sandbox definition
+  evals/
+    eval-name.yaml          # Evaluation definitions
+```
+
+### Load Agent Package
+
+```typescript
+import { AgentLoader } from '@awp/loader';
+
+const agentLoader = new AgentLoader('./agents/my-agent');
+
+// Load with registries
+const { agentDefinition, registries } = await agentLoader.loadWithRegistries();
+
+// Access capabilities
+registries.tools.getAll()           // All tools
+registries.skills.getAll()          // All skills
+registries.channels.getAll()        // All channels
+registries.schedules.getAll()       // All schedules
+
+// Get tools for a skill
+registries.skills.getToolsForSkill('skill-id')
+
+// Find tools by type
+registries.tools.getHttpTools()
+registries.tools.getConnectorTools()
+registries.tools.getMcpTools()
+registries.tools.getFunctionTools()
+```
+
+## Registries
+
+Specialized registries for managing different package types.
+
+### ToolRegistry
+
+Manages tool packages.
+
+```typescript
+const toolRegistry = new ToolRegistry();
+toolRegistry.register(tool);
+
+// Query methods
+toolRegistry.get(id)                    // Get by ID
+toolRegistry.getAll()                   // All tools
+toolRegistry.getByType(type)            // Tools by implementation
+toolRegistry.getHttpTools()             // HTTP-backed
+toolRegistry.getConnectorTools()        // Connector-backed
+toolRegistry.getMcpTools()              // MCP-backed
+toolRegistry.getFunctionTools()         // Function-backed
+toolRegistry.getPlatformServiceTools()  // Platform service tools
+toolRegistry.resolve(references)        // Resolve references
+```
+
+### SkillRegistry
+
+Manages skill packages and their dependencies.
+
+```typescript
+const skillRegistry = new SkillRegistry(toolRegistry);
+skillRegistry.register(skill);
+
+// Query methods
+skillRegistry.getToolsForSkill(skillId)         // Tools used by skill
+skillRegistry.getSkillsUsingTool(toolId)        // Skills that use tool
+skillRegistry.getAllToolsForSkill(skillId)      // Transitive tools
+skillRegistry.resolve(references)               // Resolve references
+```
+
+### ChannelRegistry
+
+Manages channel packages.
+
+```typescript
+const channelRegistry = new ChannelRegistry();
+channelRegistry.register(channel);
+
+// Query methods
+channelRegistry.getByType(type)         // Channels by type
+channelRegistry.getSlackChannels()      // Slack channels
+channelRegistry.getEmailChannels()      // Email channels
+channelRegistry.getHttpChannels()       // HTTP channels
+channelRegistry.getWebhookChannels()    // Webhook channels
+channelRegistry.resolve(references)     // Resolve references
+```
+
+### ScheduleRegistry
+
+Manages schedule packages.
+
+```typescript
+const scheduleRegistry = new ScheduleRegistry();
+scheduleRegistry.register(schedule);
+
+// Query methods
+scheduleRegistry.getByType(type)        // Schedules by type
+scheduleRegistry.getCronSchedules()     // Cron schedules
+scheduleRegistry.getEventSchedules()    // Event schedules
+scheduleRegistry.getManualSchedules()   // Manual schedules
+scheduleRegistry.resolve(references)    // Resolve references
+```
+
+### AgentCapabilityRegistry
+
+Composite registry for all agent capabilities.
+
+```typescript
+const registry = new AgentCapabilityRegistry();
+
+// Access individual registries
+registry.tools        // ToolRegistry
+registry.skills       // SkillRegistry
+registry.channels     // ChannelRegistry
+registry.schedules    // ScheduleRegistry
+registry.sandboxes    // SandboxRegistry
+
+// Statistics
+registry.getStats()   // { tools: N, skills: N, channels: N, ... }
+registry.clear()      // Clear all registries
+```
+
 ## API
 
 ### PackageLoader
