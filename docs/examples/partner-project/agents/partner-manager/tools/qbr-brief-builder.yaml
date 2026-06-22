@@ -1,0 +1,13 @@
+kind: tool
+id: qbr-brief-builder
+name: QBR Brief Builder
+version: 1.0.0
+description: Build a quarterly business review brief from current performance and open issues
+
+implementation:
+  type: function
+  module: partner_tools
+  function: build_qbr_brief
+
+metadata:
+  tags: [partner, qbr, reporting]

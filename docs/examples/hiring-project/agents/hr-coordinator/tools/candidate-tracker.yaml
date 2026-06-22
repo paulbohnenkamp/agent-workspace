@@ -1,0 +1,11 @@
+kind: tool
+id: candidate-tracker
+name: Candidate Tracker
+version: 1.0.0
+description: Read hiring pipeline status, interview stages, and ownership details
+
+implementation:
+  type: connector
+
+metadata:
+  tags: [hiring, pipeline, recruiting]

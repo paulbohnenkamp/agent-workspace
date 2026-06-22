@@ -14,6 +14,8 @@ finance-project/
   agents/
     financial-analyst/
       agent.yaml
+      tools/
+      skills/
     budget-reviewer/
       agent.yaml
     forecaster/
@@ -41,6 +43,7 @@ finance-project/
 - Recurring reporting schedules
 - Versioned finance artifacts
 - Shared policy and historical data resources
+- One featured V2 agent package with nested tools and skills
 
 ## See Also
 

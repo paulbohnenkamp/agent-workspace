@@ -14,6 +14,8 @@ hiring-project/
   agents/
     hr-coordinator/
       agent.yaml
+      tools/
+      skills/
     hiring-assistant/
       agent.yaml
     policy-reviewer/
@@ -42,6 +44,7 @@ hiring-project/
 - Policy and compliance resources shared across agents
 - Hiring and onboarding artifacts as durable outcomes
 - Recurring governance and onboarding checks
+- One featured V2 agent package with nested tools and skills
 
 ## See Also
 

@@ -1,0 +1,11 @@
+kind: tool
+id: ledger-query
+name: Ledger Query
+version: 1.0.0
+description: Query ledger balances, journal summaries, and account activity for reporting periods
+
+implementation:
+  type: connector
+
+metadata:
+  tags: [finance, ledger, reporting]

@@ -1,0 +1,17 @@
+kind: skill
+id: hiring-intake-coordination
+name: Hiring Intake Coordination
+version: 1.0.0
+description: Coordinate intake details, pipeline setup, and onboarding preparation for a new role
+
+tools:
+  - id: candidate-tracker
+  - id: onboarding-checklist-builder
+
+instructions: |
+  1. Capture the hiring request and ownership details.
+  2. Confirm the candidate pipeline is ready for the role.
+  3. Prepare onboarding requirements before final approval.
+
+metadata:
+  tags: [hiring, intake, coordination]

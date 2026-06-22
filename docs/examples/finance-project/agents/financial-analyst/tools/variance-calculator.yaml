@@ -1,0 +1,13 @@
+kind: tool
+id: variance-calculator
+name: Variance Calculator
+version: 1.0.0
+description: Calculate budget-to-actual deltas and summarize significant movements
+
+implementation:
+  type: function
+  module: finance_tools
+  function: calculate_variance
+
+metadata:
+  tags: [finance, variance, analytics]

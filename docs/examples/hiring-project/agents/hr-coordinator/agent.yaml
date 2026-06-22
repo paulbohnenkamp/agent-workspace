@@ -12,8 +12,12 @@ instructions: |
   Your role: keep hiring work moving, maintain context, and prepare durable
   artifacts for policy review and manager decisions.
 
-tools: []
-skills: []
+tools:
+  - id: candidate-tracker
+  - id: onboarding-checklist-builder
+
+skills:
+  - id: hiring-intake-coordination
 
 metadata:
   tags: [hiring, coordination]

@@ -1,0 +1,13 @@
+kind: tool
+id: onboarding-checklist-builder
+name: Onboarding Checklist Builder
+version: 1.0.0
+description: Generate a role-specific onboarding checklist from policy and team inputs
+
+implementation:
+  type: function
+  module: hiring_tools
+  function: build_onboarding_checklist
+
+metadata:
+  tags: [hiring, onboarding, checklist]

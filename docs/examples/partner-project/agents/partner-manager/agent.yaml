@@ -12,8 +12,12 @@ instructions: |
   Your role: maintain partner context, coordinate agreement work, and keep
   review cadences aligned with project goals.
 
-tools: []
-skills: []
+tools:
+  - id: partner-directory
+  - id: qbr-brief-builder
+
+skills:
+  - id: partnership-health-review
 
 metadata:
   tags: [partner, relationship-management]

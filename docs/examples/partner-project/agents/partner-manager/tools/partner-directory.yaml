@@ -1,0 +1,11 @@
+kind: tool
+id: partner-directory
+name: Partner Directory
+version: 1.0.0
+description: Retrieve partner profile, relationship history, and current ownership details
+
+implementation:
+  type: connector
+
+metadata:
+  tags: [partner, directory, crm]

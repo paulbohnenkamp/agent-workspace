@@ -1,0 +1,17 @@
+kind: skill
+id: monthly-close-analysis
+name: Monthly Close Analysis
+version: 1.0.0
+description: Produce a month-end summary using ledger data and variance calculations
+
+tools:
+  - id: ledger-query
+  - id: variance-calculator
+
+instructions: |
+  1. Pull the latest closed-period balances.
+  2. Compare actuals to budget and prior period.
+  3. Highlight material changes and open questions for review.
+
+metadata:
+  tags: [finance, month-end, close]

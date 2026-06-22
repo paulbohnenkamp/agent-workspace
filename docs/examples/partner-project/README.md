@@ -14,6 +14,8 @@ partner-project/
   agents/
     partner-manager/
       agent.yaml
+      tools/
+      skills/
     contract-reviewer/
       agent.yaml
     relationship-analyst/
@@ -40,6 +42,7 @@ partner-project/
 - Contract and performance artifacts as first-class outputs
 - Shared partner context and communication guidance
 - Periodic review and planning schedules
+- One featured V2 agent package with nested tools and skills
 
 ## See Also
 

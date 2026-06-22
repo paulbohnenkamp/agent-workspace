@@ -12,8 +12,12 @@ instructions: |
   Your role: gather financial context, produce baseline analysis, and prepare
   artifacts for budget review and forecasting.
 
-tools: []
-skills: []
+tools:
+  - id: ledger-query
+  - id: variance-calculator
+
+skills:
+  - id: monthly-close-analysis
 
 metadata:
   tags: [finance, analysis]

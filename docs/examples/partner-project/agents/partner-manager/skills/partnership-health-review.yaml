@@ -1,0 +1,17 @@
+kind: skill
+id: partnership-health-review
+name: Partnership Health Review
+version: 1.0.0
+description: Review partner status, open issues, and next-step coordination before a formal check-in
+
+tools:
+  - id: partner-directory
+  - id: qbr-brief-builder
+
+instructions: |
+  1. Review the current partner status and open actions.
+  2. Summarize recent performance and escalations.
+  3. Prepare the next review brief and ownership follow-up.
+
+metadata:
+  tags: [partner, review, relationship-health]
