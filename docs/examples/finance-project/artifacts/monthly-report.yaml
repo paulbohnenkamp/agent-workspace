@@ -1,0 +1,14 @@
+kind: artifact-type
+id: monthly-report
+name: Monthly Financial Report
+version: 1.0.0
+description: Monthly financial reporting artifact for the finance project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [finance, reporting]

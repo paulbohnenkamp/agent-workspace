@@ -1,0 +1,13 @@
+kind: tool
+id: decision-framework
+name: Decision Framework
+version: 1.0.0
+description: Apply a structured framework for comparing and scoring decision options
+
+implementation:
+  type: function
+  module: decision_tools
+  function: evaluate_framework
+
+metadata:
+  tags: [framework, scoring, analysis]

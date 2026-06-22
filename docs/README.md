@@ -1,34 +1,21 @@
-# Agent Workspace Platform Documentation
+# Agent Platform Documentation
 
-Agent Workspace Platform is a metadata-driven operating system for collaborative AI work.
+Use this documentation in the same order a new contributor would learn the system:
 
-## Core Thesis
+1. [Architecture Overview](./architecture/README.md)
+2. [Project Archetypes](./project-archetypes/README.md)
+3. [Example Projects](./examples/README.md)
+4. [Source Packages](../packages/README.md)
 
-Definitions describe work.  
-Interpreters compose experiences.  
-Runtimes execute work.  
-Artifacts preserve work.  
-Humans and agents collaborate through shared state.
+## What Each Section Does
 
-## Canonical Flow
+- [Architecture Overview](./architecture/README.md) explains the Architecture V2 model and links to the authoritative spec and ADRs.
+- [Project Archetypes](./project-archetypes/README.md) shows the four domain dashboards used to explain the platform in business terms.
+- [Example Projects](./examples/README.md) maps those archetypes into filesystem-first YAML examples.
+- [Posters](./posters/README.md) explains the runtime, tool, artifact, and package-loading mechanics with diagrams.
 
-```text
-WorkspaceDefinition
-        ↓
-Workspace Interpreter
-        ↓
-Workspace Runtime
-        ↓
-Workspace Shell
-        ↓
-Artifacts + Actions + Collaboration
-        ↓
-Persistence + Search + Versioning
-```
+## Core References
 
-## Canonical Sections
-
-- [Specification v1](./specification/v1/README.md)
-- [Architecture](./architecture/README.md)
-- [Posters](./posters/README.md)
-- [Vertical Workspaces](./verticals/README.md)
+- [ARCHITECTURE_V2.md](./architecture/ARCHITECTURE_V2.md)
+- [AGENTS.md](../AGENTS.md)
+- [packages/README.md](../packages/README.md)

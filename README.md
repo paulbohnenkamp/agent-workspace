@@ -479,6 +479,13 @@ Claude Projects are hosted, proprietary. Agent Platform is open, self-hosted, ex
 
 **Understand the architecture:**
 - [docs/architecture/ARCHITECTURE_V2.md](docs/architecture/ARCHITECTURE_V2.md) - Authoritative specification
+- [docs/architecture/README.md](docs/architecture/README.md) - Architecture overview
+
+**Follow the learning path:**
+- [docs/README.md](docs/README.md) - Documentation entry point
+- [docs/project-archetypes/README.md](docs/project-archetypes/README.md) - Project archetype diagrams
+- [docs/examples/README.md](docs/examples/README.md) - Example projects
+- [packages/README.md](packages/README.md) - Source packages
 
 **Understand design decisions:**
 - [docs/architecture/adr/](docs/architecture/adr/) - Architecture Decision Records
@@ -530,7 +537,7 @@ Collaboration
 1. **Read AGENTS.md** - Understand how to work in this repository
 2. **Read ARCHITECTURE_V2.md** - Understand the model
 3. **Read a relevant ADR** - Understand the decision that affects your work
-4. **Look at examples** - See how concepts are used in packages/*/examples/
+4. **Look at examples** - See how concepts are used in [docs/examples/](docs/examples/README.md)
 5. **Run code** - Start implementing
 
 ---

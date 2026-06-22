@@ -1,0 +1,12 @@
+kind: tool
+id: information-search
+name: Information Search
+version: 1.0.0
+description: Search internal and external sources for decision context and precedents
+
+implementation:
+  type: http
+  endpoint: https://api.search.example.com/v1/search
+
+metadata:
+  tags: [search, research, decision-support]

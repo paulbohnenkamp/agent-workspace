@@ -1,0 +1,14 @@
+kind: artifact-type
+id: hiring-plan
+name: Hiring Plan
+version: 1.0.0
+description: Hiring plan artifact for the hiring project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [hiring, planning]

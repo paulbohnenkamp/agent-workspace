@@ -1,31 +1,31 @@
-# Architecture
+# Architecture Overview
 
-## Platform Layers
+Architecture V2 models the platform with 10 concepts: Project, Agent, Tool, Skill, Channel, Schedule, Resource, Artifact, Thread, and Run.
 
-```text
-Applications
-        ↓
-Workspace Definition Packages
-        ↓
-Workspace Interpreter
-        ↓
-Workspace Runtime
-        ↓
-Persistence
-        ↓
-Infrastructure
-```
+## Learning Path
 
-## Architecture Center
+1. Read the [authoritative specification](./ARCHITECTURE_V2.md).
+2. Read the relevant [ADRs](./adr/).
+3. Compare the model with the [project archetypes](../project-archetypes/README.md).
+4. Inspect the [example projects](../examples/README.md).
+5. Read the [source packages](../../packages/README.md).
 
-The most important architectural boundary is:
+## Platform Flow
 
 ```text
-WorkspaceDefinition
+Project packages
         ↓
-Interpreter
+Package loading and validation
         ↓
-Runtime
+Project runtime
+        ↓
+Agent, tool, and schedule execution
+        ↓
+Artifacts, threads, and runs
 ```
 
-The same runtime should render decision, finance, HR, and partner workspaces from definitions.
+## References
+
+- [ARCHITECTURE_V2.md](./ARCHITECTURE_V2.md)
+- [ADR Directory](./adr/)
+- [Posters](../posters/README.md)

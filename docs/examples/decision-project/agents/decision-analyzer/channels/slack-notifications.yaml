@@ -1,0 +1,11 @@
+kind: channel
+id: slack-notifications
+name: Slack Notifications
+version: 1.0.0
+description: Send decision updates and artifact links to project stakeholders
+
+implementation:
+  type: platform_service
+
+metadata:
+  tags: [slack, notifications]

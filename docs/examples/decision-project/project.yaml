@@ -1,46 +1,42 @@
-project:
-  id: decision-analysis-v1
-  name: Decision Analysis Project
-  type: decision
-  version: 1
-  description: |
-    Analyze strategic decisions using an autonomous agent.
-    The agent evaluates options, performs financial analysis,
-    and produces a structured decision artifact.
-  created: 2026-06-01
-  updated: 2026-06-19
+kind: project
+id: decision-project
+name: Strategic Decision Analysis
+version: 1.0.0
+description: |
+  Framework for strategic decision-making with agent-driven analysis.
+
+  This project demonstrates how the Agent Platform supports complex
+  organizational decisions through structured analysis, multi-agent
+  collaboration, and versioned artifacts.
 
 agents:
   - id: decision-analyzer
     name: Decision Analyzer
-    description: Analyzes decision options and produces analysis
-    path: agents/decision-analyzer
-    enabled: true
+  - id: risk-assessor
+    name: Risk Assessor
+  - id: options-synthesizer
+    name: Options Synthesizer
 
 resources:
-  - id: guidelines
-    name: Company Guidelines
-    path: resources/company-guidelines.md
-    type: document
-
-artifact_types:
-  - type: decision-analysis
-    name: Decision Analysis
-    description: Structured analysis of decision options
-    schema: artifacts/decision-analysis/schema.json
+  - id: company-strategy
+    name: Company Strategic Priorities
+  - id: decision-criteria
+    name: Decision Evaluation Criteria
+  - id: stakeholder-list
+    name: Stakeholder Information
+  - id: historical-decisions
+    name: Historical Decisions and Outcomes
 
 schedules:
-  - id: daily-analysis
-    name: Daily Decision Analysis
-    path: schedules/daily-analysis.yaml
-    agent: decision-analyzer
-
-permissions:
-  - role: analyst
-    can: ['run_agents', 'review_artifacts']
-  - role: viewer
-    can: ['view_artifacts']
+  - id: daily-review
+    name: Daily Decision Review
+  - id: weekly-synthesis
+    name: Weekly Synthesis
+  - id: monthly-review
+    name: Monthly Strategic Review
 
 metadata:
-  tags: [decision, analysis, autonomous-agent]
-  contact: decision-team@example.com
+  domain: strategic-decisions
+  complexity: medium
+  team: strategy
+  tags: [decision-making, analysis, collaboration, strategy]

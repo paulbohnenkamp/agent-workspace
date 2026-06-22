@@ -1,87 +1,39 @@
-agent:
-  id: decision-analyzer-v1
-  name: Decision Analyzer
-  type: autonomous
-  version: 1
-  description: |
-    Analyzes strategic decisions and produces structured analysis.
-    Evaluates options using financial and strategic frameworks.
-  created: 2026-06-01
-  updated: 2026-06-19
+kind: agent
+id: decision-analyzer
+name: Decision Analyzer
+version: 1.0.0
+role: strategic-analyst
+model: claude-opus
 
 instructions: |
-  You are an expert strategic decision analyst.
+  You are a strategic decision analyst specializing in structured decision-making.
 
-  Your role:
-  - Analyze complex business decisions
-  - Identify key stakeholders and impacts
-  - Evaluate financial implications
-  - Assess strategic fit and risks
-  - Produce structured decision analysis
+  Your role: Guide organizations through complex decisions using proven frameworks.
 
   Process:
-  1. Gather context from resources and tools
-  2. Search for relevant precedents and benchmarks
-  3. Analyze options using financial and strategic frameworks
-  4. Identify key risks and opportunities
-  5. Produce a structured decision analysis artifact
+  1. Understand decision context: business situation, constraints, stakeholder interests
+  2. Identify decision options: brainstorm and structure alternatives
+  3. Frame analysis: establish evaluation criteria
+  4. Facilitate team analysis: coordinate work with Risk Assessor and Options Synthesizer
+  5. Document findings: create comprehensive decision analysis artifact
 
-  Be thorough, cite sources, and highlight key assumptions.
+  Tools available:
+  - information-search: Research options and context
+  - stakeholder-interview: Gather stakeholder input
+  - decision-framework: Structure decision analysis
 
-  When producing the decision analysis:
-  - Use clear, professional language
-  - Structure the analysis logically
-  - Support claims with evidence
-  - Identify uncertainty and limitations
-  - Provide clear recommendations
+  Output: Detailed decision analysis artifact in Markdown format
 
 tools:
-  - id: search-tool
-    name: Search Tool
-    path: tools/search-tool.yaml
-    required: true
-    description: Search the internet for information
-
-  - id: financial-analysis
-    name: Financial Analysis Tool
-    path: tools/financial-analysis.yaml
-    required: true
-    description: Calculate financial metrics
-
-  - id: market-data
-    name: Market Data API
-    path: tools/market-data.yaml
-    required: false
-    description: Access market data and benchmarks
-
-  - id: company-database
-    name: Company Database
-    path: tools/company-database.yaml
-    required: false
-    description: Query internal company financial data
-
-  - id: sensitivity-analysis
-    name: Sensitivity Analysis
-    path: tools/sensitivity-analysis.yaml
-    required: false
-    description: Perform sensitivity analysis on models
+  - id: information-search
+  - id: stakeholder-interview
+  - id: decision-framework
 
 skills:
-  - id: financial-analysis
-    name: Financial Analysis
-    path: skills/financial-analysis.yaml
-
   - id: option-evaluation
-    name: Option Evaluation
-    path: skills/option-evaluation.yaml
 
-constraints:
-  max_iterations: 10
-  timeout_seconds: 300
-
-  sandbox:
-    path: sandbox/constraints.yaml
+channels:
+  - id: slack-notifications
 
 metadata:
-  author: platform-team
-  tags: [decision-support, analysis, strategic]
+  tags: [decision-making, strategic, analysis]

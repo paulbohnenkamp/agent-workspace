@@ -27,11 +27,11 @@ resources:
     name: Employee Database Connection
 
 schedules:
-  - id: weekly-review
+  - id: weekly-hiring-review
     name: Weekly Hiring Review
   - id: monthly-onboarding
     name: Monthly Onboarding Check
-  - id: quarterly-policy
+  - id: quarterly-policy-review
     name: Quarterly Policy Review
 
 metadata:

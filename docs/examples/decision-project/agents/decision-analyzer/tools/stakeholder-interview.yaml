@@ -1,0 +1,13 @@
+kind: tool
+id: stakeholder-interview
+name: Stakeholder Interview
+version: 1.0.0
+description: Gather structured stakeholder input for a decision under review
+
+implementation:
+  type: function
+  module: stakeholder_tools
+  function: capture_interview
+
+metadata:
+  tags: [stakeholders, discovery, interviews]

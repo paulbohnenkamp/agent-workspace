@@ -1,0 +1,14 @@
+kind: artifact-type
+id: partner-agreement
+name: Partner Agreement
+version: 1.0.0
+description: Partner agreement artifact for the partner project
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [partner, agreement]
