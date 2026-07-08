@@ -588,6 +588,7 @@ Avoid spending the next cycle on:
 
 ### Planning Workflow
 
+- `docs/specs/` is the reference layer for intended behavior and acceptance criteria.
 - `plans/index.md` is the active-work entry point.
 - `ROADMAP.md` is the high-level implementation map.
 - Each plan file should capture goal, context, scope, implementation steps, acceptance criteria, verification, status, and completion notes.
@@ -738,12 +739,13 @@ Each ADR documents the context, decision, consequences, and alternatives conside
 
 ## Joining the Repository
 
-1. Read [docs/README.md](docs/README.md) for the canonical learning path
+1. Read [docs/README.md](docs/README.md) for the reference-docs map
 2. Read this file (AGENTS.md) for repository conventions
-3. Read [ARCHITECTURE_V3.md](docs/architecture/ARCHITECTURE_V3.md)
-4. Read [plans/index.md](plans/index.md) first if you are resuming active work, then the linked plan file
-5. Read one relevant ADR (based on what you'll work on)
-6. Read the code in `packages/` to understand current state
+3. Read [docs/specs/README.md](docs/specs/README.md) for intended behavior and acceptance criteria
+4. Read [ARCHITECTURE_V3.md](docs/architecture/ARCHITECTURE_V3.md)
+5. Read [plans/index.md](plans/index.md) first if you are resuming active work, then the linked plan file
+6. Read one relevant ADR (based on what you'll work on)
+7. Read the code in `packages/` to understand current state
 
 Then start contributing.
 

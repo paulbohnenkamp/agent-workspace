@@ -4,7 +4,7 @@ Implementation roadmap for building out the Agent Platform ecosystem. Architectu
 
 **Focus:** Implementation and ecosystem evolution, not architecture churn.
 
-Active implementation plans live in `plans/index.md`. Use them for the current slice, then check the matching roadmap item when the plan is done.
+Active implementation plans live in `plans/index.md`. Use `docs/specs/` for intended behavior and acceptance criteria. Check the matching roadmap item when the plan is done.
 
 ---
 
@@ -13,7 +13,7 @@ Active implementation plans live in `plans/index.md`. Use them for the current s
 The repository is now in a good Architecture V3 state:
 
 - The V3 vocabulary is consistent across architecture docs, examples, posters, and root navigation.
-- `docs/README.md` is the canonical onboarding flow for new readers.
+- `docs/README.md` is the reference-docs map for new readers, and `docs/specs/` carries intended behavior and acceptance criteria.
 - Example projects under `docs/examples/` use the V3 package layout and align to the archetype images.
 - Architecture posters are SVG-backed Markdown pages that explain runtime behavior visually.
 - Jest is wired at the workspace level and currently passes from the root test command.

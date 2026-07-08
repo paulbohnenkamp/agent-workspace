@@ -27,7 +27,7 @@ The current repo milestone is the hiring-project workspace UI slice: multiple na
 ## Next Best Steps
 
 For active work, start at `plans/index.md`.
-For reference and orientation, read `AGENTS.md`, `ROADMAP.md`, and `docs/architecture/ARCHITECTURE_V3.md`.
+For reference and orientation, read `AGENTS.md`, `ROADMAP.md`, and `docs/specs/README.md`.
 
 ## See The Workspace Slice
 

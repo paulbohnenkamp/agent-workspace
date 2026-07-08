@@ -1,6 +1,6 @@
 # Plans Index
 
-This file is the durable handoff point for active implementation work.
+This file is the durable entry point for active implementation work.
 
 Workflow:
 

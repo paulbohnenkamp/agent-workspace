@@ -1,65 +1,23 @@
-# Agent Platform Documentation
+# Documentation
 
-This is the canonical onboarding path for learning Architecture V3.
+This directory contains durable reference docs, not active implementation handoff files.
 
-Use these docs in order:
+Use these docs to understand:
 
-1. [Architecture Overview](./architecture/README.md)
-2. [Project Archetypes](./project-archetypes/README.md)
-3. [Example Projects](./examples/README.md)
-4. [Design Notes](./designs/README.md)
-5. [Architecture Posters](./posters/README.md)
-6. [Source Packages](../packages/README.md)
+- Intended behavior
+- Architecture and runtime model
+- Example project shape
+- Design notes and runtime behavior
+- Release direction
 
-## Terms First
+Key entry points:
 
-If you are new to the repo, start by learning the 10 Architecture V3 concepts in [ARCHITECTURE_V3.md](./architecture/ARCHITECTURE_V3.md):
+- [Specs](./specs/README.md) for intended behavior and acceptance criteria
+- [Architecture](./architecture/README.md) for how the layered model fits together
+- [Roadmap](../ROADMAP.md) for release-level progress
+- [Plans](../plans/README.md) for active implementation handoff
 
-- `Project` organizes context
-- `Agent` performs work
-- `Tool` provides capability
-- `Skill` packages reusable know-how
-- `Channel` communicates outward
-- `Schedule` triggers execution
-- `Resource` provides shared context
-- `Artifact` preserves outcomes
-- `Thread` captures collaboration
-- `Run` records execution
+Rule of thumb:
 
-Everything else in the docs builds on those terms.
-
-## Learn By Layer
-
-- [Architecture Overview](./architecture/README.md) explains the Architecture V3 model and links to the authoritative spec and ADRs.
-- [Project Archetypes](./project-archetypes/README.md) shows the four domain dashboards used to explain the platform in business terms.
-- [Example Projects](./examples/README.md) maps those archetypes into filesystem-first YAML examples.
-- [Design Notes](./designs/README.md) explains concrete runtime behavior patterns, especially the event-primary runtime model and projected workspace state.
-- [Posters](./posters/README.md) explains the runtime, tool, artifact, and package-loading mechanics with diagrams.
-- [Source Packages](../packages/README.md) maps the model to the implementation.
-
-## Planning Workflow
-
-Active implementation work is tracked in [`plans/index.md`](../plans/index.md).
-
-The workflow is:
-
-1. Read `AGENTS.md` and the relevant docs.
-2. Open `plans/index.md` to find the active slice.
-3. Work the linked plan file until the acceptance criteria are met.
-4. Update the plan completion notes.
-5. Check the matching item in `ROADMAP.md`.
-
-## Recommended Read Order
-
-1. Read [ARCHITECTURE_V3.md](./architecture/ARCHITECTURE_V3.md) for the vocabulary.
-2. Read [Project Archetypes](./project-archetypes/README.md) to see the concepts in business-facing dashboards.
-3. Read [Example Projects](./examples/README.md) to see the filesystem package shape.
-4. Read [Design Notes](./designs/README.md) for concrete runtime patterns.
-5. Read [Architecture Posters](./posters/README.md) to understand runtime behavior.
-6. Read [Source Packages](../packages/README.md) to connect the model to code.
-
-## Core References
-
-- [ARCHITECTURE_V3.md](./architecture/ARCHITECTURE_V3.md)
-- [AGENTS.md](../AGENTS.md)
-- [packages/README.md](../packages/README.md)
+- Update docs when intended behavior, structure, or user-facing behavior changes.
+- Update plans when you are executing work against a stable spec.
