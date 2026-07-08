@@ -37,6 +37,18 @@ Everything else in the docs builds on those terms.
 - [Posters](./posters/README.md) explains the runtime, tool, artifact, and package-loading mechanics with diagrams.
 - [Source Packages](../packages/README.md) maps the model to the implementation.
 
+## Planning Workflow
+
+Active implementation work is tracked in [`plans/index.md`](../plans/index.md).
+
+The workflow is:
+
+1. Read `AGENTS.md` and the relevant docs.
+2. Open `plans/index.md` to find the active slice.
+3. Work the linked plan file until the acceptance criteria are met.
+4. Update the plan completion notes.
+5. Check the matching item in `ROADMAP.md`.
+
 ## Recommended Read Order
 
 1. Read [ARCHITECTURE_V3.md](./architecture/ARCHITECTURE_V3.md) for the vocabulary.

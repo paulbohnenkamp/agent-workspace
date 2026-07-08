@@ -553,6 +553,7 @@ Trust these (in order):
 1. Read ARCHITECTURE_V3.md
 2. Read the relevant ADR (docs/architecture/adr/README.md)
 3. Read this file (AGENTS.md)
+4. If you are resuming active work, read `plans/index.md` and the linked plan file first
 
 ### Current Repository State
 
@@ -584,6 +585,14 @@ Avoid spending the next cycle on:
 - new top-level architecture concepts
 - renaming exercises unless they fix real inconsistency
 - architecture reshaping without corresponding implementation progress
+
+### Planning Workflow
+
+- `ROADMAP.md` is the high-level implementation map.
+- `plans/index.md` is the durable handoff point for active implementation work.
+- Each plan file should capture goal, context, scope, implementation steps, acceptance criteria, verification, status, and completion notes.
+- When a plan is done, update the matching checkbox in `ROADMAP.md`.
+- Keep the outcome summary in the plan itself so the next session can resume quickly.
 
 ### Architecture Freeze Guidance
 
@@ -732,8 +741,9 @@ Each ADR documents the context, decision, consequences, and alternatives conside
 1. Read [docs/README.md](docs/README.md) for the canonical learning path
 2. Read this file (AGENTS.md) for repository conventions
 3. Read [ARCHITECTURE_V3.md](docs/architecture/ARCHITECTURE_V3.md)
-4. Read one relevant ADR (based on what you'll work on)
-5. Read the code in `packages/` to understand current state
+4. Read [plans/index.md](plans/index.md) if you are resuming an active slice
+5. Read one relevant ADR (based on what you'll work on)
+6. Read the code in `packages/` to understand current state
 
 Then start contributing.
 

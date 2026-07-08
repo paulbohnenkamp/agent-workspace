@@ -4,6 +4,8 @@ Implementation roadmap for building out the Agent Platform ecosystem. Architectu
 
 **Focus:** Implementation and ecosystem evolution, not architecture churn.
 
+Active implementation plans live in `plans/index.md`. Use them for the current slice, then check the matching roadmap item when the plan is done.
+
 ---
 
 ## Current Snapshot
