@@ -24,7 +24,10 @@ That same layering drives UI: the filesystem defines the project, events preserv
 
 The current repo milestone is the hiring-project workspace UI slice: multiple named `views/` load through the `system/` pipeline, interpret projected state, and render a React workspace shell with smoke-test coverage.
 
-Active implementation plans live in `plans/index.md`. Use them to pick up the next slice, then update the matching roadmap checkbox when the plan is complete.
+## Next Best Steps
+
+For active work, start at `plans/index.md`.
+For reference and orientation, read `AGENTS.md`, `ROADMAP.md`, and `docs/architecture/ARCHITECTURE_V3.md`.
 
 ## See The Workspace Slice
 
