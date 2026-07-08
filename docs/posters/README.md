@@ -4,6 +4,8 @@ These posters explain how Architecture V3 works internally.
 
 Use them after the [architecture overview](../architecture/README.md) and alongside the [project archetypes](../project-archetypes/README.md) and [example projects](../examples/README.md).
 
+If you are resuming implementation work, jump to [`plans/index.md`](../../plans/index.md) first. The posters explain the model; the plan index tracks the live slice.
+
 Each poster now has:
 
 - a short Markdown explainer page in `docs/posters/*.md`

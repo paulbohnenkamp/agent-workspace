@@ -2,6 +2,8 @@
 
 This directory contains the implementation of the Agent Platform core packages:
 
+If you are resuming active implementation work, start with [`plans/index.md`](../plans/index.md). The package docs below explain the code structure, while the plan index carries the current slice handoff.
+
 - **@awp/types** - TypeScript type definitions for all platform concepts
 - **@awp/schemas** - JSON schemas for runtime persistence
 - **@awp/loader** - Filesystem package discovery and loading

@@ -2,6 +2,8 @@
 
 Architecture V3 models the platform in three explicit layers:
 
+If you are resuming active implementation work, start with [`plans/index.md`](../../plans/index.md). This page explains the frozen model; the plan index tracks the live slice.
+
 - **Collaboration and work**: Project, Agent, Skill, Artifact, Thread, Run, Resource, Schedule, Channel
 - **Integration and capability**: Connector, Tool
 - **Runtime records and state**: Event, AgentSession, projected current state

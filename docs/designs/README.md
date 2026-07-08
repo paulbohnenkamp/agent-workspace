@@ -4,6 +4,8 @@ These notes capture implementation-oriented workflow patterns that sit below the
 
 Use them when the main architecture model is already settled, but the runtime behavior still needs clarification.
 
+If you are continuing an active slice, start with [`plans/index.md`](../../plans/index.md). These notes are supporting context for the current plan, not the handoff itself.
+
 ## Design Notes
 
 - [Multi-Participant Resumable Workflow](./multi-participant-resumable-workflow.md) - How humans and agents take turns over time in one shared project
