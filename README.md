@@ -26,6 +26,16 @@ The current repo milestone is the hiring-project workspace UI slice: multiple na
 
 Active implementation plans live in `plans/index.md`. Use them to pick up the next slice, then update the matching roadmap checkbox when the plan is complete.
 
+## See The Workspace Slice
+
+To build and view the current workspace implementation:
+
+1. Run `npm run build:system`.
+2. Run `npm run system` to start the local workspace server at `http://127.0.0.1:4010`.
+3. Open `http://127.0.0.1:4010/` in a browser to land on the hiring workspace, or run `node build/system/system/render-workspace.smoke.js` to verify the hiring-project views render successfully.
+
+The hiring example lives in [`docs/examples/hiring-project/README.md`](docs/examples/hiring-project/README.md) and documents the workspace views that the slice renders.
+
 ---
 
 ## Why Agent Platform Exists

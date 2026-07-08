@@ -6,7 +6,7 @@ Tighten workspace view loading so broken `views/` files fail fast with clear err
 
 ## Related Roadmap Item
 
-- `ROADMAP.md` item: Tighten loader/schema validation for missing or mismatched view metadata
+- `ROADMAP.md` tracker entry: Tighten loader/schema validation for missing or mismatched view metadata
 
 ## Context
 
@@ -39,7 +39,7 @@ Tighten workspace view loading so broken `views/` files fail fast with clear err
 2. Add any missing reference checks for fields, regions, and renderer overlays.
 3. Make validation errors concise and actionable.
 4. Rebuild and rerun the workspace smoke test.
-5. Update plan completion notes and the roadmap checkbox when done.
+5. Update plan completion notes and the matching `ROADMAP.md` checkbox when done.
 
 ## Acceptance Criteria
 

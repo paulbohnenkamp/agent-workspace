@@ -6,7 +6,7 @@ Describe the outcome this plan should achieve.
 
 ## Related Roadmap Item
 
-- `ROADMAP.md` item:
+- `ROADMAP.md` tracker entry:
 
 ## Context
 

@@ -6,7 +6,7 @@ Deliver a working hiring-project workspace UI slice with a real loader, interpre
 
 ## Related Roadmap Item
 
-- `ROADMAP.md` item: 2.0 Workspace UI Slice
+- `ROADMAP.md` tracker entry: 2.0 Workspace UI Slice
 
 ## Context
 
@@ -36,7 +36,7 @@ Deliver a working hiring-project workspace UI slice with a real loader, interpre
 2. Build the loader, interpreter, registry, layout builder, and shell.
 3. Add validation for workspace view metadata.
 4. Add a smoke test that verifies the rendered workspace.
-5. Update roadmap and documentation to reflect the new milestone.
+5. Update the plan record and documentation to reflect the new milestone.
 
 ## Acceptance Criteria
 
@@ -64,7 +64,7 @@ Deliver a working hiring-project workspace UI slice with a real loader, interpre
 
 ## Outcome Summary
 
-- The repo now has a real, tested workspace UI slice that is committed and pushed, and the next slice can resume from plan-based handoff docs.
+- The repo now has a real, tested workspace UI slice that is committed and pushed, and the next slice can resume from `plans/index.md`.
 
 ## Tooling / Verification Notes
 

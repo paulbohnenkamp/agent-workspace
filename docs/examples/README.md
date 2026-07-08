@@ -22,6 +22,8 @@ example-project/
 
 The hiring example also includes a working workspace UI slice under `views/` that is rendered by the `system/` workspace pipeline during the repo smoke test.
 
+To see that slice locally, run `npm run build:system`, then `npm run system` from the repo root and open `http://127.0.0.1:4010/`, or run `node build/system/system/render-workspace.smoke.js` after building to verify the rendered views.
+
 ## Examples
 
 | Example | Domain | Archetype Image |
