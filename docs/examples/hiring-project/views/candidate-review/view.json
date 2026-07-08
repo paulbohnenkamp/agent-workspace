@@ -1,0 +1,185 @@
+{
+  "id": "candidate-review-workspace",
+  "title": "Candidate Review",
+  "route": "/candidates/:candidateId/review",
+  "description": "Artifact-centric workspace for reviewing one candidate across queue state, AI collaboration, evaluation artifacts, and approval actions.",
+  "shell": {
+    "type": "workspace-shell",
+    "header": {
+      "component": "workspace.header"
+    },
+    "chrome": {
+      "leftNav": true,
+      "topTabs": [
+        "workspace",
+        "my-tasks",
+        "knowledge",
+        "analytics"
+      ]
+    }
+  },
+  "context": {
+    "projectId": "hiring-project",
+    "selection": {
+      "candidateId": "$route.candidateId"
+    }
+  },
+  "fields": [
+    {
+      "name": "selectedCandidateId",
+      "source": "$route.candidateId"
+    },
+    {
+      "name": "selectedCandidate",
+      "source": "projection.item_queue",
+      "select": {
+        "id": "$fields.selectedCandidateId"
+      }
+    },
+    {
+      "name": "candidateEvaluation",
+      "source": "projection.artifact_versions",
+      "select": {
+        "artifactType": "candidate-evaluation",
+        "artifactId": "$fields.selectedCandidateId"
+      }
+    },
+    {
+      "name": "candidateThread",
+      "source": "projection.thread_index",
+      "select": {
+        "threadFor": "candidate:$fields.selectedCandidateId"
+      }
+    },
+    {
+      "name": "candidateRuns",
+      "source": "projection.agent_activity",
+      "select": {
+        "relatedTo": "candidate:$fields.selectedCandidateId"
+      }
+    },
+    {
+      "name": "candidateSources",
+      "source": "projection.knowledge_links",
+      "select": {
+        "relatedTo": "candidate:$fields.selectedCandidateId"
+      }
+    }
+  ],
+  "layout": {
+    "type": "grid",
+    "columns": [
+      "minmax(16rem, 18rem)",
+      "minmax(16rem, 18rem)",
+      "minmax(0, 1fr)",
+      "minmax(16rem, 18rem)"
+    ],
+    "gap": "1rem",
+    "regions": [
+      {
+        "id": "queue",
+        "columnStart": 1,
+        "columnSpan": 1
+      },
+      {
+        "id": "assistant",
+        "columnStart": 2,
+        "columnSpan": 1
+      },
+      {
+        "id": "main",
+        "columnStart": 3,
+        "columnSpan": 1
+      },
+      {
+        "id": "context",
+        "columnStart": 4,
+        "columnSpan": 1
+      }
+    ]
+  },
+  "regions": {
+    "queue": [
+      {
+        "component": "candidate.queue",
+        "title": "Candidate Review Queue",
+        "bind": {
+          "projection": "item_queue",
+          "selectedId": "$fields.selectedCandidateId"
+        }
+      }
+    ],
+    "assistant": [
+      {
+        "component": "assistant.summary-card",
+        "title": "AI Assistant",
+        "bind": {
+          "candidate": "$fields.selectedCandidate",
+          "artifact": "$fields.candidateEvaluation"
+        }
+      },
+      {
+        "component": "thread.timeline",
+        "title": "Discussion",
+        "bind": {
+          "thread": "$fields.candidateThread"
+        }
+      },
+      {
+        "component": "composer.inline",
+        "bind": {
+          "thread": "$fields.candidateThread"
+        }
+      }
+    ],
+    "main": [
+      {
+        "component": "candidate.header",
+        "bind": {
+          "candidate": "$fields.selectedCandidate"
+        }
+      },
+      {
+        "component": "artifact.tabs",
+        "tabs": [
+          "evaluation-summary",
+          "interview-brief",
+          "follow-up-draft",
+          "scorecard"
+        ],
+        "bind": {
+          "artifact": "$fields.candidateEvaluation"
+        }
+      }
+    ],
+    "context": [
+      {
+        "component": "knowledge.sources",
+        "title": "Knowledge Sources",
+        "bind": {
+          "sources": "$fields.candidateSources"
+        }
+      },
+      {
+        "component": "agent.status-list",
+        "title": "Agents",
+        "bind": {
+          "runs": "$fields.candidateRuns"
+        }
+      },
+      {
+        "component": "action.stack",
+        "title": "Actions",
+        "actions": [
+          "advance_candidate",
+          "request_revision",
+          "schedule_interview",
+          "policy_check"
+        ],
+        "bind": {
+          "candidateId": "$fields.selectedCandidateId"
+        }
+      }
+    ]
+  }
+}

@@ -22,6 +22,8 @@ The platform is easiest to understand as a layered model:
 
 That same layering drives UI: the filesystem defines the project, events preserve runtime history, projections derive current state, and interpreters/renderers simply make that state visible.
 
+The current repo milestone is the hiring-project workspace UI slice: multiple named `views/` load through the `system/` pipeline, interpret projected state, and render a React workspace shell with smoke-test coverage.
+
 ---
 
 ## Why Agent Platform Exists
@@ -111,7 +113,12 @@ my-project/
   artifacts/
     decision-analysis.yaml        # Output type definition
   views/
-    workspace.yaml                # Renderer-neutral workspace/view definition
+    candidate-review/
+      view.json                   # Renderer-neutral workspace definition
+      react/
+        view.json                 # Optional React-specific override
+      ink/
+        view.json                 # Optional Ink-specific override
   threads/
     (created at runtime)
   runs/
@@ -156,6 +163,7 @@ Everything else is a projection:
 - loaders project filesystem packages into a typed project model
 - event replay projects runtime history into current state
 - UI interpreters project model + state into a renderer-neutral view tree
+- a component registry maps declared view nodes to concrete UI components
 - renderers project that view tree into React, Ink, or future surfaces
 
 ```text
@@ -176,6 +184,8 @@ Event Replay + State Projections
             ↓
 UI Interpreter
             ↓
+Component Registry
+            ↓
 Renderer-Neutral View Tree
             ↓
 Renderer
@@ -190,6 +200,78 @@ This keeps the architecture clean:
 - events record what happened
 - projections derive what is true now
 - UI renders projected project state instead of inventing a second truth source
+
+Projects can expose multiple named views. A hiring project, for example, might have:
+
+- `views/open-roles-board/view.json`
+- `views/candidate-review/view.json`
+- `views/approval-queue/view.json`
+
+That is usually better than one generic `workspace.json`, because each view can describe a distinct work surface while still sharing the same project state and component registry.
+
+When a renderer needs special treatment, nest that beneath the view:
+
+```text
+views/
+  candidate-review/
+    view.json
+    react/
+      view.json
+    ink/
+      view.json
+```
+
+That keeps the renderer-neutral contract primary while leaving room for optional renderer-specific adaptation.
+
+### View Definitions and Component Registry
+
+View files should stay declarative. They describe layout, fields, bindings, and intent, not arbitrary project-specific code.
+
+This is closer to a metadata-driven wizard system than a hand-coded page:
+
+- `fields` define named pieces of resolved state, selection, or derived data
+- `layout` defines how those pieces are arranged into regions and containers
+- `component` nodes declare which registry component should render a given part of the view
+- `actions` define the allowed user or agent-facing operations exposed in that surface
+
+The usual flow is:
+
+```text
+views/*/view.json
+    ↓
+View Interpreter
+    ↓
+Component Registry
+    ↓
+React / Ink / Future Renderers
+```
+
+Example:
+
+```json
+{
+  "id": "candidate-review-workspace",
+  "title": "Candidate Review",
+  "route": "/candidates/:candidateId/review",
+  "fields": [
+    {
+      "name": "selectedCandidateId",
+      "source": "$route.candidateId"
+    },
+    {
+      "name": "candidateEvaluation",
+      "source": "projection.artifact_versions",
+      "select": {
+        "artifactType": "candidate-evaluation",
+        "artifactId": "$fields.selectedCandidateId"
+      }
+    }
+  ],
+  "layout": {
+    "type": "workspace-shell"
+  }
+}
+```
 
 ---
 

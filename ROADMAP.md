@@ -114,7 +114,7 @@ These three areas are the highest-leverage path to turning the repository from a
 
 ### 2.0 Workspace UI Slice
 
-**Status:** Should start soon, not at the end
+**Status:** In progress
 
 The platform now has a clear UI architecture:
 
@@ -122,18 +122,23 @@ The platform now has a clear UI architecture:
 - events are durable truth for runtime history
 - projections derive current workspace state
 - interpreters build renderer-neutral view trees
+- component registries map declared view nodes to concrete UI components
 - renderers surface those workspaces in React, Ink, and future clients
 
 This means UI should be developed as an early proving slice, not deferred until everything else is finished.
 
 **Work:**
-- [ ] Define the minimum `views/` workspace definition shape needed for one end-to-end example
-- [ ] Build a project loader -> project model -> projection -> interpreter pipeline for UI consumption
-- [ ] Implement one renderer-neutral workspace/view tree format
-- [ ] Build one concrete renderer first (prefer React)
-- [ ] Render artifacts, threads, runs, and event-derived status in one coherent workspace
-- [ ] Show dormant/wake/resume behavior in the UI using hiring-project or a similar example
-- [ ] Keep the UI as a projection over project state, not a second source of truth
+- [x] Define the minimum `views/` definition shape needed for one end-to-end example, including more than one named project view and optional renderer-specific subdirectories
+- [x] Build a project loader -> project model -> projection -> interpreter pipeline for UI consumption
+- [x] Define a component registry contract for view nodes like artifact viewers, thread timelines, queues, and activity panels
+- [ ] Define a metadata pattern for `fields` plus `layout`, borrowing what works from wizard metadata without turning workspace views into wizards
+- [x] Implement one renderer-neutral workspace/view tree format
+- [x] Build one concrete renderer first (prefer React)
+- [x] Render artifacts, threads, runs, and event-derived status in one coherent workspace
+- [x] Show dormant/wake/resume behavior in the UI using hiring-project or a similar example
+- [x] Keep the UI as a projection over project state, not a second source of truth
+- [ ] Tighten loader/schema validation for missing or mismatched view metadata
+- [ ] Expand reference validation across view fields, regions, and renderer overlays
 
 **Deliverable:** One working filesystem-native workspace UI that proves the architecture
 
@@ -202,7 +207,11 @@ This means UI should be developed as an early proving slice, not deferred until 
 **Work:**
 - [ ] Define how `views/` participate in the project filesystem without overcomplicating package kinds
 - [ ] Define interpreter inputs: project model, projected state, view metadata
+- [ ] Define how multiple named views are routed and selected within one project
+- [ ] Define how renderer-specific overrides under `views/<view-id>/react` or `views/<view-id>/ink` layer on top of the canonical view definition
 - [ ] Define renderer-neutral workspace nodes and layout primitives
+- [ ] Define the component registry boundary between declarative view metadata and concrete components
+- [ ] Define how view-level `fields` resolve route params, projections, selections, and derived values
 - [ ] Define how UI components reference artifacts, threads, runs, and agent activity
 - [ ] Keep renderer concerns separate from interpreter concerns
 - [ ] Document the boundary between package loading, event replay, interpretation, and rendering

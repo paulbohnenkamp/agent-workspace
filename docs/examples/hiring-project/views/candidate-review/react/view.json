@@ -1,0 +1,49 @@
+{
+  "extends": "../view.json",
+  "renderer": "react",
+  "regions": {
+    "assistant": [
+      {
+        "component": "assistant.summary-card",
+        "title": "AI Assistant",
+        "bind": {
+          "candidate": "$fields.selectedCandidate",
+          "artifact": "$fields.candidateEvaluation"
+        }
+      },
+      {
+        "component": "thread.timeline",
+        "title": "Discussion",
+        "bind": {
+          "thread": "$fields.candidateThread"
+        }
+      },
+      {
+        "component": "composer.chat-input",
+        "bind": {
+          "thread": "$fields.candidateThread"
+        }
+      }
+    ],
+    "main": [
+      {
+        "component": "candidate.header",
+        "bind": {
+          "candidate": "$fields.selectedCandidate"
+        }
+      },
+      {
+        "component": "artifact.tabs",
+        "tabs": [
+          "evaluation-summary",
+          "interview-brief",
+          "follow-up-draft",
+          "scorecard"
+        ],
+        "bind": {
+          "artifact": "$fields.candidateEvaluation"
+        }
+      }
+    ]
+  }
+}

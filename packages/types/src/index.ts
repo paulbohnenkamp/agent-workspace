@@ -1,4 +1,5 @@
 export * from './definitions';
+export * from './workspace';
 export {
   Participant,
   Event,

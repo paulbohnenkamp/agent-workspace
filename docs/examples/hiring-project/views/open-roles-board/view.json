@@ -1,0 +1,70 @@
+{
+  "id": "open-roles-board",
+  "title": "Open Roles Board",
+  "route": "/roles",
+  "description": "Queue-oriented workspace for recruiters and coordinators managing active hiring requests.",
+  "layout": {
+    "type": "grid",
+    "columns": [
+      "minmax(0, 1fr)",
+      "minmax(0, 1fr)",
+      "minmax(0, 1fr)"
+    ],
+    "gap": "1rem",
+    "regions": [
+      {
+        "id": "intake",
+        "columnStart": 1,
+        "columnSpan": 1
+      },
+      {
+        "id": "in-review",
+        "columnStart": 2,
+        "columnSpan": 1
+      },
+      {
+        "id": "approved",
+        "columnStart": 3,
+        "columnSpan": 1
+      }
+    ]
+  },
+  "regions": {
+    "intake": [
+      {
+        "component": "queue.list",
+        "title": "Intake",
+        "bind": {
+          "projection": "item_queue",
+          "filter": {
+            "status": "Intake"
+          }
+        }
+      }
+    ],
+    "in-review": [
+      {
+        "component": "queue.list",
+        "title": "In Review",
+        "bind": {
+          "projection": "item_queue",
+          "filter": {
+            "status": "Waiting for Human Review"
+          }
+        }
+      }
+    ],
+    "approved": [
+      {
+        "component": "queue.list",
+        "title": "Approved",
+        "bind": {
+          "projection": "item_queue",
+          "filter": {
+            "status": "Approved"
+          }
+        }
+      }
+    ]
+  }
+}

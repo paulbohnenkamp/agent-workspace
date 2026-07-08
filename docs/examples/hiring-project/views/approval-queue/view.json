@@ -1,0 +1,56 @@
+{
+  "id": "approval-queue",
+  "title": "Approval Queue",
+  "route": "/approvals",
+  "description": "Supervisor-facing workspace for approvals, policy findings, and resumable change requests.",
+  "layout": {
+    "type": "grid",
+    "columns": [
+      "minmax(18rem, 24rem)",
+      "minmax(0, 1fr)"
+    ],
+    "gap": "1rem",
+    "regions": [
+      {
+        "id": "queue",
+        "columnStart": 1,
+        "columnSpan": 1
+      },
+      {
+        "id": "main",
+        "columnStart": 2,
+        "columnSpan": 1
+      }
+    ]
+  },
+  "regions": {
+    "queue": [
+      {
+        "component": "approval.queue",
+        "title": "Pending Approvals",
+        "bind": {
+          "projection": "approval_state",
+          "filter": {
+            "status": "Pending"
+          }
+        }
+      }
+    ],
+    "main": [
+      {
+        "component": "event.timeline",
+        "title": "Latest Events",
+        "bind": {
+          "projection": "agent_activity"
+        }
+      },
+      {
+        "component": "artifact.summary",
+        "title": "Selected Artifact",
+        "bind": {
+          "selection": "$ui.selectedApproval.artifactId"
+        }
+      }
+    ]
+  }
+}

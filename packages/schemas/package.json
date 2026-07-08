@@ -10,7 +10,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "build": "node -e \"console.log('schemas package has no build step')\""
+    "build": "tsc -p tsconfig.json"
   },
   "exports": {
     ".": {

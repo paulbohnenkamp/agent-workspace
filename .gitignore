@@ -14,3 +14,7 @@ internal_docs/
 exec-plans/
 PLANS.md
 jobs/
+
+# Local workspace build artifacts and assistant scratch data
+build/
+.codex/

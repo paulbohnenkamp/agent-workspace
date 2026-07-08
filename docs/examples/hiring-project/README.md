@@ -41,6 +41,15 @@ hiring-project/
     onboarding-checklist.yaml
     employee-record.yaml
     policy-compliance-report.yaml
+  views/
+    open-roles-board/
+      view.json
+    candidate-review/
+      view.json
+      react/
+        view.json
+    approval-queue/
+      view.json
   schedules/
     weekly-hiring-review.yaml
     monthly-onboarding.yaml
@@ -54,6 +63,10 @@ hiring-project/
 - Canonical event history with queryable current-state projections
 - Policy and compliance resources shared across agents
 - Hiring and onboarding artifacts as durable outcomes
+- Multiple named workspace views over the same project state
+- View metadata that can use `fields` plus `layout` composition in the same spirit as metadata-driven wizard UIs
+- Optional renderer-specific overrides under a shared view identity
+- A working React workspace slice that loads `view.json`, interprets projected state, and renders the example views through the `system/` pipeline
 - Recurring governance and onboarding checks
 - Evaluation kept outside the main execution and wake-up loop
 - One featured V3 agent package with nested tools and skills

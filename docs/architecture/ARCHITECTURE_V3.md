@@ -93,7 +93,12 @@ project/
   artifacts/
     artifact-schema.yaml        # Artifact type definitions
   views/
-    workspace.yaml              # Renderer-neutral workspace/view definitions
+    candidate-review/
+      view.json                 # Renderer-neutral workspace definition
+      react/
+        view.json               # Optional React-specific override
+      ink/
+        view.json               # Optional Ink-specific override
   threads/
     (none - created at runtime)
   runs/
@@ -174,6 +179,7 @@ UI is not a separate source of truth. It is a projection over:
 - the loaded project model
 - event-derived current state
 - optional view metadata that describes workspace composition
+- a component registry that maps view nodes to concrete UI primitives
 
 ```text
 Project Filesystem
@@ -193,6 +199,8 @@ Event Replay + State Projections
             ↓
 UI Interpreter
             ↓
+Component Registry
+            ↓
 Renderer-Neutral View Tree
             ↓
 Renderer
@@ -208,6 +216,37 @@ This means:
 - projections derive what is true now
 - interpreters decide how project state becomes visible workspace structure
 - renderers only render that interpreted state
+
+Projects may define multiple named views rather than one generic workspace file. A hiring project may include:
+
+- `views/open-roles-board/view.json`
+- `views/candidate-review/view.json`
+- `views/approval-queue/view.json`
+
+Each view remains declarative metadata that binds to projected project state. The interpreter resolves those bindings and the component registry selects the corresponding UI primitives.
+
+The recommended structure borrows from metadata-driven wizard systems:
+
+- `fields` define named bindings and derived state used across the view
+- `layout` defines regions, containers, tabs, stacks, and shell composition
+- `component` nodes identify the concrete registry component to render
+- `actions` define allowed operations without embedding page-specific code
+
+That keeps workspace definitions expressive while still renderer-neutral.
+
+If a renderer needs specialization, it can live beneath the same view identity:
+
+```text
+views/
+  candidate-review/
+    view.json
+    react/
+      view.json
+    ink/
+      view.json
+```
+
+The neutral `view.json` stays canonical. Renderer-specific files are optional overlays, not separate view identities.
 
 ---
 

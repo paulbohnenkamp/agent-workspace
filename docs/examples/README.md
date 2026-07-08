@@ -10,8 +10,15 @@ example-project/
   agents/
   resources/
   artifacts/
+  views/
+    candidate-review/
+      view.json
+      react/
+        view.json
   schedules/
 ```
+
+The hiring example also includes a working workspace UI slice under `views/` that is rendered by the `system/` workspace pipeline during the repo smoke test.
 
 ## Examples
 

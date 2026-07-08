@@ -625,6 +625,40 @@ Default behavior should be:
 3. Update related docs
 4. Explain in commit message
 
+### UI Implementation Guardrails
+
+For workspace UI work, preserve the metadata-driven model. Do not treat sample views as one-off pages.
+
+1. **TypeScript only for handwritten UI/runtime code**
+   - Do not add new handwritten JavaScript for renderers, registries, or workspace runtime behavior.
+   - Generated JavaScript artifacts are acceptable, but source-of-truth UI code should be TypeScript.
+   - Existing handwritten JavaScript in workspace UI/runtime paths should be treated as migration debt and converted to TypeScript rather than extended indefinitely.
+
+2. **Registry-based composition, not page-specific rendering**
+   - A `ComponentRegistry.ts` should behave like `FieldRegistry.ts` in the `emwizard` model: map metadata component types to reusable renderers.
+   - Registries must not contain candidate-specific, route-specific, or page-specific business logic.
+
+3. **Composable layout, not one-off screens**
+   - Views should be assembled from reusable layout primitives and component metadata, similar to how `emwizard` composes wizards from config plus layout builders.
+   - Do not hard-code a bespoke shell for one workspace view unless the same shell abstractions can support other views.
+
+4. **React-first UI system over one-off renderer code**
+   - For new UI code, prefer React with functional components.
+   - Borrow registry, builder, and container concepts from `emwizard`, but do not carry forward Oracle JET or Preact implementation choices.
+   - Prefer stable TypeScript interfaces, reusable layout primitives, and class-based CSS roles over ad hoc inline styling branches or one-off page renderer code.
+   - Styling should describe reusable workspace roles such as shell, rail, canvas, panel, section, and state, not a single named view.
+
+5. **Metadata owns structure**
+   - View-specific structure belongs in metadata (`view.json` and related definitions), not buried inside renderer conditionals.
+   - Renderer code should interpret metadata, not silently redefine it.
+
+6. **Prove reuse before polishing**
+   - Before investing in heavy visual refinement, ensure the renderer changes can support at least two different workspace views without copy-paste or view-specific hacks.
+
+7. **Borrow before inventing**
+   - Before changing workspace composition or registry patterns, inspect adjacent systems such as `emwizard` for proven registry, builder, and container patterns.
+   - Prefer copying and adapting the existing `emwizard` TypeScript structural patterns where they fit, while implementing new UI code in React with functional components.
+
 ---
 
 ## Quick Reference

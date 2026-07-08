@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Schema exports for Agent Workspace Platform
  *
@@ -5,37 +6,25 @@
  * Schemas define the structure and constraints for definitions, runtime objects,
  * and interpreter outputs.
  */
-
-module.exports = {
-  // Definition schemas
-  workspaceDefinition: require('./workspace-definition.schema.json'),
-  artifactDefinition: require('./artifact-definition.schema.json'),
-  playbookDefinition: require('./playbook-definition.schema.json'),
-  agentDefinition: require('./agent-definition.schema.json'),
-  skillDefinition: require('./skill-definition.schema.json'),
-  toolDefinition: require('./tool-definition.schema.json'),
-  connectorDefinition: require('./connector.schema.json'),
-
-  // Runtime schemas
-  workspaceInstance: require('./workspace-instance.schema.json'),
-  workItem: require('./work-item.schema.json'),
-  artifactInstance: require('./artifact-instance.schema.json'),
-  knowledgeSource: require('./knowledge-source.schema.json'),
-  action: require('./action.schema.json'),
-  thread: require('./thread.schema.json'),
-  run: require('./run.schema.json'),
-  playbookInstance: require('./playbook-instance.schema.json'),
-  agentSession: require('./agent-session.schema.json'),
-  event: require('./event.schema.json'),
-  participant: require('./participant.schema.json'),
-
-  // Interpreter and shell schemas
-  componentTree: require('./component-tree.schema.json'),
-
-  // Policy and permission schemas
-  policies: require('./policies.schema.json'),
-  permissions: require('./permissions.schema.json'),
-
-  // State schemas
-  workspaceState: require('./workspace-state.schema.json'),
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.workspaceView = exports.permissions = exports.policies = exports.participant = exports.event = exports.run = exports.thread = exports.connectorDefinition = void 0;
+const connector_schema_json_1 = __importDefault(require("./connector.schema.json"));
+exports.connectorDefinition = connector_schema_json_1.default;
+const thread_schema_json_1 = __importDefault(require("./thread.schema.json"));
+exports.thread = thread_schema_json_1.default;
+const run_schema_json_1 = __importDefault(require("./run.schema.json"));
+exports.run = run_schema_json_1.default;
+const event_schema_json_1 = __importDefault(require("./event.schema.json"));
+exports.event = event_schema_json_1.default;
+const participant_schema_json_1 = __importDefault(require("./participant.schema.json"));
+exports.participant = participant_schema_json_1.default;
+const policies_schema_json_1 = __importDefault(require("./policies.schema.json"));
+exports.policies = policies_schema_json_1.default;
+const permissions_schema_json_1 = __importDefault(require("./permissions.schema.json"));
+exports.permissions = permissions_schema_json_1.default;
+const workspace_view_schema_json_1 = __importDefault(require("./workspace-view.schema.json"));
+exports.workspaceView = workspace_view_schema_json_1.default;
+//# sourceMappingURL=index.js.map
