@@ -4,6 +4,8 @@ These four archetypes preserve the same dashboard composition while updating ter
 
 They are the domain-facing view of the platform: the images show how a Project feels in practice, while the example projects show how that same shape is expressed in YAML packages.
 
+If you are resuming an active implementation slice, start with [`plans/index.md`](../../plans/index.md). This page is reference material; the plan index carries the live handoff.
+
 ## Archetypes
 
 | Archetype | Image | Example Project |

@@ -10,6 +10,8 @@ It is the clearest example of long-running collaborative work that starts, stops
 - another agent revises after comments or policy findings
 - approval arrives later through a new event or scheduled review
 
+If you are continuing the current workspace UI slice, start with [`plans/index.md`](../../../plans/index.md). This example documents the target shape; the plan index tracks the live work.
+
 ## Archetype
 
 - [Hiring Project image](../../images/projects/hiring-project.png)
