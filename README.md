@@ -226,28 +226,29 @@ That is usually better than one generic `workspace.json`, because each view can 
 
 Workspace component aliases are intentionally generic and short. The canonical catalog is:
 
-- `badge`
-- `panel`
-- `list`
-- `document`
-- `header`
-- `queue`
-- `summaryCard`
-- `timeline`
-- `composer`
-- `tabs`
-- `sources`
-- `statusList`
-- `actions`
+- Shell and layout roles: `shell`, `rail`, `canvas`, `section`, `stack`, `grid`, `toolbar`
+- Content primitives: `badge`, `panel`, `card`, `list`, `document`, `text`, `divider`
+- Composite workspace surfaces: `header`, `queue`, `summaryCard`, `timeline`, `composer`, `tabs`, `sources`, `statusList`, `actions`
 
-Use those names in `view.json` instead of domain-scoped aliases.
+Use those names in `view.json` instead of domain-scoped aliases. The registry is the source of truth for what `component` values are valid.
+Component implementations live one-per-file under `src/components/*.tsx`, while `src/ComponentRegistry.tsx` stays as the thin alias map.
 
 Quick cheat sheet:
 
+- `shell`: shell-level hero or frame content
+- `rail`: side rail content or narrow support panel
+- `canvas`: main content canvas or broad workspace body
+- `section`: reusable labeled section block
+- `stack`: vertical stack of related content
+- `grid`: responsive grid of cards or cells
+- `toolbar`: compact action bar or control strip
 - `badge`: inline status pill or tone label
 - `panel`: generic bordered container for a block of content
+- `card`: compact summary card for a record or metric
 - `list`: generic item list or record list
 - `document`: sectioned document or record view
+- `text`: plain text or prose block
+- `divider`: labeled or unlabeled separator
 - `header`: top-of-view hero block or shell slot
 - `queue`: ordered work list or review board column
 - `summaryCard`: compact summary of a person, artifact, or assistant

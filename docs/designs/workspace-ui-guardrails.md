@@ -42,7 +42,7 @@ Existing handwritten JavaScript in these paths should be treated as temporary mi
 
 ## 2. Registries must stay generic
 
-A future `ComponentRegistry.ts` should be conceptually equivalent to `FieldRegistry.ts` in `emwizard`.
+A future `ComponentRegistry.tsx` should be conceptually equivalent to `FieldRegistry.tsx` in `emwizard`.
 
 That means:
 
@@ -51,15 +51,26 @@ That means:
 - do not embed candidate-specific logic
 - do not embed route-specific layout assumptions
 - do not special-case one workspace in registry code
+- keep `src/ComponentRegistry.tsx` thin and keep component implementations in `src/components/*.tsx`
 
 Canonical component aliases:
 
 | Alias | Purpose |
 | --- | --- |
+| `shell` | Shell-level hero or frame content |
+| `rail` | Side rail content or narrow support panel |
+| `canvas` | Main workspace canvas or broad body |
+| `section` | Reusable labeled section block |
+| `stack` | Vertical stack of related content |
+| `grid` | Responsive grid of cards or cells |
+| `toolbar` | Compact action bar or control strip |
 | `badge` | Inline status pill or tone label |
 | `panel` | Generic bordered container for a block of content |
+| `card` | Compact summary card for a record or metric |
 | `list` | Generic item list or record list |
 | `document` | Sectioned document or record view |
+| `text` | Plain text or prose block |
+| `divider` | Separator line, optionally labeled |
 | `header` | Hero/header area for a view or shell slot |
 | `queue` | Ordered list of work items or review items |
 | `summaryCard` | Compact summary panel for a person, artifact, or assistant |
@@ -88,10 +99,20 @@ When to use each alias:
 
 Good:
 
+- `"shell" -> ShellComponent`
+- `"rail" -> RailComponent`
+- `"canvas" -> CanvasComponent`
+- `"section" -> SectionComponent`
+- `"stack" -> StackComponent`
+- `"grid" -> GridComponent`
+- `"toolbar" -> ToolbarComponent`
 - `"badge" -> BadgeComponent`
 - `"panel" -> PanelComponent`
+- `"card" -> CardComponent`
 - `"list" -> ListComponent`
 - `"document" -> DocumentComponent`
+- `"text" -> TextComponent`
+- `"divider" -> DividerComponent`
 - `"header" -> HeaderComponent`
 - `"queue" -> QueueComponent`
 - `"summaryCard" -> SummaryCardComponent`
@@ -106,12 +127,22 @@ Example nodes:
 
 ```json
 [
+  { "component": "shell", "bind": { "title": "Workspace", "body": "Overview and status" } },
+  { "component": "rail", "bind": { "items": "$fields.workspaceRail" } },
+  { "component": "canvas", "bind": { "items": "$fields.workspaceCards" } },
+  { "component": "section", "bind": { "body": "Reusable section block" } },
+  { "component": "stack", "bind": { "items": "$fields.workspaceStack" } },
+  { "component": "grid", "bind": { "items": "$fields.workspaceGrid" } },
+  { "component": "toolbar", "actions": ["refresh", "advance"] },
   { "component": "header", "bind": { "candidate": "$fields.selectedCandidate" } },
   { "component": "queue", "bind": { "projection": "item_queue" } },
   { "component": "summaryCard", "bind": { "artifact": "$fields.candidateEvaluation" } },
   { "component": "panel", "bind": { "body": "Reusable content block" } },
+  { "component": "card", "bind": { "title": "Quick summary", "value": "42" } },
   { "component": "list", "bind": { "items": "$fields.candidateSources" } },
   { "component": "document", "bind": { "sections": "$fields.candidateEvaluation.sections" } },
+  { "component": "text", "bind": { "body": "Short prose block" } },
+  { "component": "divider", "bind": { "label": "Next section" } },
   { "component": "badge", "bind": { "label": "Approved" } },
   { "component": "timeline", "bind": { "thread": "$fields.candidateThread" } },
   { "component": "composer", "bind": { "thread": "$fields.candidateThread" } },
@@ -256,19 +287,23 @@ Otherwise the result becomes a one-off mock implementation that cannot scale.
 
 The likely end-state should look something like this:
 
-1. `ComponentRegistry.ts`
-   - maps metadata component ids to reusable component renderers
+1. `ComponentRegistry.tsx`
+   - thin registry that maps metadata component ids to reusable renderers
 
-2. layout builder layer
+2. `src/components/*.tsx`
+   - one React component per file
+   - component bodies stay easy to find, reuse, and extend
+
+3. layout builder layer
    - interprets view layout metadata into shell/rail/canvas composition
 
-3. generic workspace shell
+4. generic workspace shell
    - shared frame for top bar, rails, canvas, actions, and density
 
-4. typed component renderers
+5. typed component renderers
    - reusable implementations for queue, summary, discussion, artifact, knowledge, agent status, actions
 
-5. metadata-defined views
+6. metadata-defined views
    - each view composes the same building blocks differently
 
 ## PR / Review Checklist

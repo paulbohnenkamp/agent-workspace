@@ -24,19 +24,18 @@ The hiring example also includes a working workspace UI slice under `views/` tha
 
 When authoring workspace views in the examples, use the canonical component aliases from the registry:
 
-- `badge`
-- `panel`
-- `list`
-- `document`
-- `header`
-- `queue`
-- `summaryCard`
-- `timeline`
-- `composer`
-- `tabs`
-- `sources`
-- `statusList`
-- `actions`
+- Shell and layout roles: `shell`, `rail`, `canvas`, `section`, `stack`, `grid`, `toolbar`
+- Content primitives: `badge`, `panel`, `card`, `list`, `document`, `text`, `divider`
+- Composite workspace surfaces: `header`, `queue`, `summaryCard`, `timeline`, `composer`, `tabs`, `sources`, `statusList`, `actions`
+
+The registry is the alias map; implementations live one per file under `src/components/`.
+
+Workspace views are composed in layers:
+
+1. `view.json` declares the shell, layout, regions, and node order.
+2. The loader validates the view and resolves aliases against the registry.
+3. The layout builder places the resolved nodes into regions.
+4. The React shell and components render the composed workspace.
 
 To see that slice locally, run `npm run build:workspace`, then `npm run workspace` from the repo root and open `http://127.0.0.1:4010/`, or run `node build/src/render-workspace.smoke.js` after building to verify the rendered views.
 

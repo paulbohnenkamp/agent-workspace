@@ -27,3 +27,4 @@ Workflow:
 - [ESLint Config and Generated Artifacts Cleanup](./eslint-config-and-generated-artifacts-cleanup.md) - done, warning removed and generated schema outputs ignored
 - [Workspace Component Alias Standard](./workspace-component-alias-standard.md) - done, workspace view aliases are now generic and validated
 - [Workspace Component Catalog](./workspace-component-catalog.md) - done, registry now exposes generic primitives and composites
+- [Workspace Primitive Catalog Expansion](./workspace-primitive-catalog-expansion.md) - done, registry is thin and components live one per file

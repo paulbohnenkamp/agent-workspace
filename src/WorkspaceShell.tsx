@@ -185,11 +185,60 @@ export function workspaceStyles(): string {
       background: var(--surface);
       overflow: hidden;
     }
+    .workspace-shell-surface,
+    .workspace-grid-surface {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .workspace-shell-surface__header,
+    .workspace-grid-surface__header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .workspace-shell-surface__eyebrow,
+    .workspace-grid-surface__eyebrow,
+    .workspace-text__title {
+      margin: 0 0 0.25rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .workspace-shell-surface__title,
+    .workspace-grid-surface__title {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .workspace-shell-surface__caption,
+    .workspace-grid-surface__caption {
+      margin: 0.35rem 0 0;
+      color: var(--ink-muted);
+    }
+    .workspace-shell-surface__body,
+    .workspace-grid-surface__body {
+      margin: 1rem 0 0;
+      color: var(--ink-muted);
+    }
     .workspace-panel--dense .workspace-panel__header {
       padding-top: 0.65rem;
     }
     .workspace-panel--dense .workspace-panel__body {
       padding: 0.75rem 1rem 1rem;
+    }
+    .workspace-rail,
+    .workspace-canvas,
+    .workspace-section,
+    .workspace-stack-surface,
+    .workspace-toolbar-surface,
+    .workspace-card {
+      border-color: var(--border-strong);
     }
     .workspace-panel__header,
     .workspace-document__header,
@@ -230,6 +279,25 @@ export function workspaceStyles(): string {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+    }
+    .workspace-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .workspace-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .workspace-grid__cell {
+      padding: 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
     }
     .workspace-list-item,
     .workspace-record,
@@ -382,6 +450,44 @@ export function workspaceStyles(): string {
     .workspace-document__section ul {
       margin: 0;
       padding-left: 1.25rem;
+    }
+    .workspace-text {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+    .workspace-text p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    .workspace-text ul {
+      margin: 0.75rem 0 0;
+      padding-left: 1.25rem;
+    }
+    .workspace-divider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0;
+    }
+    .workspace-divider-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+    .workspace-divider {
+      flex: 1;
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+    .workspace-card__value {
+      font-size: 1.8rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
     }
     .status-badge {
       display: inline-flex;

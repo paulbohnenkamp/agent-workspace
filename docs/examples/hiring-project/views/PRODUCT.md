@@ -23,5 +23,16 @@ This should not feel like a consumer recruiting marketplace, a playful HR portal
 4. Let actions feel deliberate. Approval, revision, scheduling, and policy-related actions should read as consequential and clear.
 5. Favor operational calm over visual novelty. Consistency, hierarchy, and clarity matter more than decorative personality.
 
+## View Composition Model
+
+The hiring views are metadata-composed surfaces, not hand-authored pages:
+
+1. `view.json` declares the shell, layout, regions, and component nodes.
+2. The loader resolves those component ids against the registry.
+3. The layout builder places each region into the workspace shell.
+4. The React components in `src/components/*.tsx` render the actual content blocks.
+
+That keeps `candidate-review`, `open-roles-board`, and `approval-queue` on the same compositional model even though they show different workflows.
+
 ## Accessibility & Inclusion
 Target WCAG 2.1 AA as the baseline. Prioritize strong contrast, keyboard accessibility, visible focus states, reduced-motion support, and layouts that remain understandable on narrower screens. Copy and labels should be explicit enough for mixed-experience teams, including users who are not deeply familiar with the system or with AI-assisted workflows.

@@ -68,18 +68,39 @@ hiring-project/
 - Multiple named workspace views over the same project state
 - View metadata that can use `fields` plus `layout` composition in the same spirit as metadata-driven wizard UIs
 - Optional renderer-specific overrides under a shared view identity
-- Canonical workspace component aliases like `badge`, `panel`, `list`, `document`, `header`, `queue`, `summaryCard`, `timeline`, `composer`, `tabs`, `sources`, `statusList`, and `actions`
+- Canonical workspace component aliases grouped as:
+  - Shell and layout roles: `shell`, `rail`, `canvas`, `section`, `stack`, `grid`, `toolbar`
+  - Content primitives: `badge`, `panel`, `card`, `list`, `document`, `text`, `divider`
+  - Composite workspace surfaces: `header`, `queue`, `summaryCard`, `timeline`, `composer`, `tabs`, `sources`, `statusList`, and `actions`
+- The registry is the alias map; implementations live one per file under `src/components/`
 - A working React workspace slice that loads `view.json`, interprets projected state, and renders the example views through the `src/` pipeline
 - Recurring governance and onboarding checks
 - Evaluation kept outside the main execution and wake-up loop
 - One featured V3 agent package with nested tools and skills
 
+How the candidate review view is composed:
+
+1. `views/candidate-review/view.json` declares the shell, layout, regions, and component nodes.
+2. The loader validates those nodes against the registry-backed alias catalog.
+3. The layout builder places the regions into the workspace shell.
+4. The React components in `src/components/*.tsx` render each node one at a time.
+
 Quick alias cheat sheet:
 
+- `shell`: shell-level hero or frame content
+- `rail`: side rail content or support panel
+- `canvas`: main workspace canvas
+- `section`: reusable section block
+- `stack`: vertical stack of related content
+- `grid`: responsive grid of cards or cells
+- `toolbar`: compact action bar
 - `badge`: inline status pill
 - `panel`: generic content block
+- `card`: compact summary card
 - `list`: generic record list
 - `document`: sectioned record or artifact view
+- `text`: plain text or prose block
+- `divider`: separator line
 - `header`: candidate or shell hero
 - `queue`: review or intake list
 - `summaryCard`: candidate, artifact, or assistant summary

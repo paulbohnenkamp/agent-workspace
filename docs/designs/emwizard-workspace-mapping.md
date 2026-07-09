@@ -15,6 +15,7 @@ The goal is not to copy Oracle JET or Preact APIs. The goal is to reuse the stru
 Workspace runtime
 - `ComponentRegistry`
 - component id from `view.json` -> registered React renderer
+- component implementations live one per file under `src/components/`
 
 Shared idea:
 - metadata names the thing
@@ -22,10 +23,20 @@ Shared idea:
 - the renderer stays generic
 
 Workspace canonical aliases:
+- `shell`
+- `rail`
+- `canvas`
+- `section`
+- `stack`
+- `grid`
+- `toolbar`
 - `badge`
 - `panel`
+- `card`
 - `list`
 - `document`
+- `text`
+- `divider`
 - `header`
 - `queue`
 - `summaryCard`

@@ -18,10 +18,20 @@ describe("workspace view component aliases", () => {
   it("exposes the expanded primitive catalog", () => {
     const registry = createDefaultComponentRegistry();
 
+    expect(registry.has("shell")).toBe(true);
+    expect(registry.has("rail")).toBe(true);
+    expect(registry.has("canvas")).toBe(true);
+    expect(registry.has("section")).toBe(true);
+    expect(registry.has("stack")).toBe(true);
+    expect(registry.has("grid")).toBe(true);
+    expect(registry.has("toolbar")).toBe(true);
     expect(registry.has("badge")).toBe(true);
     expect(registry.has("panel")).toBe(true);
+    expect(registry.has("card")).toBe(true);
     expect(registry.has("list")).toBe(true);
     expect(registry.has("document")).toBe(true);
+    expect(registry.has("text")).toBe(true);
+    expect(registry.has("divider")).toBe(true);
     expect(registry.has("header")).toBe(true);
     expect(registry.has("queue")).toBe(true);
     expect(registry.has("summaryCard")).toBe(true);
@@ -45,13 +55,31 @@ describe("workspace view component aliases", () => {
           id: "primitive-aliases",
           title: "Primitive Aliases",
           route: "/primitives",
+          shell: {
+            type: "workspace-shell",
+            header: {
+              component: "shell",
+            },
+          },
           layout: {
             type: "grid",
-            columns: ["minmax(0, 1fr)"],
-            regions: [{ id: "main", columnStart: 1, columnSpan: 1 }],
+            columns: ["minmax(0, 1fr)", "minmax(0, 1fr)"],
+            regions: [
+              { id: "main", columnStart: 1, columnSpan: 1 },
+              { id: "side", columnStart: 2, columnSpan: 1 },
+            ],
           },
           regions: {
             main: [
+              { component: "rail", bind: { title: "Rail", items: [{ id: "r1", title: "Rail item", detail: "Detail" }] } },
+              { component: "canvas", bind: { title: "Canvas", items: [{ id: "c1", title: "Canvas item", detail: "Detail" }] } },
+              { component: "section", bind: { title: "Section", body: "Section body" } },
+              { component: "stack", bind: { title: "Stack", items: [{ id: "s1", title: "Stack item", detail: "Detail" }] } },
+              { component: "grid", bind: { title: "Grid", columns: ["repeat(2, minmax(0, 1fr))"], items: [{ id: "g1", title: "Grid cell", detail: "Detail" }] } },
+              { component: "toolbar", actions: ["refresh", "advance"] },
+              { component: "card", bind: { title: "Card", value: "42", detail: "Metric" } },
+              { component: "text", bind: { body: "Prose block" } },
+              { component: "divider", bind: { label: "Separator" } },
               { component: "badge", bind: { label: "Active" } },
               { component: "panel", bind: { body: "Panel body" } },
               { component: "list", bind: { items: [{ id: "1", title: "Item one", detail: "Detail" }] } },
@@ -63,6 +91,9 @@ describe("workspace view component aliases", () => {
                   sections: [{ title: "Section", body: "Section body" }],
                 },
               },
+            ],
+            side: [
+              { component: "shell", bind: { title: "Shell", body: "Shell body" } },
             ],
           },
         },

@@ -290,6 +290,17 @@ This means UI should be developed as an early proving slice, not deferred until 
 
 **Deliverable:** One registry answers “what can I use?” for workspace `view.json`
 
+### 2.12 Workspace Primitive Catalog Expansion
+
+**Status:** Done
+
+**Work:**
+- [x] Inventory layout, shell, and reusable content primitives separately from composites
+- [x] Add the missing generic primitive components to `src/ComponentRegistry.tsx`
+- [x] Update docs/examples/tests so the expanded catalog is the authoritative source of truth
+
+**Deliverable:** The registry exposes a fuller generic primitive catalog for workspace authors
+
 ---
 
 ## Phase 3: Projects
