@@ -1,0 +1,30 @@
+kind: connector
+id: monitoring-platform
+name: Monitoring Platform
+version: 1.0.0
+description: Outbound systems-management binding for target health, incidents, and provisioning state
+type: observability
+mode: read-write
+
+auth:
+  type: oauth
+  provider: vercel-connect
+  scopes:
+    - targets.read
+    - incidents.read
+    - tasks.write
+    - maintenance.write
+
+config:
+  baseUrl: https://monitoring.example.com/api
+  tenant: operations
+
+capabilities:
+  - target.lookup
+  - health.read
+  - incident.read
+  - provisioning.task.create
+  - maintenance.window.schedule
+
+metadata:
+  tags: [systems, monitoring, provisioning]

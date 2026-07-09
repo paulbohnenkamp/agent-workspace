@@ -1,0 +1,14 @@
+kind: artifact-type
+id: incident-summary
+name: Incident Summary
+version: 1.0.0
+description: Incident summary with signals, impact, mitigation, and next actions
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [systems, incident]

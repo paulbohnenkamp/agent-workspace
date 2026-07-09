@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Systems Workspace</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f7f9fc;
+      color: #0f172a;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+    }
+    .workspace {
+      width: 1600px;
+      height: 1000px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f6f8fb 100%);
+      display: grid;
+      grid-template-columns: 56px 320px 300px 1fr 300px;
+      grid-template-rows: 66px 1fr;
+      overflow: hidden;
+    }
+    .topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 0 28px 0 16px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid #e5e9f1;
+    }
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0f766e, #2563eb);
+      color: white;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      letter-spacing: 0;
+    }
+    .title { font-size: 22px; font-weight: 750; letter-spacing: 0; }
+    .nav { display: flex; gap: 28px; margin-left: 10px; color: #334155; font-weight: 520; }
+    .nav span:first-child { color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 20px; }
+    .search {
+      margin-left: auto;
+      width: 430px;
+      height: 38px;
+      border: 1px solid #dde4ee;
+      border-radius: 10px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      color: #64748b;
+    }
+    .user { display: flex; align-items: center; gap: 12px; color: #334155; }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #bae6fd, #bfdbfe);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .rail {
+      grid-row: 2;
+      border-right: 1px solid #e5e9f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      padding-top: 22px;
+      background: #fff;
+    }
+    .rail .icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #475569;
+    }
+    .rail svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .rail .active { background: #e8f2ff; color: #2563eb; }
+    .panel {
+      border-right: 1px solid #e5e9f1;
+      padding: 22px 14px;
+      background: rgba(255,255,255,0.78);
+      overflow: hidden;
+    }
+    .queue-title, .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+      font-weight: 750;
+      margin-bottom: 16px;
+    }
+    .pill {
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: #eef2f7;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .filters { display: flex; gap: 10px; margin-bottom: 14px; }
+    .filter {
+      height: 36px;
+      border: 1px solid #dde4ee;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      color: #334155;
+      font-weight: 560;
+    }
+    .target {
+      position: relative;
+      padding: 14px 14px 14px 58px;
+      margin-bottom: 11px;
+      min-height: 78px;
+      border: 1px solid #e1e7f0;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .target.selected { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08); }
+    .target-icon {
+      position: absolute;
+      left: 14px;
+      top: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      background: #0f766e;
+    }
+    .target h3 { margin: 0; font-size: 14px; line-height: 1.2; }
+    .target p { margin: 5px 0 0; color: #64748b; font-size: 12px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 9px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .review { background: #fff7ed; color: #c2410c; }
+    .healthy { background: #ecfdf5; color: #047857; }
+    .warning { background: #fef2f2; color: #b91c1c; }
+    .score {
+      position: absolute;
+      right: 12px;
+      top: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 3px solid #16a34a;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #166534;
+      background: #fff;
+    }
+    .score.warn { border-color: #f59e0b; color: #92400e; }
+    .assistant {
+      padding: 22px 12px;
+      border-right: 1px solid #e5e9f1;
+      background: #fbfcff;
+    }
+    .assistant-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 750;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+    .beta { color: #2563eb; background: #edf4ff; border-radius: 999px; padding: 3px 7px; font-size: 10px; margin-left: 6px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .card h4 { margin: 0 0 10px; font-size: 13px; }
+    .card p, .card li { color: #334155; line-height: 1.42; margin: 0 0 8px; font-size: 12px; }
+    .card ul { margin: 0; padding-left: 18px; }
+    .chat { background: #edf4ff; border-radius: 8px; padding: 12px; color: #1e3a8a; margin: 10px 0; font-size: 12px; }
+    .main {
+      padding: 20px 16px 20px 18px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .object-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .object-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 850;
+      font-size: 18px;
+    }
+    .object-title h2 { margin: 0; font-size: 22px; line-height: 1.15; }
+    .object-title p { margin: 5px 0 0; color: #64748b; font-size: 12px; }
+    .status { margin-left: auto; background: #ecfdf5; color: #047857; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 7px; font-weight: 750; }
+    .tabs { display: flex; gap: 34px; border-bottom: 1px solid #e5e9f1; margin-bottom: 18px; color: #334155; }
+    .tabs span { padding-bottom: 12px; }
+    .tabs span:first-child { color: #2563eb; border-bottom: 2px solid #2563eb; font-weight: 750; }
+    .report {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+    }
+    .report-title {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .report-title h2 { margin: 0; font-size: 22px; }
+    .recommend {
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      padding: 12px 18px;
+      color: #15803d;
+      font-weight: 850;
+      text-align: center;
+      min-width: 150px;
+    }
+    .small { color: #64748b; font-size: 12px; }
+    .section { border-top: 1px solid #edf2f7; padding-top: 16px; margin-top: 16px; }
+    .section h3 { margin: 0 0 10px; font-size: 15px; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 12px 0 18px;
+    }
+    .metric {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 86px;
+    }
+    .metric .label { color: #64748b; font-size: 12px; }
+    .metric .value { font-size: 22px; font-weight: 850; margin-top: 8px; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .table th, .table td { border-bottom: 1px solid #e8edf4; text-align: left; padding: 10px 8px; }
+    .table th { color: #475569; font-weight: 750; }
+    .risk-high { color: #dc2626; font-weight: 750; }
+    .risk-med { color: #d97706; font-weight: 750; }
+    .right {
+      border-left: 1px solid #e5e9f1;
+      padding: 22px 14px;
+      background: #fbfcff;
+      overflow: hidden;
+    }
+    .source, .agent, .action {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .source strong, .agent strong { display: block; font-size: 12px; margin-bottom: 4px; }
+    .source span, .agent span { color: #64748b; font-size: 11px; }
+    .agent { display: flex; align-items: center; gap: 10px; }
+    .agent-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 850;
+      flex: 0 0 auto;
+    }
+    .online { margin-left: auto; width: 8px; height: 8px; background: #16a34a; border-radius: 50%; }
+    .action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 750;
+      color: #2563eb;
+    }
+    .action.primary { background: #078a55; border-color: #078a55; color: #fff; }
+    .action.warn { color: #dc2626; }
+  </style>
+</head>
+<body>
+  <div class="workspace">
+    <div class="topbar">
+      <div class="logo">S</div>
+      <div class="title">Systems Workspace</div>
+      <div class="nav"><span>Workspace</span><span>My Tasks</span><span>Runbooks</span><span>Analytics</span></div>
+      <div class="search">Search targets, incidents, runbooks, and tasks...</div>
+      <div class="user"><div class="avatar">AM</div><div>Alex Morgan<br><span class="small">Systems Lead</span></div></div>
+    </div>
+
+    <div class="rail">
+      <div class="icon" aria-label="Home">
+        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10.5V20h5v-5h4v5h5v-9.5"/></svg>
+      </div>
+      <div class="icon active" aria-label="Targets">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+      </div>
+      <div class="icon" aria-label="Incidents">
+        <svg viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4L12 3z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
+      </div>
+      <div class="icon" aria-label="Change Calendar">
+        <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M4 10h16"/></svg>
+      </div>
+      <div class="icon" aria-label="Runbooks">
+        <svg viewBox="0 0 24 24"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v4h4"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+      </div>
+      <div class="icon" aria-label="Analytics">
+        <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-4"/></svg>
+      </div>
+      <div class="icon" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a8 8 0 0 0 .1-2l2-1.2-2-3.4-2.3.9a7 7 0 0 0-1.7-1L15.2 6h-4l-.4 2.3a7 7 0 0 0-1.7 1l-2.3-.9-2 3.4 2 1.2a8 8 0 0 0 .1 2l-2 1.2 2 3.4 2.3-.9a7 7 0 0 0 1.7 1l.4 2.3h4l.4-2.3a7 7 0 0 0 1.7-1l2.3.9 2-3.4-2.3-1.2z"/></svg>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="queue-title">Target Review Queue <span class="pill">14</span></div>
+      <div class="filters"><div class="filter">All Targets</div><div class="filter">Sort: Risk</div></div>
+      <div class="target selected"><div class="target-icon">DB</div><h3>OrderDB Cluster</h3><p>Primary database cluster</p><span class="badge review">In Review</span><div class="score warn">72</div></div>
+      <div class="target"><div class="target-icon" style="background:#2563eb">API</div><h3>Storage Gateway API</h3><p>Service tier - 6 nodes</p><span class="badge healthy">Healthy</span><div class="score">91</div></div>
+      <div class="target"><div class="target-icon" style="background:#7c3aed">NV</div><h3>NVMe Worker Pool</h3><p>Compute pool - provisioning</p><span class="badge review">Pending Change</span><div class="score warn">78</div></div>
+      <div class="target"><div class="target-icon" style="background:#0f766e">BK</div><h3>Backup Controller</h3><p>Data protection - nightly jobs</p><span class="badge healthy">On Track</span><div class="score">88</div></div>
+      <div class="target"><div class="target-icon" style="background:#dc2626">AL</div><h3>Alert Router</h3><p>Notifications - policy drift</p><span class="badge warning">Needs Review</span><div class="score warn">61</div></div>
+      <div class="target"><div class="target-icon" style="background:#0891b2">LB</div><h3>Ingress Load Balancer</h3><p>Network edge - capacity check</p><span class="badge healthy">Healthy</span><div class="score">86</div></div>
+    </div>
+
+    <div class="assistant">
+      <div class="assistant-head">AI Assistant <span class="beta">BETA</span></div>
+      <div class="card">
+        <h4>Evaluating OrderDB Cluster</h4>
+        <p><strong>AI Summary</strong> (9 sources analyzed)</p>
+        <p>OrderDB is stable, but replication lag and pending storage expansion create moderate risk during the weekend change window.</p>
+        <p><strong>Confidence:</strong> High</p>
+      </div>
+      <div class="chat">What should we do before approving maintenance?</div>
+      <div class="card">
+        <h4>Recommended next steps</h4>
+        <ul>
+          <li>Verify replica catch-up before change start.</li>
+          <li>Pre-stage storage expansion tasks.</li>
+          <li>Confirm rollback owner and paging policy.</li>
+        </ul>
+      </div>
+      <div class="chat">Generate a change plan with risk notes.</div>
+      <div class="card">
+        <h4>Draft created</h4>
+        <p>Maintenance plan generated with approval checklist, validation steps, and rollback criteria.</p>
+      </div>
+    </div>
+
+    <main class="main">
+      <div class="object-head">
+        <div class="object-logo">DB</div>
+        <div class="object-title"><h2>OrderDB Cluster</h2><p>Work Item ID: SYS-2025-0421 - Owner: Maya Chen - Window: Jun 2, 10:00 PM</p></div>
+        <div class="status">In Review</div>
+      </div>
+      <div class="tabs"><span>Health Report</span><span>Provisioning Plan</span><span>Incident Timeline</span><span>Change Approval</span></div>
+      <div class="report">
+        <div class="report-title">
+          <div><h2>System Health Report</h2><p class="small">Generated by Systems Operator - May 30, 2025 at 9:35 AM</p></div>
+          <div class="recommend">Approve<br><span class="small">with checks</span></div>
+        </div>
+        <div class="section">
+          <h3>1. Executive Summary</h3>
+          <p>OrderDB can proceed with planned maintenance if replication lag clears and the provisioning task is staged before the change window. No customer-facing impact is expected with current safeguards.</p>
+          <div class="metrics">
+            <div class="metric"><div class="label">Health Score</div><div class="value">72</div><div class="small">Moderate risk</div></div>
+            <div class="metric"><div class="label">Open Incidents</div><div class="value">2</div><div class="small">1 linked to lag</div></div>
+            <div class="metric"><div class="label">Provisioning</div><div class="value">84%</div><div class="small">Task staged</div></div>
+            <div class="metric"><div class="label">SLO Status</div><div class="value">99.96%</div><div class="small">On target</div></div>
+          </div>
+        </div>
+        <div class="section">
+          <h3>2. Risk And Mitigation</h3>
+          <table class="table">
+            <tr><th>Signal</th><th>Impact</th><th>Likelihood</th><th>Mitigation</th></tr>
+            <tr><td>Replica lag above threshold</td><td class="risk-high">High</td><td>Medium</td><td>Block approval until lag clears</td></tr>
+            <tr><td>Storage pool expansion</td><td class="risk-med">Medium</td><td>Medium</td><td>Pre-stage task and verify capacity</td></tr>
+            <tr><td>Change-window overlap</td><td class="risk-med">Medium</td><td>Low</td><td>Notify incident commander</td></tr>
+          </table>
+        </div>
+        <div class="section">
+          <h3>3. Recommendation</h3>
+          <p>Approve the maintenance plan after replication returns to normal, provisioning task validation passes, and rollback ownership is confirmed.</p>
+        </div>
+      </div>
+    </main>
+
+    <aside class="right">
+      <div class="panel-title">Knowledge Sources <span class="small">View all (7)</span></div>
+      <div class="source"><strong>OrderDB Runbook</strong><span>Updated May 12, 2025</span></div>
+      <div class="source"><strong>Monitoring Policy</strong><span>Replica lag and SLO thresholds</span></div>
+      <div class="source"><strong>Change Calendar</strong><span>Weekend maintenance windows</span></div>
+      <div class="source"><strong>Incident History</strong><span>Last 30 days analyzed</span></div>
+
+      <div class="panel-title" style="margin-top:24px">Agents (4) <span class="small">View all</span></div>
+      <div class="agent"><div class="agent-dot">M</div><div><strong>Monitoring Agent</strong><span>Analyzed signals</span></div><div class="online"></div></div>
+      <div class="agent"><div class="agent-dot">P</div><div><strong>Provisioning Agent</strong><span>Staged task</span></div><div class="online"></div></div>
+      <div class="agent"><div class="agent-dot">R</div><div><strong>Runbook Agent</strong><span>Checked guidance</span></div><div class="online"></div></div>
+      <div class="agent"><div class="agent-dot">S</div><div><strong>Safety Agent</strong><span>Checked policy</span></div><div class="online"></div></div>
+
+      <div class="panel-title" style="margin-top:24px">Actions</div>
+      <div class="action primary">Approve Change <span>></span></div>
+      <div class="action">Schedule Maintenance <span>></span></div>
+      <div class="action">Retry Provisioning Task <span>></span></div>
+      <div class="action warn">Escalate Incident <span>></span></div>
+      <div class="action">Export Health Report <span>></span></div>
+    </aside>
+  </div>
+</body>
+</html>

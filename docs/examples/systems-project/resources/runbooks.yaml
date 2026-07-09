@@ -1,0 +1,12 @@
+kind: resource
+id: runbooks
+name: Operational Runbooks
+version: 1.0.0
+description: Resource for standard operating procedures, remediation steps, and incident response guidance
+
+resource_type: document
+schema:
+  type: object
+
+metadata:
+  tags: [systems, runbooks]

@@ -1,0 +1,41 @@
+kind: project
+id: systems-project
+name: Systems Management
+version: 1.0.0
+description: |
+  Systems management and operational control-plane framework.
+
+  This project demonstrates agent-assisted target review, provisioning,
+  maintenance planning, incident response, and change approval workflows.
+
+agents:
+  - id: systems-operator
+    name: Systems Operator
+  - id: provisioning-agent
+    name: Provisioning Agent
+  - id: reliability-reviewer
+    name: Reliability Reviewer
+
+resources:
+  - id: target-inventory
+    name: Target Inventory
+  - id: monitoring-policies
+    name: Monitoring Policies
+  - id: runbooks
+    name: Operational Runbooks
+  - id: change-calendar
+    name: Change Calendar
+
+schedules:
+  - id: daily-health-review
+    name: Daily Health Review
+  - id: weekly-maintenance-planning
+    name: Weekly Maintenance Planning
+  - id: monthly-capacity-review
+    name: Monthly Capacity Review
+
+metadata:
+  domain: systems
+  complexity: high
+  team: operations
+  tags: [systems, operations, control-plane, monitoring, provisioning]

@@ -1,0 +1,12 @@
+kind: resource
+id: monitoring-policies
+name: Monitoring Policies
+version: 1.0.0
+description: Resource for alert thresholds, SLOs, escalation policy, and monitoring controls
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [systems, monitoring, policy]

@@ -1,0 +1,19 @@
+kind: schedule
+id: daily-health-review
+name: Daily Health Review
+version: 1.0.0
+description: Daily health review for systems-management targets
+
+trigger:
+  type: cron
+  expression: "0 8 * * 1-5"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: systems-operator
+
+enabled: true
+
+metadata:
+  tags: [systems, schedule, health]

@@ -1,0 +1,12 @@
+kind: resource
+id: target-inventory
+name: Target Inventory
+version: 1.0.0
+description: Resource for managed systems, databases, services, clusters, and storage targets
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [systems, inventory]

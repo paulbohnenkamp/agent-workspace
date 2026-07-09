@@ -1,0 +1,12 @@
+kind: resource
+id: change-calendar
+name: Change Calendar
+version: 1.0.0
+description: Resource for maintenance windows, blackout periods, and scheduled operational changes
+
+resource_type: data
+schema:
+  type: object
+
+metadata:
+  tags: [systems, change-management]

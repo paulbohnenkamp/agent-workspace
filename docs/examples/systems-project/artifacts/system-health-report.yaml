@@ -1,0 +1,14 @@
+kind: artifact-type
+id: system-health-report
+name: System Health Report
+version: 1.0.0
+description: System health summary for a managed target or service group
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [systems, health-report]

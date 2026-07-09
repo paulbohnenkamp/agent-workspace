@@ -1,0 +1,11 @@
+kind: tool
+id: provisioning-orchestrator
+name: Provisioning Orchestrator
+version: 1.0.0
+description: Create and inspect provisioning, retry, maintenance, and remediation tasks
+
+implementation:
+  type: connector
+
+metadata:
+  tags: [systems, provisioning, remediation]

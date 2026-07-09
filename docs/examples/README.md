@@ -32,6 +32,7 @@ To see that slice locally, run `npm run build:system`, then `npm run system` fro
 | [Finance Project](./finance-project/README.md) | Financial planning and analysis | [image](../images/projects/finance-project.png) |
 | [Hiring Project](./hiring-project/README.md) | Talent management and hiring | [image](../images/projects/hiring-project.png) |
 | [Partner Project](./partner-project/README.md) | Partner relationship management | [image](../images/projects/partner-project.png) |
+| [Systems Project](./systems-project/README.md) | Systems management and operations | [image](../images/projects/systems-project.png) |
 
 ## Navigation
 

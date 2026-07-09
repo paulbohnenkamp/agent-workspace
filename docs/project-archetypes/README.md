@@ -1,6 +1,6 @@
 # Project Archetypes
 
-These four archetypes preserve the same dashboard composition while updating terminology to Architecture V3.
+These five archetypes preserve the same dashboard composition while updating terminology to Architecture V3.
 
 They are the domain-facing view of the platform: the images show how a Project feels in practice, while the example projects show how that same shape is expressed in YAML packages.
 
@@ -14,6 +14,7 @@ If you are resuming an active implementation slice, start with [`plans/index.md`
 | Finance Project | [finance-project.png](../images/projects/finance-project.png) | [finance-project](../examples/finance-project/README.md) |
 | Hiring Project | [hiring-project.png](../images/projects/hiring-project.png) | [hiring-project](../examples/hiring-project/README.md) |
 | Partner Project | [partner-project.png](../images/projects/partner-project.png) | [partner-project](../examples/partner-project/README.md) |
+| Systems Project | [systems-project.png](../images/projects/systems-project.png) | [systems-project](../examples/systems-project/README.md) |
 
 ## How To Use These
 

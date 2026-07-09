@@ -1,0 +1,19 @@
+kind: schedule
+id: monthly-capacity-review
+name: Monthly Capacity Review
+version: 1.0.0
+description: Monthly capacity and reliability review for managed targets
+
+trigger:
+  type: cron
+  expression: "0 9 1 * *"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: reliability-reviewer
+
+enabled: true
+
+metadata:
+  tags: [systems, schedule, capacity]

@@ -1,0 +1,11 @@
+kind: tool
+id: target-monitor
+name: Target Monitor
+version: 1.0.0
+description: Query target health, incident status, alert history, and monitoring policy state
+
+implementation:
+  type: connector
+
+metadata:
+  tags: [systems, monitoring, incidents]

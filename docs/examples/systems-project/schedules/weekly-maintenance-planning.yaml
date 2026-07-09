@@ -1,0 +1,19 @@
+kind: schedule
+id: weekly-maintenance-planning
+name: Weekly Maintenance Planning
+version: 1.0.0
+description: Weekly review of maintenance windows, pending changes, and remediation work
+
+trigger:
+  type: cron
+  expression: "0 11 * * 2"
+  timezone: America/New_York
+
+action:
+  type: agent_run
+  agent_id: provisioning-agent
+
+enabled: true
+
+metadata:
+  tags: [systems, schedule, maintenance]

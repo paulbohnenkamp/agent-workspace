@@ -50,3 +50,4 @@ decision-project/
 - [Finance Project](../finance-project/README.md)
 - [Hiring Project](../hiring-project/README.md)
 - [Partner Project](../partner-project/README.md)
+- [Systems Project](../systems-project/README.md)

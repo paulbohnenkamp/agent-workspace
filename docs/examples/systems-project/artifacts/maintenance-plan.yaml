@@ -1,0 +1,14 @@
+kind: artifact-type
+id: maintenance-plan
+name: Maintenance Plan
+version: 1.0.0
+description: Maintenance plan for target updates, patching, failover, or capacity work
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [systems, maintenance]

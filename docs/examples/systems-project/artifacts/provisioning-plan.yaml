@@ -1,0 +1,14 @@
+kind: artifact-type
+id: provisioning-plan
+name: Provisioning Plan
+version: 1.0.0
+description: Provisioning or remediation plan for systems-management work
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [systems, provisioning]

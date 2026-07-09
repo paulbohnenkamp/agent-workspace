@@ -1,0 +1,14 @@
+kind: artifact-type
+id: change-approval
+name: Change Approval
+version: 1.0.0
+description: Change approval record with risk, owner, timing, and rollback context
+
+schema:
+  type: object
+  properties:
+    content:
+      type: string
+
+metadata:
+  tags: [systems, approval]
