@@ -220,6 +220,76 @@ This means UI should be developed as an early proving slice, not deferred until 
 
 **Deliverable:** Clear view/interpreter contract for all renderers
 
+### 2.6 Root `src/` Source Layout Migration
+
+**Status:** Complete
+
+**Work:**
+- [x] Move root-owned authored code into `src/`
+- [x] Update imports, build entrypoints, and scripts for the new layout
+- [x] Tighten lint/format scope to source trees and ignore generated/runtime folders
+- [x] Keep package source under `packages/*/src/`
+
+**Deliverable:** Root source code is clearly separated from generated output and runtime artifacts
+
+### 2.7 Package Types Lint Cleanup
+
+**Status:** Complete
+
+**Work:**
+- [x] Normalize `packages/types/src/*` to current TypeScript lint conventions
+- [x] Remove or narrow `any` usage in the shared type model
+- [x] Re-run focused lint to confirm the package is clean
+
+**Deliverable:** Shared type declarations stop contributing avoidable lint debt
+
+### 2.8 Package Lint Cleanup
+
+**Status:** Complete
+
+**Work:**
+- [x] Clean `packages/loader/src`
+- [x] Clean `packages/runtime/src`
+- [x] Clean `packages/tools/src`
+- [x] Re-run repo-wide lint until clean
+
+**Deliverable:** Package source no longer blocks the repo lint pass
+
+### 2.9 ESLint Config and Generated Artifacts Cleanup
+
+**Status:** Complete
+
+**Work:**
+- [x] Rename the ESLint config to an ESM entrypoint
+- [x] Explicitly ignore generated schema outputs
+- [x] Re-run lint/build verification
+
+**Deliverable:** Lint stays focused on authored source and no longer emits the module warning
+
+### 2.10 Workspace Component Alias Standard
+
+**Status:** Complete
+
+**Work:**
+- [x] Define the canonical workspace component alias catalog
+- [x] Update `src/ComponentRegistry.tsx` to expose the canonical aliases
+- [x] Update `view.json` files and docs/examples to match the new aliases
+- [x] Add guardrails against unknown or duplicate component aliases
+
+**Deliverable:** Workspace view authors have one clear, generic component vocabulary
+
+### 2.11 Workspace Component Catalog
+
+**Status:** Complete
+
+**Work:**
+- [x] Inventory the full workspace primitive and composite component vocabulary
+- [x] Rename workspace/view-specific implementations to generic names
+- [x] Expand `src/ComponentRegistry.tsx` into the canonical source of truth
+- [x] Update docs/examples and tests to match the full catalog
+
+**Deliverable:** One registry answers “what can I use?” for workspace `view.json`
+
 ---
 
 ## Phase 3: Projects

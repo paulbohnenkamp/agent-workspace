@@ -32,7 +32,7 @@
   "regions": {
     "intake": [
       {
-        "component": "queue.list",
+        "component": "queue",
         "title": "Intake",
         "bind": {
           "projection": "item_queue",
@@ -44,7 +44,7 @@
     ],
     "in-review": [
       {
-        "component": "queue.list",
+        "component": "queue",
         "title": "In Review",
         "bind": {
           "projection": "item_queue",
@@ -56,7 +56,7 @@
     ],
     "approved": [
       {
-        "component": "queue.list",
+        "component": "queue",
         "title": "Approved",
         "bind": {
           "projection": "item_queue",

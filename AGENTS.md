@@ -588,6 +588,7 @@ Avoid spending the next cycle on:
 
 ### Planning Workflow
 
+- Do not start implementation work without an active plan.
 - `docs/specs/` is the reference layer for intended behavior and acceptance criteria.
 - `plans/index.md` is the active-work entry point.
 - `ROADMAP.md` is the high-level implementation map.

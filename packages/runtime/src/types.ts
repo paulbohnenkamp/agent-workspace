@@ -2,14 +2,14 @@
  * Runtime types and interfaces for Project execution
  */
 
-import { Project, Agent, Tool, Skill, Run, Artifact, Thread, Resource, ArtifactVersion, Participant, Event, AgentSession, Channel, Schedule } from '@awp/types';
+import { Project, Agent, Tool, Skill, Run, Artifact, Thread, Resource, ArtifactVersion, Participant, Event, AgentSession, Schedule } from '@awp/types';
 
 /**
  * ProjectState - runtime state of a project
  * Event history is canonical; current maps and arrays are derived projections
  * optimized for query, collaboration, and resume behavior.
  */
-export interface ProjectState {
+export type ProjectState = {
   /** Project definition and configuration */
   project: Project;
 
@@ -41,13 +41,13 @@ export interface ProjectState {
   schedules: ScheduleInstance[];
 
   /** Project metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * AgentInstance - runtime instance of an agent
  */
-export interface AgentInstance {
+export type AgentInstance = {
   /** Agent definition */
   agent: Agent;
 
@@ -64,13 +64,13 @@ export interface AgentInstance {
   session?: AgentSession;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * ArtifactRecord - mutable artifact with version history
  */
-export interface ArtifactRecord {
+export type ArtifactRecord = {
   /** Current artifact state */
   artifact: Artifact;
 
@@ -84,13 +84,13 @@ export interface ArtifactRecord {
   lastModified: string;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * ThreadRecord - conversation thread with messages
  */
-export interface ThreadRecord {
+export type ThreadRecord = {
   /** Thread definition */
   thread: Thread;
 
@@ -104,13 +104,13 @@ export interface ThreadRecord {
   participants: string[];
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * ScheduleInstance - runtime instance of a schedule
  */
-export interface ScheduleInstance {
+export type ScheduleInstance = {
   /** Schedule definition */
   schedule: Schedule;
 
@@ -127,13 +127,13 @@ export interface ScheduleInstance {
   executionCount: number;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * RunRequest - request to execute a tool, skill, or agent
  */
-export interface RunRequest {
+export type RunRequest = {
   /** What to execute: tool, skill, agent, or schedule */
   targetKind: 'tool' | 'skill' | 'agent' | 'schedule';
 
@@ -144,19 +144,19 @@ export interface RunRequest {
   triggeredBy: string;
 
   /** Input data */
-  input?: Record<string, any>;
+  input?: Record<string, unknown>;
 
   /** Associated thread (if applicable) */
   threadId?: string;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * RunResult - result of executing a run
  */
-export interface RunResult {
+export type RunResult = {
   /** Resulting run record */
   run: Run;
 
@@ -174,9 +174,24 @@ export interface RunResult {
 }
 
 /**
+ * Project statistics summary
+ */
+export type ProjectStats = {
+  projectId: string;
+  agentCount: number;
+  resourceCount: number;
+  artifactCount: number;
+  threadCount: number;
+  runCount: number;
+  participantCount: number;
+  eventCount: number;
+  scheduleCount: number;
+}
+
+/**
  * Options for project initialization
  */
-export interface ProjectInitOptions {
+export type ProjectInitOptions = {
   /** Project definition */
   project: Project;
 
@@ -190,13 +205,13 @@ export interface ProjectInitOptions {
   enableEvents?: boolean;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Options for executing a run
  */
-export interface ExecutionOptions {
+export type ExecutionOptions = {
   /** Timeout in seconds */
   timeout?: number;
 
@@ -213,13 +228,13 @@ export interface ExecutionOptions {
   recordRun?: boolean;
 
   /** Metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Project service for managing project execution
  */
-export interface ProjectService {
+export type ProjectService = {
   /** Initialize a project context */
   initializeProject(options: ProjectInitOptions): Promise<ProjectState>;
 
@@ -242,7 +257,7 @@ export interface ProjectService {
 /**
  * Run service for executing tools, skills, and agents
  */
-export interface RunService {
+export type RunService = {
   /** Execute a run request */
   execute(projectId: string, request: RunRequest, options?: ExecutionOptions): Promise<RunResult>;
 
@@ -259,7 +274,7 @@ export interface RunService {
 /**
  * Filter for listing runs
  */
-export interface RunFilter {
+export type RunFilter = {
   agentId?: string;
   status?: Run['status'];
   from?: string;
@@ -269,7 +284,7 @@ export interface RunFilter {
 /**
  * Artifact service for managing artifacts
  */
-export interface ArtifactService {
+export type ArtifactService = {
   /** Create an artifact */
   createArtifact(projectId: string, artifact: Artifact): Promise<Artifact>;
 
@@ -292,12 +307,12 @@ export interface ArtifactService {
 /**
  * Thread service for managing conversations
  */
-export interface ThreadService {
+export type ThreadService = {
   /** Create a thread */
   createThread(projectId: string, thread: Thread): Promise<Thread>;
 
   /** Add message to thread */
-  addMessage(projectId: string, threadId: string, message: any): Promise<void>;
+  addMessage(projectId: string, threadId: string, message: Record<string, unknown>): Promise<void>;
 
   /** Get thread by ID */
   getThread(projectId: string, threadId: string): Promise<Thread | undefined>;
@@ -312,7 +327,7 @@ export interface ThreadService {
 /**
  * Event service for tracking activity
  */
-export interface EventService {
+export type EventService = {
   /** Emit an event */
   emit(projectId: string, event: Event): Promise<void>;
 
@@ -326,7 +341,7 @@ export interface EventService {
 /**
  * Filter for listing events
  */
-export interface EventFilter {
+export type EventFilter = {
   from?: string;
   to?: string;
   name?: string;
@@ -336,7 +351,7 @@ export interface EventFilter {
 /**
  * Repository for persisting projects
  */
-export interface ProjectRepository {
+export type ProjectRepository = {
   /** Save project context */
   save(context: ProjectState): Promise<void>;
 

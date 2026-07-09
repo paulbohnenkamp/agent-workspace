@@ -9,13 +9,21 @@ import {
 } from '@awp/types';
 import { ArtifactRecord, ProjectState, ThreadRecord } from './types';
 
-export interface ProjectEventProjection {
+export type ProjectEventProjection = {
   resources: Resource[];
   artifacts: Map<string, ArtifactRecord>;
   threads: Map<string, ThreadRecord>;
   runs: Map<string, Run>;
   agentSessions: Map<string, AgentSession>;
   participants: Map<string, Participant>;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function asRecord<T>(value: unknown): T | undefined {
+  return isRecord(value) ? (value as unknown as T) : undefined;
 }
 
 function cloneRun(run: Run): Run {
@@ -37,7 +45,7 @@ function cloneParticipant(participant: Participant): Participant {
 function cloneResource(resource: Resource): Resource {
   return {
     ...resource,
-    content: resource.content ? { ...resource.content } : undefined,
+    content: resource.content as unknown,
     metadata: resource.metadata ? { ...resource.metadata } : undefined,
   };
 }
@@ -68,7 +76,7 @@ function cloneArtifactRecord(record: ArtifactRecord): ArtifactRecord {
 }
 
 function buildArtifactRecord(artifact: Artifact): ArtifactRecord {
-  const updatedAt = artifact.updatedAt || artifact.createdAt;
+  const updatedAt = artifact.updatedAt ?? artifact.createdAt;
 
   return {
     artifact: cloneArtifact(artifact),
@@ -155,7 +163,8 @@ export function applyEventToProjection(
     case 'run.started':
     case 'run.succeeded':
     case 'run.failed': {
-      const run = event.payload?.run as Run | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const run = asRecord<Run>(payload?.run);
       if (run) {
         projection.runs.set(run.id, cloneRun(run));
       }
@@ -164,8 +173,9 @@ export function applyEventToProjection(
 
     case 'artifact.created':
     case 'artifact.updated': {
-      const record = event.payload?.record as ArtifactRecord | undefined;
-      const artifact = event.payload?.artifact as Artifact | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const record = asRecord<ArtifactRecord>(payload?.record);
+      const artifact = asRecord<Artifact>(payload?.artifact);
       if (record) {
         projection.artifacts.set(record.artifact.id, cloneArtifactRecord(record));
       } else if (artifact) {
@@ -176,8 +186,9 @@ export function applyEventToProjection(
 
     case 'thread.created':
     case 'thread.updated': {
-      const record = event.payload?.record as ThreadRecord | undefined;
-      const thread = event.payload?.thread as Thread | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const record = asRecord<ThreadRecord>(payload?.record);
+      const thread = asRecord<Thread>(payload?.thread);
       if (record) {
         projection.threads.set(record.thread.id, cloneThreadRecord(record));
       } else if (thread) {
@@ -188,7 +199,8 @@ export function applyEventToProjection(
 
     case 'participant.joined':
     case 'participant.updated': {
-      const participant = event.payload?.participant as Participant | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const participant = asRecord<Participant>(payload?.participant);
       if (participant) {
         projection.participants.set(participant.id, cloneParticipant(participant));
       }
@@ -197,7 +209,8 @@ export function applyEventToProjection(
 
     case 'resource.added':
     case 'resource.updated': {
-      const resource = event.payload?.resource as Resource | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const resource = asRecord<Resource>(payload?.resource);
       if (resource) {
         projection.resources = appendUniqueResource(projection.resources, resource);
       }
@@ -207,7 +220,8 @@ export function applyEventToProjection(
     case 'agent_session.waiting':
     case 'agent_session.resumed':
     case 'agent_session.updated': {
-      const session = event.payload?.session as AgentSession | undefined;
+      const payload = isRecord(event.payload) ? event.payload : undefined;
+      const session = asRecord<AgentSession>(payload?.session);
       if (session) {
         projection.agentSessions.set(session.id, cloneAgentSession(session));
       }

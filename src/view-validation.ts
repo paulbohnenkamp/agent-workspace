@@ -1,13 +1,12 @@
 import type {
   LooseRecord,
-  WorkspaceLayoutRegionDefinition,
-  WorkspaceViewDefinition,
 } from "../packages/types/src/workspace";
+import type { ComponentRegistry } from "./ComponentRegistry";
 
-export interface WorkspaceViewValidationError {
+export type WorkspaceViewValidationError = {
   path: string;
   message: string;
-}
+};
 
 function isPlainObject(value: unknown): value is LooseRecord {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -51,7 +50,7 @@ function validateLayoutRegion(region: unknown, path: string, errors: WorkspaceVi
   }
 
   ["columnStart", "columnSpan", "rowStart", "rowSpan"].forEach((key) => {
-    const value = region[key as keyof WorkspaceLayoutRegionDefinition] as unknown;
+    const value = region[key];
 
     if (value != null && (typeof value !== "number" || !Number.isInteger(value) || value < 1)) {
       pushError(errors, `${path}.${key}`, "expected a positive integer");
@@ -116,12 +115,14 @@ function validateViewNode(node: unknown, path: string, errors: WorkspaceViewVali
   }
 }
 
-function validateRegions(view: WorkspaceViewDefinition, errors: WorkspaceViewValidationError[]): void {
+function validateRegions(view: LooseRecord, errors: WorkspaceViewValidationError[]): void {
   if (!isPlainObject(view.layout) || !Array.isArray(view.layout.regions)) {
     return;
   }
 
-  const layoutRegionIds = new Set(view.layout.regions.map((region) => region.id));
+  const layoutRegionIds = new Set(
+    (view.layout.regions as LooseRecord[]).map((region) => (typeof region.id === "string" ? region.id : "")),
+  );
   const declaredRegionIds = new Set(Object.keys(view.regions ?? {}));
 
   layoutRegionIds.forEach((regionId) => {
@@ -144,6 +145,54 @@ function validateRegions(view: WorkspaceViewDefinition, errors: WorkspaceViewVal
 
     nodes.forEach((node, index) => validateViewNode(node, `regions.${regionId}[${index}]`, errors));
   });
+}
+
+function validateComponentAlias(
+  componentId: unknown,
+  path: string,
+  registry: ComponentRegistry,
+  errors: WorkspaceViewValidationError[],
+): void {
+  if (typeof componentId !== "string") {
+    return;
+  }
+
+  if (!registry.has(componentId)) {
+    pushError(errors, path, `unknown component alias "${componentId}"`);
+  }
+}
+
+export function validateWorkspaceViewComponents(
+  view: unknown,
+  registry: ComponentRegistry,
+): WorkspaceViewValidationError[] {
+  const errors: WorkspaceViewValidationError[] = [];
+
+  if (!isPlainObject(view)) {
+    return errors;
+  }
+
+  if (isPlainObject(view.shell) && isPlainObject(view.shell.header)) {
+    validateComponentAlias(view.shell.header.component, "shell.header.component", registry, errors);
+  }
+
+  if (isPlainObject(view.regions)) {
+    Object.entries(view.regions).forEach(([regionId, nodes]) => {
+      if (!Array.isArray(nodes)) {
+        return;
+      }
+
+      nodes.forEach((node, index) => {
+        if (!isPlainObject(node)) {
+          return;
+        }
+
+        validateComponentAlias(node.component, `regions.${regionId}[${index}].component`, registry, errors);
+      });
+    });
+  }
+
+  return errors;
 }
 
 export function validateWorkspaceView(view: unknown): WorkspaceViewValidationError[] {
@@ -211,7 +260,7 @@ export function validateWorkspaceView(view: unknown): WorkspaceViewValidationErr
   }
 
   validateLayout(view.layout, "layout", errors);
-  validateRegions(view as unknown as WorkspaceViewDefinition, errors);
+  validateRegions(view, errors);
 
   return errors;
 }

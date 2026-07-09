@@ -1,8 +1,13 @@
 import fs from "fs";
 import path from "path";
 
+import { createDefaultComponentRegistry } from "./ComponentRegistry";
 import type { WorkspaceViewDefinition } from "../packages/types/src/workspace";
-import { formatWorkspaceViewValidationErrors, validateWorkspaceView } from "./view-validation";
+import {
+  formatWorkspaceViewValidationErrors,
+  validateWorkspaceView,
+  validateWorkspaceViewComponents,
+} from "./view-validation";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -35,6 +40,7 @@ function readJson<T>(filePath: string): T {
 }
 
 export function loadView(projectRoot: string, viewId: string, renderer = "react"): WorkspaceViewDefinition {
+  const registry = createDefaultComponentRegistry();
   const viewDirectory = path.join(projectRoot, "views", viewId);
   const basePath = path.join(viewDirectory, "view.json");
 
@@ -44,9 +50,12 @@ export function loadView(projectRoot: string, viewId: string, renderer = "react"
 
   const baseView = readJson<WorkspaceViewDefinition>(basePath);
   const baseErrors = validateWorkspaceView(baseView);
+  const baseComponentErrors = validateWorkspaceViewComponents(baseView, registry);
 
-  if (baseErrors.length > 0) {
-    throw new Error(formatWorkspaceViewValidationErrors(`${viewId}/view.json`, baseErrors));
+  if (baseErrors.length > 0 || baseComponentErrors.length > 0) {
+    throw new Error(
+      formatWorkspaceViewValidationErrors(`${viewId}/view.json`, [...baseErrors, ...baseComponentErrors]),
+    );
   }
 
   const rendererPath = path.join(viewDirectory, renderer, "view.json");
@@ -58,9 +67,15 @@ export function loadView(projectRoot: string, viewId: string, renderer = "react"
   const rendererView = readJson<Partial<WorkspaceViewDefinition>>(rendererPath);
   const mergedView = deepMerge(baseView, rendererView);
   const mergedErrors = validateWorkspaceView(mergedView);
+  const mergedComponentErrors = validateWorkspaceViewComponents(mergedView, registry);
 
-  if (mergedErrors.length > 0) {
-    throw new Error(formatWorkspaceViewValidationErrors(`${viewId}/${renderer}/view.json`, mergedErrors));
+  if (mergedErrors.length > 0 || mergedComponentErrors.length > 0) {
+    throw new Error(
+      formatWorkspaceViewValidationErrors(`${viewId}/${renderer}/view.json`, [
+        ...mergedErrors,
+        ...mergedComponentErrors,
+      ]),
+    );
   }
 
   return mergedView;

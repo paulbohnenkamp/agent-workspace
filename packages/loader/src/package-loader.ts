@@ -5,18 +5,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from 'yaml';
-import {
-  Tool,
-  Skill,
-  Agent,
-  Project,
-  Channel,
-  Schedule,
-  Resource,
-  Sandbox,
-  ArtifactType,
-  AnyPackage,
-} from '@awp/types';
+import { AnyPackage } from '@awp/types';
 import {
   LoaderOptions,
   PackageLoadResult,
@@ -27,12 +16,16 @@ import {
   ValidationOptions,
 } from './types';
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
 /**
  * Discovers and loads packages from the filesystem
  */
 export class PackageLoader {
   private options: Required<LoaderOptions>;
-  private loadedPackages: Map<string, PackageLoadResult> = new Map();
+  private loadedPackages = new Map<string, PackageLoadResult>();
 
   constructor(options: LoaderOptions) {
     this.options = {
@@ -44,13 +37,17 @@ export class PackageLoader {
     };
   }
 
+  get rootPath(): string {
+    return this.options.rootPath;
+  }
+
   /**
    * Discover all packages in the root path
    */
   async discover(): Promise<DiscoveryResult> {
     const startTime = Date.now();
     const packages: PackageLoadResult[] = [];
-    const failed: Array<{ path: string; error: string }> = [];
+    const failed: { path: string; error: string }[] = [];
 
     try {
       await this.scanDirectory(this.options.rootPath, packages, failed);
@@ -75,6 +72,8 @@ export class PackageLoader {
    * Load a single package by path
    */
   async loadPackage<T extends AnyPackage = AnyPackage>(packagePath: string): Promise<PackageLoadResult<T>> {
+    await Promise.resolve();
+
     try {
       const yamlPath = packagePath.endsWith('.yaml')
         ? packagePath
@@ -90,9 +89,9 @@ export class PackageLoader {
       }
 
       const yaml = fs.readFileSync(yamlPath, 'utf-8');
-      const parsed = parse(yaml);
+      const parsed: unknown = parse(yaml);
 
-      if (!parsed || typeof parsed !== 'object') {
+      if (!isRecord(parsed)) {
         return {
           package: {} as T,
           sourcePath: yamlPath,
@@ -117,7 +116,7 @@ export class PackageLoader {
       if (this.options.validateSchema) {
         const validation = this.validate(pkg);
         if (validation.errors.length > 0) {
-          result.warnings = (result.warnings || []).concat(
+          result.warnings = (result.warnings ?? []).concat(
             validation.errors.map((e) => e.message),
           );
         }
@@ -200,8 +199,12 @@ export class PackageLoader {
   /**
    * Get package ID from package
    */
-  private getPackageId(pkg: any): string {
-    return pkg.id || 'unknown';
+  private getPackageId(pkg: unknown): string {
+    if (!isRecord(pkg)) {
+      return 'unknown';
+    }
+
+    return typeof pkg.id === 'string' && pkg.id ? pkg.id : 'unknown';
   }
 
   /**
@@ -210,7 +213,7 @@ export class PackageLoader {
   private async scanDirectory(
     dir: string,
     packages: PackageLoadResult[],
-    failed: Array<{ path: string; error: string }>,
+    failed: { path: string; error: string }[],
   ): Promise<void> {
     if (!fs.existsSync(dir)) {
       failed.push({ path: dir, error: 'Directory does not exist' });
@@ -237,7 +240,7 @@ export class PackageLoader {
         if (result.success) {
           packages.push(result);
         } else {
-          failed.push({ path: fullPath, error: result.error || 'Unknown error' });
+          failed.push({ path: fullPath, error: result.error ?? 'Unknown error' });
         }
       }
     }
@@ -247,8 +250,12 @@ export class PackageLoader {
 /**
  * Detect package kind from content
  */
-export function detectPackageKind(pkg: any): PackageKind | undefined {
-  if (pkg.kind) return pkg.kind;
+export function detectPackageKind(pkg: unknown): PackageKind | undefined {
+  if (!isRecord(pkg)) {
+    return undefined;
+  }
+
+  if (typeof pkg.kind === 'string') return pkg.kind as PackageKind;
 
   // Heuristic detection
   if (pkg.instructions && pkg.tools) return 'agent';
@@ -268,7 +275,7 @@ export async function loadFromMultiplePaths(
   options?: Omit<LoaderOptions, 'rootPath'>,
 ): Promise<DiscoveryResult> {
   const allPackages: PackageLoadResult[] = [];
-  const allFailed: Array<{ path: string; error: string }> = [];
+  const allFailed: { path: string; error: string }[] = [];
   let totalDuration = 0;
 
   for (const rootPath of paths) {

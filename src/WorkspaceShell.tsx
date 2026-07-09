@@ -179,13 +179,19 @@ export function workspaceStyles(): string {
       background: var(--surface);
       box-shadow: var(--shadow);
     }
-    .workspace-module {
+    .workspace-panel {
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: var(--surface);
       overflow: hidden;
     }
-    .workspace-module__header,
+    .workspace-panel--dense .workspace-panel__header {
+      padding-top: 0.65rem;
+    }
+    .workspace-panel--dense .workspace-panel__body {
+      padding: 0.75rem 1rem 1rem;
+    }
+    .workspace-panel__header,
     .workspace-document__header,
     .workspace-document__hero,
     .workspace-list-item__topline,
@@ -197,13 +203,13 @@ export function workspaceStyles(): string {
       justify-content: space-between;
       gap: 0.75rem;
     }
-    .workspace-module__header {
+    .workspace-panel__header {
       padding: 0.9rem 1rem 0;
     }
-    .workspace-module__body {
+    .workspace-panel__body {
       padding: 1rem;
     }
-    .workspace-module__caption,
+    .workspace-panel__caption,
     .workspace-document__eyebrow {
       margin: 0 0 0.25rem;
       font-size: 0.72rem;
@@ -211,7 +217,7 @@ export function workspaceStyles(): string {
       text-transform: uppercase;
       color: var(--ink-muted);
     }
-    .workspace-module__title,
+    .workspace-panel__title,
     .workspace-document__section-title {
       margin: 0;
       font-size: 1.05rem;

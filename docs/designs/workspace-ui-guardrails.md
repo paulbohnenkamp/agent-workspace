@@ -52,11 +52,75 @@ That means:
 - do not embed route-specific layout assumptions
 - do not special-case one workspace in registry code
 
+Canonical component aliases:
+
+| Alias | Purpose |
+| --- | --- |
+| `badge` | Inline status pill or tone label |
+| `panel` | Generic bordered container for a block of content |
+| `list` | Generic item list or record list |
+| `document` | Sectioned document or record view |
+| `header` | Hero/header area for a view or shell slot |
+| `queue` | Ordered list of work items or review items |
+| `summaryCard` | Compact summary panel for a person, artifact, or assistant |
+| `timeline` | Message or event timeline |
+| `composer` | Input surface for drafting or replying |
+| `tabs` | Tabbed artifact or document sections |
+| `sources` | Evidence or knowledge source list |
+| `statusList` | Runtime or agent status list |
+| `actions` | Action button stack |
+
+When to use each alias:
+
+- `badge`: use for inline status pills or short tone labels.
+- `panel`: use for a generic bordered content block.
+- `list`: use for a generic item list or record list.
+- `document`: use for a sectioned document or record view.
+- `header`: use for the primary hero block at the top of a view, such as a candidate summary header or shell header slot.
+- `queue`: use for ordered work lists, review queues, or board columns.
+- `summaryCard`: use for a compact summary of a person, artifact, or assistant state.
+- `timeline`: use for threaded discussion, activity history, or event streams.
+- `composer`: use for a reply box, draft input, or inline action-entry surface.
+- `tabs`: use for switching between artifact sections or document panels.
+- `sources`: use for evidence, citations, or linked knowledge sources.
+- `statusList`: use for agent/runtime status rows or operational health lists.
+- `actions`: use for a small stack of call-to-action buttons.
+
 Good:
 
-- `"artifact.tabs" -> ArtifactTabsComponent`
-- `"thread.timeline" -> ThreadTimelineComponent`
-- `"action.stack" -> ActionStackComponent`
+- `"badge" -> BadgeComponent`
+- `"panel" -> PanelComponent`
+- `"list" -> ListComponent`
+- `"document" -> DocumentComponent`
+- `"header" -> HeaderComponent`
+- `"queue" -> QueueComponent`
+- `"summaryCard" -> SummaryCardComponent`
+- `"timeline" -> TimelineComponent`
+- `"composer" -> ComposerComponent`
+- `"tabs" -> TabsComponent`
+- `"sources" -> SourcesComponent`
+- `"statusList" -> StatusListComponent`
+- `"actions" -> ActionsComponent`
+
+Example nodes:
+
+```json
+[
+  { "component": "header", "bind": { "candidate": "$fields.selectedCandidate" } },
+  { "component": "queue", "bind": { "projection": "item_queue" } },
+  { "component": "summaryCard", "bind": { "artifact": "$fields.candidateEvaluation" } },
+  { "component": "panel", "bind": { "body": "Reusable content block" } },
+  { "component": "list", "bind": { "items": "$fields.candidateSources" } },
+  { "component": "document", "bind": { "sections": "$fields.candidateEvaluation.sections" } },
+  { "component": "badge", "bind": { "label": "Approved" } },
+  { "component": "timeline", "bind": { "thread": "$fields.candidateThread" } },
+  { "component": "composer", "bind": { "thread": "$fields.candidateThread" } },
+  { "component": "tabs", "bind": { "artifact": "$fields.candidateEvaluation" } },
+  { "component": "sources", "bind": { "sources": "$fields.candidateSources" } },
+  { "component": "statusList", "bind": { "runs": "$fields.candidateRuns" } },
+  { "component": "actions", "actions": ["advance_candidate", "request_revision"] }
+]
+```
 
 Bad:
 
@@ -130,8 +194,8 @@ Good:
 - `.workspace-shell`
 - `.workspace-rail`
 - `.workspace-canvas`
-- `.panel`
-- `.panel--dense`
+- `.workspace-panel`
+- `.workspace-panel--dense`
 - `.status-badge`
 
 Bad:

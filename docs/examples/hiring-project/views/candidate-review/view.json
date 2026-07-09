@@ -6,7 +6,7 @@
   "shell": {
     "type": "workspace-shell",
     "header": {
-      "component": "workspace.header"
+      "component": "header"
     },
     "chrome": {
       "leftNav": true,
@@ -101,7 +101,7 @@
   "regions": {
     "queue": [
       {
-        "component": "candidate.queue",
+        "component": "queue",
         "title": "Candidate Review Queue",
         "bind": {
           "projection": "item_queue",
@@ -111,7 +111,7 @@
     ],
     "assistant": [
       {
-        "component": "assistant.summary-card",
+        "component": "summaryCard",
         "title": "AI Assistant",
         "bind": {
           "candidate": "$fields.selectedCandidate",
@@ -119,14 +119,14 @@
         }
       },
       {
-        "component": "thread.timeline",
+        "component": "timeline",
         "title": "Discussion",
         "bind": {
           "thread": "$fields.candidateThread"
         }
       },
       {
-        "component": "composer.inline",
+        "component": "composer",
         "bind": {
           "thread": "$fields.candidateThread"
         }
@@ -134,13 +134,13 @@
     ],
     "main": [
       {
-        "component": "candidate.header",
+        "component": "header",
         "bind": {
           "candidate": "$fields.selectedCandidate"
         }
       },
       {
-        "component": "artifact.tabs",
+        "component": "tabs",
         "tabs": [
           "evaluation-summary",
           "interview-brief",
@@ -154,21 +154,21 @@
     ],
     "context": [
       {
-        "component": "knowledge.sources",
+        "component": "sources",
         "title": "Knowledge Sources",
         "bind": {
           "sources": "$fields.candidateSources"
         }
       },
       {
-        "component": "agent.status-list",
+        "component": "statusList",
         "title": "Agents",
         "bind": {
           "runs": "$fields.candidateRuns"
         }
       },
       {
-        "component": "action.stack",
+        "component": "actions",
         "title": "Actions",
         "actions": [
           "advance_candidate",

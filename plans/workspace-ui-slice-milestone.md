@@ -57,7 +57,7 @@ Deliver a working hiring-project workspace UI slice with a real loader, interpre
 
 ## Completion Notes
 
-- Added a metadata-driven workspace UI pipeline in `system/`.
+- Added a metadata-driven workspace UI pipeline in `src/`.
 - Added a workspace view schema and validation path.
 - Added hiring-project views for candidate review, open roles, and approvals.
 - Updated docs so the milestone and follow-up workflow are visible to the next agent.
@@ -68,6 +68,6 @@ Deliver a working hiring-project workspace UI slice with a real loader, interpre
 
 ## Tooling / Verification Notes
 
-- Build tool: `npm run build:system`
-- Expected verification command: `node build/system/system/render-workspace.smoke.js`
+- Build tool: `npm run build:workspace`
+- Expected verification command: `node build/src/render-workspace.smoke.js`
 - Current blocker, if any: none

@@ -4,7 +4,7 @@
   "regions": {
     "assistant": [
       {
-        "component": "assistant.summary-card",
+        "component": "summaryCard",
         "title": "AI Assistant",
         "bind": {
           "candidate": "$fields.selectedCandidate",
@@ -12,14 +12,14 @@
         }
       },
       {
-        "component": "thread.timeline",
+        "component": "timeline",
         "title": "Discussion",
         "bind": {
           "thread": "$fields.candidateThread"
         }
       },
       {
-        "component": "composer.chat-input",
+        "component": "composer",
         "bind": {
           "thread": "$fields.candidateThread"
         }
@@ -27,13 +27,13 @@
     ],
     "main": [
       {
-        "component": "candidate.header",
+        "component": "header",
         "bind": {
           "candidate": "$fields.selectedCandidate"
         }
       },
       {
-        "component": "artifact.tabs",
+        "component": "tabs",
         "tabs": [
           "evaluation-summary",
           "interview-brief",

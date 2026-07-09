@@ -21,6 +21,21 @@ Shared idea:
 - registry resolves the implementation
 - the renderer stays generic
 
+Workspace canonical aliases:
+- `badge`
+- `panel`
+- `list`
+- `document`
+- `header`
+- `queue`
+- `summaryCard`
+- `timeline`
+- `composer`
+- `tabs`
+- `sources`
+- `statusList`
+- `actions`
+
 ## 2. Layout Builder Pattern
 
 `emwizard`

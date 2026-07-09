@@ -11,11 +11,12 @@ Use plans to answer:
 
 Workflow:
 
-1. Start from [plans/TEMPLATE.md](./TEMPLATE.md).
-2. Create or update a plan file for the slice.
-3. Track active work in [plans/index.md](./index.md).
-4. Mark the plan `done` only after acceptance criteria and verification pass.
-5. Update [ROADMAP.md](../ROADMAP.md) when the slice is complete.
+1. Do not start implementation work without creating or updating a plan.
+2. Start from [plans/TEMPLATE.md](./TEMPLATE.md).
+3. Create or update a plan file for the slice.
+4. Track active work in [plans/index.md](./index.md).
+5. Mark the plan `done` only after acceptance criteria and verification pass.
+6. Update [ROADMAP.md](../ROADMAP.md) when the slice is complete.
 
 How this relates to specs:
 

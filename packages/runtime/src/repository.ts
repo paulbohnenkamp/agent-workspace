@@ -7,16 +7,16 @@ import * as path from 'path';
 import { ProjectState, ProjectRepository } from './types';
 import { replayProjectEvents } from './event-projection';
 
-interface SerializedProjectState {
+type SerializedProjectState = {
   projectionVersion?: number;
   project: ProjectState['project'];
   agents: ProjectState['agents'];
   resources: ProjectState['resources'];
-  artifacts: Array<[string, ProjectState['artifacts'] extends Map<string, infer T> ? T : never]>;
-  threads: Array<[string, ProjectState['threads'] extends Map<string, infer T> ? T : never]>;
-  runs: Array<[string, ProjectState['runs'] extends Map<string, infer T> ? T : never]>;
-  agentSessions: Array<[string, ProjectState['agentSessions'] extends Map<string, infer T> ? T : never]>;
-  participants: Array<[string, ProjectState['participants'] extends Map<string, infer T> ? T : never]>;
+  artifacts: [string, ProjectState['artifacts'] extends Map<string, infer T> ? T : never][];
+  threads: [string, ProjectState['threads'] extends Map<string, infer T> ? T : never][];
+  runs: [string, ProjectState['runs'] extends Map<string, infer T> ? T : never][];
+  agentSessions: [string, ProjectState['agentSessions'] extends Map<string, infer T> ? T : never][];
+  participants: [string, ProjectState['participants'] extends Map<string, infer T> ? T : never][];
   events: ProjectState['events'];
   schedules: ProjectState['schedules'];
   metadata?: ProjectState['metadata'];
@@ -84,39 +84,41 @@ function deserializeProjectState(serialized: SerializedProjectState): ProjectSta
  * Useful for testing and single-process deployments
  */
 export class InMemoryProjectRepository implements ProjectRepository {
-  private projects: Map<string, ProjectState> = new Map();
+  private projects = new Map<string, ProjectState>();
 
   /**
    * Save project context to memory
    */
-  async save(context: ProjectState): Promise<void> {
+  save(context: ProjectState): Promise<void> {
     this.projects.set(context.project.id, cloneProjectState(context));
+    return Promise.resolve();
   }
 
   /**
    * Load project context from memory
    */
-  async load(projectId: string): Promise<ProjectState | undefined> {
+  load(projectId: string): Promise<ProjectState | undefined> {
     const context = this.projects.get(projectId);
     if (!context) {
-      return undefined;
+      return Promise.resolve(undefined);
     }
 
-    return cloneProjectState(context);
+    return Promise.resolve(cloneProjectState(context));
   }
 
   /**
    * Delete project
    */
-  async delete(projectId: string): Promise<void> {
+  delete(projectId: string): Promise<void> {
     this.projects.delete(projectId);
+    return Promise.resolve();
   }
 
   /**
    * List all project IDs
    */
-  async list(): Promise<string[]> {
-    return Array.from(this.projects.keys());
+  list(): Promise<string[]> {
+    return Promise.resolve(Array.from(this.projects.keys()));
   }
 
   /**
@@ -139,7 +141,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
  * Persists to JSON files on disk
  */
 export class FileProjectRepository implements ProjectRepository {
-  constructor(private basePath: string = './projects') {
+  constructor(private basePath = './projects') {
   }
 
   private getProjectFilePath(projectId: string): string {
@@ -149,68 +151,67 @@ export class FileProjectRepository implements ProjectRepository {
   /**
    * Save project context to file
    */
-  async save(context: ProjectState): Promise<void> {
-    await mkdir(this.basePath, { recursive: true });
-
+  save(context: ProjectState): Promise<void> {
     const filePath = this.getProjectFilePath(context.project.id);
     const tempPath = `${filePath}.tmp`;
     const serialized = serializeProjectState(context);
 
-    await writeFile(tempPath, JSON.stringify(serialized, null, 2), 'utf-8');
-    await rename(tempPath, filePath);
+    return mkdir(this.basePath, { recursive: true })
+      .then(() => writeFile(tempPath, JSON.stringify(serialized, null, 2), 'utf-8'))
+      .then(() => rename(tempPath, filePath));
   }
 
   /**
    * Load project context from file
    */
-  async load(projectId: string): Promise<ProjectState | undefined> {
+  load(projectId: string): Promise<ProjectState | undefined> {
     const filePath = this.getProjectFilePath(projectId);
 
-    try {
-      const contents = await readFile(filePath, 'utf-8');
-      const serialized = JSON.parse(contents) as SerializedProjectState;
-      return cloneProjectState(deserializeProjectState(serialized));
-    } catch (error) {
-      const fileError = error as NodeJS.ErrnoException;
-      if (fileError.code === 'ENOENT') {
-        return undefined;
-      }
+    return readFile(filePath, 'utf-8')
+      .then((contents) => {
+        const serialized = JSON.parse(contents) as SerializedProjectState;
+        return cloneProjectState(deserializeProjectState(serialized));
+      })
+      .catch((error: unknown) => {
+        const fileError = error as NodeJS.ErrnoException;
+        if (fileError.code === 'ENOENT') {
+          return undefined;
+        }
 
-      throw error;
-    }
+        throw error;
+      });
   }
 
   /**
    * Delete project file
    */
-  async delete(projectId: string): Promise<void> {
-    try {
-      await rm(this.getProjectFilePath(projectId));
-    } catch (error) {
+  delete(projectId: string): Promise<void> {
+    return rm(this.getProjectFilePath(projectId)).catch((error: unknown) => {
       const fileError = error as NodeJS.ErrnoException;
       if (fileError.code !== 'ENOENT') {
         throw error;
       }
-    }
+    });
   }
 
   /**
    * List all project files
    */
-  async list(): Promise<string[]> {
-    try {
-      const files = await readdir(this.basePath, { withFileTypes: true });
-      return files
-        .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
-        .map((entry) => entry.name.replace(/\.json$/, ''))
-        .sort();
-    } catch (error) {
-      const fileError = error as NodeJS.ErrnoException;
-      if (fileError.code === 'ENOENT') {
-        return [];
-      }
+  list(): Promise<string[]> {
+    return readdir(this.basePath, { withFileTypes: true })
+      .then((files) =>
+        files
+          .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+          .map((entry) => entry.name.replace(/\.json$/, ''))
+          .sort(),
+      )
+      .catch((error: unknown) => {
+        const fileError = error as NodeJS.ErrnoException;
+        if (fileError.code === 'ENOENT') {
+          return [];
+        }
 
-      throw error;
-    }
+        throw error;
+      });
   }
 }

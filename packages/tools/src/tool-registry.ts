@@ -3,7 +3,15 @@
  */
 
 import { Tool } from '@awp/types';
-import { ToolProvider, ToolExecutionRequest, ToolExecutionResult, ToolBinding, IToolRegistry } from './types';
+import {
+  ToolProvider,
+  ToolExecutionRequest,
+  ToolExecutionResult,
+  ToolBinding,
+  IToolRegistry,
+  ToolRegistryExecutionStats,
+  ToolRegistryStats,
+} from './types';
 import {
   ApiToolProvider,
   ConnectorToolProvider,
@@ -12,17 +20,21 @@ import {
   PlatformServiceToolProvider,
 } from './providers';
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
 /**
  * Registry for managing tools and their execution providers
  */
 export class ToolRegistry implements IToolRegistry {
   private providers: ToolProvider[] = [];
-  private toolBindings: Map<string, ToolBinding> = new Map();
-  private executionStats = {
+  private toolBindings = new Map<string, ToolBinding>();
+  private executionStats: ToolRegistryExecutionStats = {
     total: 0,
     successful: 0,
     failed: 0,
-    byProvider: {} as Record<string, number>,
+    byProvider: {},
   };
 
   constructor() {
@@ -52,7 +64,7 @@ export class ToolRegistry implements IToolRegistry {
    */
   registerTool(tool: Tool, provider?: ToolProvider): boolean {
     // Find provider if not specified
-    const selectedProvider = provider || this.getProvider(tool);
+    const selectedProvider = provider ?? this.getProvider(tool);
 
     if (!selectedProvider) {
       console.error(`No provider found for tool: ${tool.id}`);
@@ -72,7 +84,7 @@ export class ToolRegistry implements IToolRegistry {
       provider: selectedProvider,
       providerConfig: {
         type: selectedProvider.type,
-        config: (tool.implementation as any) || {},
+        config: isRecord(tool.implementation) ? tool.implementation : {},
       },
     };
 
@@ -136,7 +148,7 @@ export class ToolRegistry implements IToolRegistry {
 
       // Track by provider
       const providerType = binding.provider.type;
-      this.executionStats.byProvider[providerType] = (this.executionStats.byProvider[providerType] || 0) + 1;
+      this.executionStats.byProvider[providerType] = (this.executionStats.byProvider[providerType] ?? 0) + 1;
 
       return result;
     } catch (error) {
@@ -169,7 +181,7 @@ export class ToolRegistry implements IToolRegistry {
   /**
    * Get stats
    */
-  getStats(): Record<string, any> {
+  getStats(): ToolRegistryStats {
     return {
       tools: this.toolBindings.size,
       providers: this.providers.length,

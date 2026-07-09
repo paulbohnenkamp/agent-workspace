@@ -7,30 +7,33 @@ import {
   Skill,
   Agent,
   Project,
-  Channel,
   Connector,
-  Schedule,
   Resource,
-  Sandbox,
-  ArtifactType,
   AnyPackage,
-  ToolReference,
-  SkillReference,
-  AgentReference,
-  ResourceReference,
-  ChannelReference,
-  ConnectorReference,
-  ScheduleReference,
 } from '@awp/types';
-import { PackageLoadResult, PackageRef, ReferenceResolutionResult, PackageKind } from './types';
+import {
+  PackageLoadResult,
+  PackageRef,
+  ReferenceResolutionResult,
+  PackageKind,
+  PackageRegistryStats,
+} from './types';
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function asArray(value: unknown): unknown[] {
+  return Array.isArray(value) ? value : [];
+}
 
 /**
  * Registry for managing packages and resolving references
  */
 export class PackageRegistry {
-  private packages: Map<string, PackageLoadResult> = new Map();
-  private byKind: Map<PackageKind, Set<string>> = new Map();
-  private references: Map<string, PackageRef[]> = new Map();
+  private packages = new Map<string, PackageLoadResult>();
+  private byKind = new Map<PackageKind, Set<string>>();
+  private references = new Map<string, PackageRef[]>();
 
   constructor(packages?: PackageLoadResult[]) {
     if (packages) {
@@ -72,7 +75,7 @@ export class PackageRegistry {
    * Get all packages of a specific kind
    */
   getByKind(kind: PackageKind): AnyPackage[] {
-    const ids = this.byKind.get(kind) || new Set();
+    const ids = this.byKind.get(kind) ?? new Set();
     return Array.from(ids)
       .map((id) => this.packages.get(id)?.package)
       .filter((pkg): pkg is AnyPackage => pkg !== undefined);
@@ -97,7 +100,7 @@ export class PackageRegistry {
    * Get all references in a package
    */
   getReferences(id: string): PackageRef[] {
-    return this.references.get(id) || [];
+    return this.references.get(id) ?? [];
   }
 
   /**
@@ -163,7 +166,7 @@ export class PackageRegistry {
       if (visited.has(id)) return;
       visited.add(id);
 
-      const refs = this.references.get(id) || [];
+    const refs = this.references.get(id) ?? [];
       for (const ref of refs) {
         const pkg = this.get(ref.id);
         if (pkg) {
@@ -182,8 +185,8 @@ export class PackageRegistry {
   /**
    * Validate all references
    */
-  validateReferences(): Array<{ id: string; missing: PackageRef[] }> {
-    const issues: Array<{ id: string; missing: PackageRef[] }> = [];
+  validateReferences(): { id: string; missing: PackageRef[] }[] {
+    const issues: { id: string; missing: PackageRef[] }[] = [];
 
     for (const [packageId, refs] of this.references) {
       const missing = refs.filter((ref) => !this.has(ref.id));
@@ -315,8 +318,8 @@ export class PackageRegistry {
   /**
    * Get statistics about the registry
    */
-  getStats() {
-    const stats: Record<PackageKind, number> = {} as any;
+  getStats(): PackageRegistryStats {
+    const stats = {} as Record<PackageKind, number>;
 
     for (const [kind, ids] of this.byKind) {
       stats[kind] = ids.size;
@@ -341,102 +344,98 @@ export class PackageRegistry {
   /**
    * Extract ID from package
    */
-  private getId(pkg: any): string {
-    return pkg.id || 'unknown';
+  private getId(pkg: unknown): string {
+    if (!isRecord(pkg)) {
+      return 'unknown';
+    }
+
+    return typeof pkg.id === 'string' && pkg.id ? pkg.id : 'unknown';
   }
 
   /**
    * Extract references from a package
    */
-  private extractReferences(packageId: string, pkg: any): void {
+  private extractReferences(packageId: string, pkg: unknown): void {
+    if (!isRecord(pkg)) {
+      return;
+    }
+
     const refs: PackageRef[] = [];
 
     // Tools referenced
-    if (pkg.tools && Array.isArray(pkg.tools)) {
-      for (let i = 0; i < pkg.tools.length; i++) {
-        const tool = pkg.tools[i];
-        if (typeof tool === 'object' && tool.id) {
-          refs.push({
-            kind: 'tool',
-            id: tool.id,
-            field: `tools[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.tools).length; i++) {
+      const tool = asArray(pkg.tools)[i];
+      if (isRecord(tool) && typeof tool.id === 'string') {
+        refs.push({
+          kind: 'tool',
+          id: tool.id,
+          field: `tools[${i}]`,
+        });
       }
     }
 
     // Skills referenced
-    if (pkg.skills && Array.isArray(pkg.skills)) {
-      for (let i = 0; i < pkg.skills.length; i++) {
-        const skill = pkg.skills[i];
-        if (typeof skill === 'object' && skill.id) {
-          refs.push({
-            kind: 'skill',
-            id: skill.id,
-            field: `skills[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.skills).length; i++) {
+      const skill = asArray(pkg.skills)[i];
+      if (isRecord(skill) && typeof skill.id === 'string') {
+        refs.push({
+          kind: 'skill',
+          id: skill.id,
+          field: `skills[${i}]`,
+        });
       }
     }
 
     // Agents referenced (in projects)
-    if (pkg.agents && Array.isArray(pkg.agents)) {
-      for (let i = 0; i < pkg.agents.length; i++) {
-        const agent = pkg.agents[i];
-        if (typeof agent === 'object' && agent.id) {
-          refs.push({
-            kind: 'agent',
-            id: agent.id,
-            field: `agents[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.agents).length; i++) {
+      const agent = asArray(pkg.agents)[i];
+      if (isRecord(agent) && typeof agent.id === 'string') {
+        refs.push({
+          kind: 'agent',
+          id: agent.id,
+          field: `agents[${i}]`,
+        });
       }
     }
 
     // Resources referenced (in projects)
-    if (pkg.resources && Array.isArray(pkg.resources)) {
-      for (let i = 0; i < pkg.resources.length; i++) {
-        const resource = pkg.resources[i];
-        if (typeof resource === 'object' && resource.id) {
-          refs.push({
-            kind: 'resource',
-            id: resource.id,
-            field: `resources[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.resources).length; i++) {
+      const resource = asArray(pkg.resources)[i];
+      if (isRecord(resource) && typeof resource.id === 'string') {
+        refs.push({
+          kind: 'resource',
+          id: resource.id,
+          field: `resources[${i}]`,
+        });
       }
     }
 
     // Channels referenced (in projects)
-    if (pkg.channels && Array.isArray(pkg.channels)) {
-      for (let i = 0; i < pkg.channels.length; i++) {
-        const channel = pkg.channels[i];
-        if (typeof channel === 'object' && channel.id) {
-          refs.push({
-            kind: 'channel',
-            id: channel.id,
-            field: `channels[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.channels).length; i++) {
+      const channel = asArray(pkg.channels)[i];
+      if (isRecord(channel) && typeof channel.id === 'string') {
+        refs.push({
+          kind: 'channel',
+          id: channel.id,
+          field: `channels[${i}]`,
+        });
       }
     }
 
     // Connectors referenced
-    if (pkg.connectors && Array.isArray(pkg.connectors)) {
-      for (let i = 0; i < pkg.connectors.length; i++) {
-        const connector = pkg.connectors[i];
-        if (typeof connector === 'object' && connector.id) {
-          refs.push({
-            kind: 'connector',
-            id: connector.id,
-            field: `connectors[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.connectors).length; i++) {
+      const connector = asArray(pkg.connectors)[i];
+      if (isRecord(connector) && typeof connector.id === 'string') {
+        refs.push({
+          kind: 'connector',
+          id: connector.id,
+          field: `connectors[${i}]`,
+        });
       }
     }
 
     // Single connector referenced (typically by tools)
-    if (pkg.connector && typeof pkg.connector === 'object' && pkg.connector.id) {
+    if (isRecord(pkg.connector) && typeof pkg.connector.id === 'string') {
       refs.push({
         kind: 'connector',
         id: pkg.connector.id,
@@ -445,16 +444,14 @@ export class PackageRegistry {
     }
 
     // Schedules referenced (in projects)
-    if (pkg.schedules && Array.isArray(pkg.schedules)) {
-      for (let i = 0; i < pkg.schedules.length; i++) {
-        const schedule = pkg.schedules[i];
-        if (typeof schedule === 'object' && schedule.id) {
-          refs.push({
-            kind: 'schedule',
-            id: schedule.id,
-            field: `schedules[${i}]`,
-          });
-        }
+    for (let i = 0; i < asArray(pkg.schedules).length; i++) {
+      const schedule = asArray(pkg.schedules)[i];
+      if (isRecord(schedule) && typeof schedule.id === 'string') {
+        refs.push({
+          kind: 'schedule',
+          id: schedule.id,
+          field: `schedules[${i}]`,
+        });
       }
     }
 
@@ -469,7 +466,7 @@ export class PackageRegistry {
   private detectCycle(
     packageId: string,
     visiting: Set<string>,
-    visited: Set<string> = new Set(),
+    visited = new Set<string>(),
   ): string[] {
     if (visited.has(packageId)) {
       return [];
@@ -482,7 +479,7 @@ export class PackageRegistry {
 
     visiting.add(packageId);
 
-    const refs = this.references.get(packageId) || [];
+    const refs = this.references.get(packageId) ?? [];
     for (const ref of refs) {
       const cycle = this.detectCycle(ref.id, new Set(visiting), visited);
       if (cycle.length > 0) {

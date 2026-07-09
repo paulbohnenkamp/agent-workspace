@@ -2,9 +2,9 @@ const common = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   rootDir: '.',
-  moduleFileExtensions: ['ts', 'js', 'json'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
   transform: {
-    '^.+\\.ts$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.base.json' }],
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.test.json' }],
   },
   moduleNameMapper: {
     '^@awp/types$': '<rootDir>/packages/types/src',

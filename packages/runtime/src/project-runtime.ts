@@ -4,7 +4,6 @@
 
 import { randomUUID } from 'crypto';
 import {
-  Project,
   Agent,
   Tool,
   Skill,
@@ -14,8 +13,6 @@ import {
   Resource,
   Participant,
   Event,
-  AgentSession,
-  Channel,
   Schedule,
 } from '@awp/types';
 import { PackageRegistry } from '@awp/loader';
@@ -25,10 +22,9 @@ import {
   RunRequest,
   RunResult,
   ExecutionOptions,
-  AgentInstance,
   ArtifactRecord,
   ThreadRecord,
-  ScheduleInstance,
+  ProjectStats,
 } from './types';
 import { applyEventToProjectState } from './event-projection';
 
@@ -36,7 +32,7 @@ import { applyEventToProjectState } from './event-projection';
  * ProjectRuntime - manages project execution and state
  */
 export class ProjectRuntime {
-  private contexts: Map<string, ProjectState> = new Map();
+  private contexts = new Map<string, ProjectState>();
   private registry: PackageRegistry;
 
   constructor(registry: PackageRegistry) {
@@ -51,7 +47,7 @@ export class ProjectRuntime {
   /**
    * Initialize a project context
    */
-  async initializeProject(options: ProjectInitOptions): Promise<ProjectState> {
+  initializeProject(options: ProjectInitOptions): Promise<ProjectState> {
     const projectId = options.project.id;
 
     // Create context
@@ -128,7 +124,7 @@ export class ProjectRuntime {
       }
     }
 
-    return context;
+    return Promise.resolve(context);
   }
 
   /**
@@ -144,8 +140,9 @@ export class ProjectRuntime {
   async executeRun(
     projectId: string,
     request: RunRequest,
-    options?: ExecutionOptions,
+    _options?: ExecutionOptions,
   ): Promise<RunResult> {
+    void _options;
     const context = this.contexts.get(projectId);
     if (!context) {
       throw new Error(`Project not found: ${projectId}`);
@@ -189,7 +186,7 @@ export class ProjectRuntime {
 
     try {
       // Execute based on target kind
-      let output: Record<string, any> | undefined;
+      let output: Record<string, unknown> | undefined;
       const artifactsCreated: string[] = [];
 
       switch (request.targetKind) {
@@ -275,23 +272,23 @@ export class ProjectRuntime {
   /**
    * Execute a tool
    */
-  private async executeTool(
+  private executeTool(
     context: ProjectState,
     toolId: string,
-    input?: Record<string, any>,
-  ): Promise<Record<string, any>> {
+    input?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     const tool = this.registry.get<Tool>(toolId);
     if (!tool) {
       throw new Error(`Tool not found: ${toolId}`);
     }
 
     // Simulate tool execution
-    return {
+    return Promise.resolve({
       toolId: tool.id,
       result: `Executed tool: ${tool.name}`,
       input,
       timestamp: new Date().toISOString(),
-    };
+    });
   }
 
   /**
@@ -300,8 +297,8 @@ export class ProjectRuntime {
   private async executeSkill(
     context: ProjectState,
     skillId: string,
-    input?: Record<string, any>,
-  ): Promise<Record<string, any>> {
+    input?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     const skill = this.registry.get<Skill>(skillId);
     if (!skill) {
       throw new Error(`Skill not found: ${skillId}`);
@@ -309,7 +306,12 @@ export class ProjectRuntime {
 
     // Skill might use tools
     const tools = this.registry.resolveTools(skill);
-    let result: any = {
+    const result: {
+      skillId: string;
+      toolsUsed: string[];
+      toolResults?: Record<string, Record<string, unknown>>;
+      errors?: Record<string, string>;
+    } = {
       skillId: skill.id,
       toolsUsed: tools.map((t) => t.id),
     };
@@ -318,11 +320,11 @@ export class ProjectRuntime {
     for (const tool of tools) {
       try {
         const toolResult = await this.executeTool(context, tool.id, input);
-        result.toolResults = result.toolResults || {};
+        result.toolResults = result.toolResults ?? {};
         result.toolResults[tool.id] = toolResult;
       } catch (error) {
         // Tool execution failed
-        result.errors = result.errors || {};
+        result.errors = result.errors ?? {};
         result.errors[tool.id] = error instanceof Error ? error.message : String(error);
       }
     }
@@ -333,11 +335,12 @@ export class ProjectRuntime {
   /**
    * Execute an agent
    */
-  private async executeAgent(
+  private executeAgent(
     context: ProjectState,
     agentId: string,
-    input?: Record<string, any>,
-  ): Promise<Record<string, any>> {
+    _input?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    void _input;
     const agentInstance = context.agents.find((a) => a.agent.id === agentId);
     if (!agentInstance) {
       throw new Error(`Agent not found or not loaded: ${agentId}`);
@@ -353,7 +356,7 @@ export class ProjectRuntime {
       // In real implementation, this would invoke the agent model
       const result = {
         agentId: agent.id,
-        model: agent.model || 'claude-opus',
+        model: agent.model ?? 'claude-opus',
         role: agent.role,
         toolsAvailable: agentInstance.tools.map((t) => t.id),
         skillsAvailable: agentInstance.skills.map((s) => s.id),
@@ -364,7 +367,7 @@ export class ProjectRuntime {
       };
 
       agentInstance.status = 'idle';
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
       agentInstance.status = 'failed';
       throw error;
@@ -374,10 +377,10 @@ export class ProjectRuntime {
   /**
    * Execute a schedule
    */
-  private async executeSchedule(
+  private executeSchedule(
     context: ProjectState,
     scheduleId: string,
-  ): Promise<Record<string, any>> {
+  ): Promise<Record<string, unknown>> {
     const scheduleInstance = context.schedules.find((s) => s.schedule.id === scheduleId);
     if (!scheduleInstance) {
       throw new Error(`Schedule not found: ${scheduleId}`);
@@ -389,18 +392,18 @@ export class ProjectRuntime {
     scheduleInstance.lastExecutedAt = new Date().toISOString();
     scheduleInstance.executionCount++;
 
-    return {
+    return Promise.resolve({
       scheduleId: schedule.id,
       type: schedule.type,
       executionCount: scheduleInstance.executionCount,
       lastExecuted: scheduleInstance.lastExecutedAt,
-    };
+    });
   }
 
   /**
    * Create an artifact
    */
-  async createArtifact(projectId: string, artifact: Artifact): Promise<Artifact> {
+  createArtifact(projectId: string, artifact: Artifact): Promise<Artifact> {
     const context = this.contexts.get(projectId);
     if (!context) {
       throw new Error(`Project not found: ${projectId}`);
@@ -444,7 +447,7 @@ export class ProjectRuntime {
     };
     this.appendEvent(context, event);
 
-    return context.artifacts.get(artifact.id)!.artifact;
+    return Promise.resolve(context.artifacts.get(artifact.id)!.artifact);
   }
 
   /**
@@ -491,7 +494,7 @@ export class ProjectRuntime {
   /**
    * Create a thread
    */
-  async createThread(projectId: string, thread: Thread): Promise<Thread> {
+  createThread(projectId: string, thread: Thread): Promise<Thread> {
     const context = this.contexts.get(projectId);
     if (!context) {
       throw new Error(`Project not found: ${projectId}`);
@@ -503,7 +506,7 @@ export class ProjectRuntime {
         createdAt: new Date().toISOString(),
       },
       messageCount: 0,
-      participants: thread.participants || [],
+      participants: thread.participants ?? [],
       lastMessageAt: undefined,
     };
 
@@ -521,16 +524,26 @@ export class ProjectRuntime {
     };
     this.appendEvent(context, event);
 
-    return context.threads.get(thread.id)!.thread;
+    return Promise.resolve(context.threads.get(thread.id)!.thread);
   }
 
   /**
    * Get project statistics
    */
-  getProjectStats(projectId: string): Record<string, any> {
+  getProjectStats(projectId: string): ProjectStats {
     const context = this.contexts.get(projectId);
     if (!context) {
-      return {};
+      return {
+        projectId,
+        agentCount: 0,
+        resourceCount: 0,
+        artifactCount: 0,
+        threadCount: 0,
+        runCount: 0,
+        participantCount: 0,
+        eventCount: 0,
+        scheduleCount: 0,
+      };
     }
 
     return {

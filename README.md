@@ -22,7 +22,7 @@ The platform is easiest to understand as a layered model:
 
 That same layering drives UI: the filesystem defines the project, events preserve runtime history, projections derive current state, and interpreters/renderers simply make that state visible.
 
-The current repo milestone is the hiring-project workspace UI slice: multiple named `views/` load through the `system/` pipeline, interpret projected state, and render a React workspace shell with smoke-test coverage.
+The current repo milestone is the hiring-project workspace UI slice: multiple named `views/` load through the `src/` pipeline, interpret projected state, and render a React workspace shell with smoke-test coverage.
 
 ## Next Best Steps
 
@@ -33,9 +33,9 @@ For reference and orientation, read `AGENTS.md`, `ROADMAP.md`, and `docs/specs/R
 
 To build and view the current workspace implementation:
 
-1. Run `npm run build:system`.
-2. Run `npm run system` to start the local workspace server at `http://127.0.0.1:4010`.
-3. Open `http://127.0.0.1:4010/` in a browser to land on the hiring workspace, or run `node build/system/system/render-workspace.smoke.js` to verify the hiring-project views render successfully.
+1. Run `npm run build:workspace`.
+2. Run `npm run workspace` to start the local workspace server at `http://127.0.0.1:4010`.
+3. Open `http://127.0.0.1:4010/` in a browser to land on the hiring workspace, or run `node build/src/render-workspace.smoke.js` to verify the hiring-project views render successfully.
 
 The hiring example lives in [`docs/examples/hiring-project/README.md`](docs/examples/hiring-project/README.md) and documents the workspace views that the slice renders.
 
@@ -178,7 +178,7 @@ Everything else is a projection:
 - loaders project filesystem packages into a typed project model
 - event replay projects runtime history into current state
 - UI interpreters project model + state into a renderer-neutral view tree
-- a component registry maps declared view nodes to concrete UI components
+- a component registry maps declared view nodes to concrete UI components using a short generic alias catalog
 - renderers project that view tree into React, Ink, or future surfaces
 
 ```text
@@ -223,6 +223,40 @@ Projects can expose multiple named views. A hiring project, for example, might h
 - `views/approval-queue/view.json`
 
 That is usually better than one generic `workspace.json`, because each view can describe a distinct work surface while still sharing the same project state and component registry.
+
+Workspace component aliases are intentionally generic and short. The canonical catalog is:
+
+- `badge`
+- `panel`
+- `list`
+- `document`
+- `header`
+- `queue`
+- `summaryCard`
+- `timeline`
+- `composer`
+- `tabs`
+- `sources`
+- `statusList`
+- `actions`
+
+Use those names in `view.json` instead of domain-scoped aliases.
+
+Quick cheat sheet:
+
+- `badge`: inline status pill or tone label
+- `panel`: generic bordered container for a block of content
+- `list`: generic item list or record list
+- `document`: sectioned document or record view
+- `header`: top-of-view hero block or shell slot
+- `queue`: ordered work list or review board column
+- `summaryCard`: compact summary of a person, artifact, or assistant
+- `timeline`: message, discussion, or event stream
+- `composer`: reply box or draft input surface
+- `tabs`: artifact or document section switcher
+- `sources`: evidence or knowledge source list
+- `statusList`: runtime or agent status rows
+- `actions`: small stack of call-to-action buttons
 
 When a renderer needs special treatment, nest that beneath the view:
 

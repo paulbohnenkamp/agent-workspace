@@ -16,13 +16,16 @@ import {
   ConnectorReference,
   ScheduleReference,
 } from '@awp/types';
-import { PackageRef, PackageKind } from './types';
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
 
 /**
  * Base registry class for any package kind
  */
 export abstract class BaseRegistry<T extends AnyPackage> {
-  protected packages: Map<string, T> = new Map();
+  protected packages = new Map<string, T>();
 
   /**
    * Register a package
@@ -77,7 +80,7 @@ export class ToolRegistry extends BaseRegistry<Tool> {
   getByType(type: string): Tool[] {
     return this.getAll().filter((tool) => {
       if (!tool.implementation) return false;
-      return (tool.implementation as any).type === type;
+      return isRecord(tool.implementation) && tool.implementation.type === type;
     });
   }
 
@@ -131,11 +134,11 @@ export class ToolRegistry extends BaseRegistry<Tool> {
  */
 export class SkillRegistry extends BaseRegistry<Skill> {
   private toolRegistry: ToolRegistry;
-  private skillReferences: Map<string, string[]> = new Map();
+  private skillReferences = new Map<string, string[]>();
 
   constructor(toolRegistry?: ToolRegistry) {
     super();
-    this.toolRegistry = toolRegistry || new ToolRegistry();
+    this.toolRegistry = toolRegistry ?? new ToolRegistry();
   }
 
   /**
@@ -155,7 +158,7 @@ export class SkillRegistry extends BaseRegistry<Skill> {
    * Get tools used by a skill
    */
   getToolsForSkill(skillId: string): Tool[] {
-    const toolIds = this.skillReferences.get(skillId) || [];
+    const toolIds = this.skillReferences.get(skillId) ?? [];
     return toolIds
       .map((id) => this.toolRegistry.get(id))
       .filter((tool): tool is Tool => tool !== undefined);

@@ -10,10 +10,14 @@ import { PackageLoader } from './package-loader';
 import { AgentCapabilityRegistry } from './registries';
 import { PackageLoadResult } from './types';
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
 /**
  * Agent package structure
  */
-export interface AgentPackageStructure {
+export type AgentPackageStructure = {
   agentDefinition: Agent;
   toolResults: PackageLoadResult<Tool>[];
   skillResults: PackageLoadResult<Skill>[];
@@ -21,8 +25,8 @@ export interface AgentPackageStructure {
   connectorResults: PackageLoadResult<Connector>[];
   scheduleResults: PackageLoadResult<Schedule>[];
   sandboxResults: PackageLoadResult<Sandbox>[];
-  evals: any[];
-  errors: Array<{ directory: string; error: string }>;
+  evals: unknown[];
+  errors: { directory: string; error: string }[];
 }
 
 /**
@@ -55,15 +59,18 @@ export class AgentLoader {
     };
 
     // Load agent definition
-    const agentDefPath = path.join(this.packageLoader['options'].rootPath, 'agent.yaml');
+    const agentDefPath = path.join(this.packageLoader.rootPath, 'agent.yaml');
     if (fs.existsSync(agentDefPath)) {
       const yaml = fs.readFileSync(agentDefPath, 'utf-8');
-      const parsed = parse(yaml);
+      const parsed: unknown = parse(yaml);
+      if (!isRecord(parsed)) {
+        throw new Error(`Invalid agent definition in ${agentDefPath}`);
+      }
       result.agentDefinition = {
         ...parsed,
         kind: 'agent',
         sourcePath: agentDefPath,
-      };
+      } as Agent;
     }
 
     // Discover and load capability packages
@@ -198,7 +205,7 @@ export async function loadAgents(
 /**
  * Agent package summary
  */
-export interface AgentPackageSummary {
+export type AgentPackageSummary = {
   agentId: string;
   agentName: string;
   agentModel?: string;

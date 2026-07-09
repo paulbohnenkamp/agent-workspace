@@ -68,6 +68,6 @@ Tighten workspace view loading so broken `views/` files fail fast with clear err
 
 ## Tooling / Verification Notes
 
-- Build tool: `npm run build:system`
-- Expected verification command: `node build/system/system/render-workspace.smoke.js`
+- Build tool: `npm run build:workspace`
+- Expected verification command: `node build/src/render-workspace.smoke.js`
 - Current blocker, if any: none yet

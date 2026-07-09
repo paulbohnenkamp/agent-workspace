@@ -19,7 +19,7 @@ export type ParticipantRole = 'owner' | 'editor' | 'reviewer' | 'viewer';
 /**
  * Participant - human or agent actor in a project
  */
-export interface Participant {
+export type Participant = {
   id: string;
   type: 'human' | 'agent';
   projectId: string;
@@ -34,25 +34,25 @@ export interface Participant {
  * Resource - context data (documents, configs, credentials, datasets)
  * Represents resources available to agents within a project
  */
-export interface Resource {
+export type Resource = {
   id: string;
   projectId: string;
   type: string;
   name: string;
   description?: string;
-  content?: any;
+  content?: unknown;
   contentHash?: string;
   sourceUrl?: string;
   createdAt: string;
   createdBy: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Event - canonical record of runtime activity
  * Events are named with <object>.<verb> pattern and drive current-state projections.
  */
-export interface Event {
+export type Event = {
   id: string;
   name: string;
   timestamp: string;
@@ -62,15 +62,15 @@ export interface Event {
   threadId?: string;
   agentSessionId?: string;
   participantId?: string;
-  payload?: Record<string, any>;
-  metadata?: Record<string, any>;
+  payload?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Run - finite execution instance
  * Records a tool invocation, skill execution, or agent action
  */
-export interface Run {
+export type Run = {
   id: string;
   projectId: string;
   agentId?: string;
@@ -86,22 +86,22 @@ export interface Run {
   /** Agent session context */
   agentSessionId?: string;
   /** Execution input */
-  input?: Record<string, any>;
+  input?: Record<string, unknown>;
   /** Execution output/result */
-  output?: Record<string, any>;
+  output?: Record<string, unknown>;
   /** Error if failed */
   error?: string;
   /** Canonical events emitted during execution */
   events?: Event[];
   /** Run metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Thread - conversation or discussion
  * Links humans and agents discussing artifacts, runs, or project context
  */
-export interface Thread {
+export type Thread = {
   id: string;
   projectId: string;
   status: ThreadStatus;
@@ -114,25 +114,25 @@ export interface Thread {
   updatedAt?: string;
   createdBy: string;
   participants?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Message in a thread
  */
-export interface Message {
+export type Message = {
   id: string;
   authorId: string;
   content: string;
   timestamp: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * AgentSession - long-lived participation context for an agent in a project
  * Spans multiple runs and maintains agent-specific context
  */
-export interface AgentSession {
+export type AgentSession = {
   id: string;
   projectId: string;
   agentId: string;
@@ -144,22 +144,22 @@ export interface AgentSession {
   /** Threads involving this agent */
   threads?: string[];
   /** Session-specific context maintained across runs */
-  context?: Record<string, any>;
-  metadata?: Record<string, any>;
+  context?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * Artifact - durable result created or edited in a project
  * Represents a versioned, auditable outcome
  */
-export interface Artifact {
+export type Artifact = {
   id: string;
   projectId: string;
   type: string;
   status: ArtifactStatus;
   title?: string;
   /** Current content */
-  content: Record<string, any>;
+  content: Record<string, unknown>;
   createdAt: string;
   updatedAt?: string;
   createdBy: string;
@@ -171,28 +171,28 @@ export interface Artifact {
   relatedArtifacts?: string[];
   /** Participants who have worked on this artifact */
   participants?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * ArtifactVersion - immutable snapshot of artifact at a point in time
  */
-export interface ArtifactVersion {
+export type ArtifactVersion = {
   id: string;
   artifactId: string;
   version: number;
-  content: Record<string, any>;
+  content: Record<string, unknown>;
   createdAt: string;
   createdBy: string;
   changeDescription?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
  * ProjectState - runtime state model for a project
  * Captures the mutable runtime state of a project execution
  */
-export interface ProjectState {
+export type ProjectState = {
   projectId: string;
   /** Artifacts in this project */
   artifacts: Artifact[];
@@ -209,5 +209,5 @@ export interface ProjectState {
   /** Events that have occurred */
   events: Event[];
   /** Runtime metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }

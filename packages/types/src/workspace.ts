@@ -2,13 +2,13 @@ import type { ReactElement } from 'react';
 
 export type LooseRecord = Record<string, unknown>;
 
-export interface WorkspaceProjectDescriptor {
+export type WorkspaceProjectDescriptor = {
   id: string;
   name: string;
   title: string;
 }
 
-export interface WorkspaceStateRecord {
+export type WorkspaceStateRecord = {
   project: WorkspaceProjectDescriptor;
   item_queue?: LooseRecord[];
   artifact_versions?: LooseRecord[];
@@ -19,7 +19,7 @@ export interface WorkspaceStateRecord {
   [key: string]: unknown;
 }
 
-export interface WorkspaceShellDefinition {
+export type WorkspaceShellDefinition = {
   type: string;
   header?: {
     component?: string;
@@ -30,7 +30,7 @@ export interface WorkspaceShellDefinition {
   };
 }
 
-export interface WorkspaceFieldDefinition {
+export type WorkspaceFieldDefinition = {
   name: string;
   source: string;
   select?: LooseRecord;
@@ -39,7 +39,7 @@ export interface WorkspaceFieldDefinition {
 
 export type WorkspaceTrackSize = string;
 
-export interface WorkspaceLayoutRegionDefinition {
+export type WorkspaceLayoutRegionDefinition = {
   id: string;
   columnStart?: number;
   columnSpan?: number;
@@ -47,7 +47,7 @@ export interface WorkspaceLayoutRegionDefinition {
   rowSpan?: number;
 }
 
-export interface WorkspaceLayoutDefinition {
+export type WorkspaceLayoutDefinition = {
   type: 'grid';
   columns: WorkspaceTrackSize[];
   gap?: string;
@@ -55,7 +55,7 @@ export interface WorkspaceLayoutDefinition {
   regions: WorkspaceLayoutRegionDefinition[];
 }
 
-export interface WorkspaceViewNodeDefinition {
+export type WorkspaceViewNodeDefinition = {
   component: string;
   title?: string;
   tabs?: string[];
@@ -65,7 +65,7 @@ export interface WorkspaceViewNodeDefinition {
 
 export type WorkspaceDeclaredRegions = Record<string, WorkspaceViewNodeDefinition[]>;
 
-export interface WorkspaceViewDefinition {
+export type WorkspaceViewDefinition = {
   id: string;
   title: string;
   route: string;
@@ -77,13 +77,13 @@ export interface WorkspaceViewDefinition {
   regions?: WorkspaceDeclaredRegions;
 }
 
-export interface WorkspaceResolvedViewNode extends Omit<WorkspaceViewNodeDefinition, 'bind'> {
+export type WorkspaceResolvedViewNode = {
   bind: LooseRecord;
-}
+} & Omit<WorkspaceViewNodeDefinition, 'bind'>
 
 export type WorkspaceResolvedRegions = Record<string, WorkspaceResolvedViewNode[]>;
 
-export interface WorkspaceInterpretedView {
+export type WorkspaceInterpretedView = {
   view: WorkspaceViewDefinition;
   route: LooseRecord;
   context: LooseRecord;
@@ -93,13 +93,13 @@ export interface WorkspaceInterpretedView {
   regions: WorkspaceResolvedRegions;
 }
 
-export interface WorkspaceNavigationItem {
+export type WorkspaceNavigationItem = {
   id: string;
   label: string;
   href: string;
 }
 
-export interface WorkspaceRegionRenderDefinition {
+export type WorkspaceRegionRenderDefinition = {
   id: string;
   nodes: WorkspaceResolvedViewNode[];
   className: string;
@@ -109,7 +109,7 @@ export interface WorkspaceRegionRenderDefinition {
   rowSpan?: number;
 }
 
-export interface WorkspaceComponentProps {
+export type WorkspaceComponentProps = {
   node: WorkspaceResolvedViewNode;
   interpreted: WorkspaceInterpretedView;
 }

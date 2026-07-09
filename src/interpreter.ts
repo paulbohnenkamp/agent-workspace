@@ -30,19 +30,20 @@ function evaluateString(expression: unknown, context: Context): unknown {
     return expression;
   }
 
-  const directMatch = expression.match(/^\$(route|fields|ui)\.([A-Za-z0-9_.]+)$/);
+  const directMatch = /^\$(route|fields|ui)\.([A-Za-z0-9_.]+)$/.exec(expression);
 
   if (directMatch) {
-    const [, scope, valuePath] = directMatch;
+    const scope = directMatch[1] as "route" | "fields" | "ui";
+    const valuePath = directMatch[2];
     const source = scope === "route" ? context.route : scope === "fields" ? context.fields : context.ui;
     return getByPath(source, valuePath);
   }
 
   if (expression.includes("$route.") || expression.includes("$fields.") || expression.includes("$ui.")) {
-    return expression.replace(/\$(route|fields|ui)\.([A-Za-z0-9_.]+)/g, (_match, scope, valuePath) => {
+    return expression.replace(/\$(route|fields|ui)\.([A-Za-z0-9_.]+)/g, (_match: string, scope: string, valuePath: string) => {
       const source = scope === "route" ? context.route : scope === "fields" ? context.fields : context.ui;
       const resolved = getByPath(source, valuePath);
-      return resolved == null ? "" : String(resolved);
+      return resolved == null ? "" : JSON.stringify(resolved) ?? "";
     });
   }
 
@@ -51,17 +52,18 @@ function evaluateString(expression: unknown, context: Context): unknown {
 
 function evaluateTemplate<T>(value: T, context: Context): T {
   if (Array.isArray(value)) {
-    return value.map((item) => evaluateTemplate(item, context)) as T;
+    const items = value as unknown[];
+    return items.map((item) => evaluateTemplate(item, context)) as unknown as T;
   }
 
-  if (value && typeof value === "object") {
+  if (value != null && typeof value === "object") {
     const next: LooseRecord = {};
 
     Object.entries(value as Record<string, unknown>).forEach(([key, entry]) => {
       next[key] = evaluateTemplate(entry, context);
     });
 
-    return next as T;
+    return next as unknown as T;
   }
 
   return evaluateString(value, context) as T;
@@ -81,12 +83,12 @@ function filterProjectionItems(list: unknown, criteria: LooseRecord): LooseRecor
   }) as LooseRecord[];
 }
 
-interface Context {
+type Context = {
   state: WorkspaceStateRecord;
   route: LooseRecord;
   fields: LooseRecord;
   ui: LooseRecord;
-}
+};
 
 function resolveField(field: WorkspaceFieldDefinition, context: Context): unknown {
   if (field.source.startsWith("$")) {
@@ -98,11 +100,11 @@ function resolveField(field: WorkspaceFieldDefinition, context: Context): unknow
     const projection = context.state[projectionName];
     const selection = field.select ? evaluateTemplate(field.select, context) : undefined;
 
-    if (!selection || typeof selection !== "object") {
+    if (!selection || typeof selection !== "object" || Array.isArray(selection)) {
       return projection;
     }
 
-    const matches = filterProjectionItems(projection, selection as LooseRecord);
+    const matches = filterProjectionItems(projection, selection);
     return matches.length <= 1 ? matches[0] : matches;
   }
 
@@ -123,13 +125,13 @@ function resolveFields(view: WorkspaceViewDefinition, context: Omit<Context, "fi
 }
 
 function resolveBind(bind: LooseRecord | undefined, context: Context): LooseRecord {
-  const evaluated = evaluateTemplate(bind ?? {}, context);
+  const evaluated = evaluateTemplate<LooseRecord>(bind ?? {}, context);
 
   if (!evaluated || typeof evaluated !== "object") {
     return {};
   }
 
-  const resolved = { ...evaluated } as LooseRecord;
+  const resolved: LooseRecord = { ...evaluated };
   const projectionName = typeof resolved.projection === "string" ? resolved.projection : undefined;
 
   if (!projectionName) {

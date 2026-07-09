@@ -5,6 +5,27 @@
 import { Tool } from '@awp/types';
 import { ToolProvider, ToolExecutionRequest, ToolExecutionResult, ProviderConfig } from './types';
 
+type ToolImplementation = Record<string, unknown> & {
+  type?: string;
+  endpoint?: string;
+  connector_type?: string;
+  server?: string;
+  capabilities?: string[];
+  language?: string;
+  module?: string;
+  function?: string;
+  service?: string;
+  operation?: string;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function getImplementation(tool: Tool): ToolImplementation | undefined {
+  return isRecord(tool.implementation) ? tool.implementation : undefined;
+}
+
 /**
  * Base class for tool providers
  */
@@ -40,15 +61,15 @@ export abstract class BaseToolProvider implements ToolProvider {
     };
   }
 
-  getMetadata(): Record<string, any> {
+  getMetadata(): Record<string, unknown> {
     return {
       type: this.type,
       config: this.config,
     };
   }
 
-  protected getExecutionConfig(): Record<string, any> {
-    return this.config.config || {};
+  protected getExecutionConfig(): ToolImplementation {
+    return this.config.config ?? {};
   }
 }
 
@@ -59,12 +80,12 @@ export class ApiToolProvider extends BaseToolProvider {
   type = 'http';
 
   canHandle(tool: Tool): boolean {
-    if (!tool.implementation) return false;
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) return false;
     return impl.type === 'http' || impl.type === 'api';
   }
 
-  async execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
+  execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
     try {
       const impl = this.getExecutionConfig();
 
@@ -73,7 +94,7 @@ export class ApiToolProvider extends BaseToolProvider {
         success: true,
         output: {
           api_endpoint: impl.endpoint,
-          method: impl.method || 'POST',
+          method: impl.method ?? 'POST',
           request_id: Math.random().toString(36).substring(7),
           timestamp: new Date().toISOString(),
           input_received: request.input,
@@ -84,13 +105,13 @@ export class ApiToolProvider extends BaseToolProvider {
         },
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
-      return {
+      return Promise.resolve({
         success: false,
         error: error instanceof Error ? error.message : String(error),
         metadata: { provider: 'api' },
-      };
+      });
     }
   }
 
@@ -98,7 +119,14 @@ export class ApiToolProvider extends BaseToolProvider {
     const baseValidation = super.validate(tool);
     const errors = [...baseValidation.errors];
 
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) {
+      errors.push('HTTP tool must have implementation config');
+      return {
+        valid: false,
+        errors,
+      };
+    }
     if (!impl.endpoint) {
       errors.push('HTTP tool must have endpoint');
     }
@@ -117,12 +145,12 @@ export class ConnectorToolProvider extends BaseToolProvider {
   type = 'connector';
 
   canHandle(tool: Tool): boolean {
-    if (!tool.implementation) return false;
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) return false;
     return impl.type === 'connector';
   }
 
-  async execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
+  execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
     try {
       const impl = this.getExecutionConfig();
 
@@ -138,6 +166,7 @@ export class ConnectorToolProvider extends BaseToolProvider {
             { id: '1', name: 'Row 1' },
             { id: '2', name: 'Row 2' },
           ],
+          input_received: request.input,
         },
         metadata: {
           provider: 'connector',
@@ -145,13 +174,13 @@ export class ConnectorToolProvider extends BaseToolProvider {
         },
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
-      return {
+      return Promise.resolve({
         success: false,
         error: error instanceof Error ? error.message : String(error),
         metadata: { provider: 'connector' },
-      };
+      });
     }
   }
 
@@ -159,7 +188,14 @@ export class ConnectorToolProvider extends BaseToolProvider {
     const baseValidation = super.validate(tool);
     const errors = [...baseValidation.errors];
 
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) {
+      errors.push('Connector tool must specify implementation config');
+      return {
+        valid: false,
+        errors,
+      };
+    }
     if (!impl.connector_type) {
       errors.push('Connector tool must specify connector_type');
     }
@@ -178,12 +214,12 @@ export class McpToolProvider extends BaseToolProvider {
   type = 'mcp';
 
   canHandle(tool: Tool): boolean {
-    if (!tool.implementation) return false;
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) return false;
     return impl.type === 'mcp';
   }
 
-  async execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
+  execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
     try {
       const impl = this.getExecutionConfig();
 
@@ -192,7 +228,7 @@ export class McpToolProvider extends BaseToolProvider {
         success: true,
         output: {
           server: impl.server,
-          capabilities: impl.capabilities || [],
+          capabilities: impl.capabilities ?? [],
           session_id: Math.random().toString(36).substring(7),
           timestamp: new Date().toISOString(),
           mcp_response: {
@@ -206,13 +242,13 @@ export class McpToolProvider extends BaseToolProvider {
         },
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
-      return {
+      return Promise.resolve({
         success: false,
         error: error instanceof Error ? error.message : String(error),
         metadata: { provider: 'mcp' },
-      };
+      });
     }
   }
 
@@ -220,7 +256,14 @@ export class McpToolProvider extends BaseToolProvider {
     const baseValidation = super.validate(tool);
     const errors = [...baseValidation.errors];
 
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) {
+      errors.push('MCP tool must specify implementation config');
+      return {
+        valid: false,
+        errors,
+      };
+    }
     if (!impl.server) {
       errors.push('MCP tool must specify server');
     }
@@ -239,12 +282,12 @@ export class NativeToolProvider extends BaseToolProvider {
   type = 'function';
 
   canHandle(tool: Tool): boolean {
-    if (!tool.implementation) return false;
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) return false;
     return impl.type === 'function' || impl.type === 'code';
   }
 
-  async execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
+  execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
     try {
       const impl = this.getExecutionConfig();
 
@@ -252,7 +295,7 @@ export class NativeToolProvider extends BaseToolProvider {
       const result = {
         success: true,
         output: {
-          language: impl.language || 'python',
+          language: impl.language ?? 'python',
           module: impl.module,
           function: impl.function,
           execution_id: Math.random().toString(36).substring(7),
@@ -268,20 +311,21 @@ export class NativeToolProvider extends BaseToolProvider {
         },
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
-      return {
+      return Promise.resolve({
         success: false,
         error: error instanceof Error ? error.message : String(error),
         metadata: { provider: 'function' },
-      };
+      });
     }
   }
 
-  private computeResult(input: Record<string, any>): any {
+  private computeResult(input: Record<string, unknown>): number {
     // Simple computation simulation
-    if (input.numbers && Array.isArray(input.numbers)) {
-      return input.numbers.reduce((a: number, b: number) => a + b, 0);
+    const numbers = input.numbers;
+    if (Array.isArray(numbers) && numbers.every((value) => typeof value === 'number')) {
+      return numbers.reduce((a, b) => a + b, 0);
     }
     return Object.values(input).length;
   }
@@ -290,7 +334,14 @@ export class NativeToolProvider extends BaseToolProvider {
     const baseValidation = super.validate(tool);
     const errors = [...baseValidation.errors];
 
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) {
+      errors.push('Function tool must specify implementation config');
+      return {
+        valid: false,
+        errors,
+      };
+    }
     if (!impl.module && !impl.function) {
       errors.push('Function tool must specify module or function');
     }
@@ -309,12 +360,12 @@ export class PlatformServiceToolProvider extends BaseToolProvider {
   type = 'platform_service';
 
   canHandle(tool: Tool): boolean {
-    if (!tool.implementation) return false;
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) return false;
     return impl.type === 'platform_service' || impl.type === 'service';
   }
 
-  async execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
+  execute(request: ToolExecutionRequest): Promise<ToolExecutionResult> {
     try {
       const impl = this.getExecutionConfig();
 
@@ -337,13 +388,13 @@ export class PlatformServiceToolProvider extends BaseToolProvider {
         },
       };
 
-      return result;
+      return Promise.resolve(result);
     } catch (error) {
-      return {
+      return Promise.resolve({
         success: false,
         error: error instanceof Error ? error.message : String(error),
         metadata: { provider: 'platform_service' },
-      };
+      });
     }
   }
 
@@ -351,7 +402,14 @@ export class PlatformServiceToolProvider extends BaseToolProvider {
     const baseValidation = super.validate(tool);
     const errors = [...baseValidation.errors];
 
-    const impl = tool.implementation as any;
+    const impl = getImplementation(tool);
+    if (!impl) {
+      errors.push('Platform service tool must specify implementation config');
+      return {
+        valid: false,
+        errors,
+      };
+    }
     if (!impl.service) {
       errors.push('Platform service tool must specify service');
     }

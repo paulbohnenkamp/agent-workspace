@@ -64,7 +64,7 @@ function createNavigation(basePath = ""): WorkspaceNavigationItem[] {
 
 function handleView(request: http.IncomingMessage, response: http.ServerResponse, viewId: string): void {
   const route = Object.fromEntries(new URL(request.url ?? "/", "http://localhost").searchParams.entries());
-  route.candidateId = route.candidateId || "avery-chen";
+  route.candidateId = route.candidateId ?? "avery-chen";
 
   try {
     const view = loadView(projectRoot, viewId, "react");
@@ -114,7 +114,7 @@ const server = http.createServer((request, response) => {
   send(response, 404, "<h1>Not Found</h1>");
 });
 
-const port = Number(process.env.PORT || 4010);
+const port = Number(process.env.PORT ?? "4010");
 const host = "127.0.0.1";
 
 server.listen(port, host, () => {

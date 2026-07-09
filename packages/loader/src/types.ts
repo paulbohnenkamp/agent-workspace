@@ -48,7 +48,7 @@ export type AnyPackage =
 /**
  * Options for package loading
  */
-export interface LoaderOptions {
+export type LoaderOptions = {
   /** Root directory to search for packages */
   rootPath: string;
   /** Whether to recursively search directories */
@@ -64,7 +64,7 @@ export interface LoaderOptions {
 /**
  * Result of loading a single package
  */
-export interface PackageLoadResult<T extends AnyPackage = AnyPackage> {
+export type PackageLoadResult<T extends AnyPackage = AnyPackage> = {
   /** Loaded package */
   package: T;
   /** Path to the package file */
@@ -80,11 +80,11 @@ export interface PackageLoadResult<T extends AnyPackage = AnyPackage> {
 /**
  * Result of discovering packages
  */
-export interface DiscoveryResult {
+export type DiscoveryResult = {
   /** Packages discovered */
   packages: PackageLoadResult[];
   /** Packages that failed to load */
-  failed: Array<{ path: string; error: string }>;
+  failed: { path: string; error: string }[];
   /** Total time taken (ms) */
   durationMs: number;
   /** Number of packages discovered */
@@ -94,7 +94,7 @@ export interface DiscoveryResult {
 /**
  * Reference from one package to another
  */
-export interface PackageRef {
+export type PackageRef = {
   /** Kind of package being referenced */
   kind: PackageKind;
   /** ID of package being referenced */
@@ -110,7 +110,7 @@ export interface PackageRef {
 /**
  * Result of reference resolution
  */
-export interface ReferenceResolutionResult {
+export type ReferenceResolutionResult = {
   /** Total references found */
   total: number;
   /** References successfully resolved */
@@ -124,7 +124,7 @@ export interface ReferenceResolutionResult {
 /**
  * Options for validating packages
  */
-export interface ValidationOptions {
+export type ValidationOptions = {
   /** Check required fields */
   checkRequired?: boolean;
   /** Check field types */
@@ -138,7 +138,7 @@ export interface ValidationOptions {
 /**
  * Validation error
  */
-export interface ValidationError {
+export type ValidationError = {
   /** What is invalid */
   message: string;
   /** Path to field (e.g., 'tools.0.id') */
@@ -150,7 +150,7 @@ export interface ValidationError {
 /**
  * Result of validating a package
  */
-export interface ValidationResult {
+export type ValidationResult = {
   /** Package ID being validated */
   packageId: string;
   /** Whether valid */
@@ -159,4 +159,13 @@ export interface ValidationResult {
   errors: ValidationError[];
   /** Warnings found */
   warnings: ValidationError[];
+}
+
+/**
+ * Package registry statistics
+ */
+export type PackageRegistryStats = {
+  total: number;
+  byKind: Record<PackageKind, number>;
+  totalReferences: number;
 }

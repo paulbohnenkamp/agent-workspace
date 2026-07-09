@@ -68,10 +68,27 @@ hiring-project/
 - Multiple named workspace views over the same project state
 - View metadata that can use `fields` plus `layout` composition in the same spirit as metadata-driven wizard UIs
 - Optional renderer-specific overrides under a shared view identity
-- A working React workspace slice that loads `view.json`, interprets projected state, and renders the example views through the `system/` pipeline
+- Canonical workspace component aliases like `badge`, `panel`, `list`, `document`, `header`, `queue`, `summaryCard`, `timeline`, `composer`, `tabs`, `sources`, `statusList`, and `actions`
+- A working React workspace slice that loads `view.json`, interprets projected state, and renders the example views through the `src/` pipeline
 - Recurring governance and onboarding checks
 - Evaluation kept outside the main execution and wake-up loop
 - One featured V3 agent package with nested tools and skills
+
+Quick alias cheat sheet:
+
+- `badge`: inline status pill
+- `panel`: generic content block
+- `list`: generic record list
+- `document`: sectioned record or artifact view
+- `header`: candidate or shell hero
+- `queue`: review or intake list
+- `summaryCard`: candidate, artifact, or assistant summary
+- `timeline`: discussion or event history
+- `composer`: reply or draft input surface
+- `tabs`: section switcher for artifact content
+- `sources`: supporting evidence and references
+- `statusList`: agent or runtime status rows
+- `actions`: approval, revision, or next-step buttons
 
 ## See Also
 

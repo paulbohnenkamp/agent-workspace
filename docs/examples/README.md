@@ -20,9 +20,25 @@ example-project/
   schedules/
 ```
 
-The hiring example also includes a working workspace UI slice under `views/` that is rendered by the `system/` workspace pipeline during the repo smoke test.
+The hiring example also includes a working workspace UI slice under `views/` that is rendered by the `src/` workspace pipeline during the repo smoke test.
 
-To see that slice locally, run `npm run build:system`, then `npm run system` from the repo root and open `http://127.0.0.1:4010/`, or run `node build/system/system/render-workspace.smoke.js` after building to verify the rendered views.
+When authoring workspace views in the examples, use the canonical component aliases from the registry:
+
+- `badge`
+- `panel`
+- `list`
+- `document`
+- `header`
+- `queue`
+- `summaryCard`
+- `timeline`
+- `composer`
+- `tabs`
+- `sources`
+- `statusList`
+- `actions`
+
+To see that slice locally, run `npm run build:workspace`, then `npm run workspace` from the repo root and open `http://127.0.0.1:4010/`, or run `node build/src/render-workspace.smoke.js` after building to verify the rendered views.
 
 ## Examples
 
