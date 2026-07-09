@@ -1,8 +1,8 @@
 # Hiring Project Example
 
-This example shows how Architecture V3 supports hiring, policy review, and onboarding as one project-centric system.
+This is the flagship example of the product story: a long-running hiring workspace where humans and agents collaborate across review, policy, and approval steps without losing state.
 
-It is the clearest example of long-running collaborative work that starts, stops, and resumes over time:
+The story looks like this:
 
 - a recruiter opens the hiring request
 - an agent drafts candidate materials
@@ -11,6 +11,10 @@ It is the clearest example of long-running collaborative work that starts, stops
 - approval arrives later through a new event or scheduled review
 
 If you are continuing the current workspace UI slice, start with [`plans/index.md`](../../../plans/index.md). This example documents the target shape; the plan index tracks the live work.
+
+## Preview
+
+![Hiring Workspace example](../../images/projects/hiring-project.png)
 
 ## Archetype
 
@@ -109,7 +113,7 @@ Quick alias cheat sheet:
 - `tabs`: section switcher for artifact content
 - `sources`: supporting evidence and references
 - `statusList`: agent or runtime status rows
-- `actions`: approval, revision, or next-step buttons
+- `actions`: approval, revision, or next-step buttons, with optional `primary` or `secondary` metadata for hierarchy
 
 ## See Also
 

@@ -1,21 +1,23 @@
 # Documentation
 
-This directory contains durable reference docs, not active implementation handoff files.
+This directory is the durable reference layer for the product story.
 
 Use these docs to understand:
 
-- Intended behavior
-- Architecture and runtime model
-- Example project shape
-- Design notes and runtime behavior
-- Release direction
+- what the platform is
+- how the layered architecture fits together
+- how example projects are composed
+- what the workspace UI is supposed to look and feel like
+- how releases and milestones are tracked
 
-Key entry points:
+Start here:
 
+- [Architecture](./architecture/README.md) for the layered model and decision records
 - [Specs](./specs/README.md) for intended behavior and acceptance criteria
-- [Architecture](./architecture/README.md) for how the layered model fits together
-- [Roadmap](../ROADMAP.md) for release-level progress
-- [Plans](../plans/README.md) for active implementation handoff
+- [Examples](./examples/README.md) for the story of the product in practice
+- [Releases](./releases/README.md) for release notes and milestone summaries
+- [Roadmap](../ROADMAP.md) for implementation progress
+- [Plans](../plans/README.md) for active handoff files
 
 Rule of thumb:
 

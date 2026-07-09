@@ -15,6 +15,7 @@ Workflow:
 
 | Roadmap Item | Status | Plan | Notes |
 | --- | --- | --- | --- |
+| Documentation story and release flow cleanup | planned | [plans/docs-story-and-release-flow-cleanup.md](./docs-story-and-release-flow-cleanup.md) | Shortens the README, adds changelog/release entry points, and makes the docs read like a product story. |
 | Tighten loader/schema validation for `views/` | planned | [plans/view-metadata-validation.md](./view-metadata-validation.md) | Next slice after the workspace UI milestone. |
 | ESLint Config and Generated Artifacts Cleanup | planned | [plans/eslint-config-and-generated-artifacts-cleanup.md](./eslint-config-and-generated-artifacts-cleanup.md) | Removes the remaining lint warning and narrows generated-file scope. |
 | Package Lint Cleanup | planned | [plans/package-lint-cleanup.md](./package-lint-cleanup.md) | Clears the remaining package source lint backlog. |

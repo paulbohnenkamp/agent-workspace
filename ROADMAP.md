@@ -17,6 +17,7 @@ The repository is now in a good Architecture V3 state:
 - Example projects under `docs/examples/` use the V3 package layout and align to the archetype images.
 - Architecture posters are SVG-backed Markdown pages that explain runtime behavior visually.
 - Jest is wired at the workspace level and currently passes from the root test command.
+- The top-level docs still need a more polished product-story treatment and a clearer release-notes path.
 
 What this means in practice:
 
@@ -32,7 +33,8 @@ If a future agent needs to choose what to do next, prefer this order:
 2. Build a thin end-to-end UI slice early so the filesystem model, event projections, and workspace interpretation are proven together.
 3. Add persistence and execution behavior before adding new abstractions.
 4. Improve validation and package/schema enforcement.
-5. Only after that, add broader integrations like channels, schedules, and richer tool providers.
+5. Clean up the public-facing docs story and release flow so the repo presents professionally.
+6. Only after that, add broader integrations like channels, schedules, and richer tool providers.
 
 In other words:
 
@@ -217,6 +219,20 @@ This means UI should be developed as an early proving slice, not deferred until 
 - [ ] Define how UI components reference artifacts, threads, runs, and agent activity
 - [ ] Keep renderer concerns separate from interpreter concerns
 - [ ] Document the boundary between package loading, event replay, interpretation, and rendering
+
+### 2.6 Documentation Story and Release Flow
+
+**Status:** Planned
+
+**Work:**
+- [ ] Shorten the root README into a product-style entry point
+- [ ] Add `CHANGELOG.md`
+- [ ] Add a release notes landing page or equivalent
+- [ ] Add a hero screenshot for the workspace example
+- [ ] Rewrite example and docs entry points so they tell one coherent story
+- [ ] Remove stale or conflicting explanations across docs
+
+**Deliverable:** A polished documentation front door that reads like a product and points to releases clearly
 
 **Deliverable:** Clear view/interpreter contract for all renderers
 

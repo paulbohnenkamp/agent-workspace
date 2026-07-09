@@ -4,16 +4,8 @@
   "regions": {
     "assistant": [
       {
-        "component": "summaryCard",
-        "title": "AI Assistant",
-        "bind": {
-          "candidate": "$fields.selectedCandidate",
-          "artifact": "$fields.candidateEvaluation"
-        }
-      },
-      {
         "component": "timeline",
-        "title": "Discussion",
+        "title": "Chat",
         "bind": {
           "thread": "$fields.candidateThread"
         }
@@ -34,12 +26,7 @@
       },
       {
         "component": "tabs",
-        "tabs": [
-          "evaluation-summary",
-          "interview-brief",
-          "follow-up-draft",
-          "scorecard"
-        ],
+        "tabs": ["evaluation-summary", "interview-brief", "follow-up-draft", "scorecard"],
         "bind": {
           "artifact": "$fields.candidateEvaluation"
         }

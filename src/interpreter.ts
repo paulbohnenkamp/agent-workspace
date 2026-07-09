@@ -43,7 +43,15 @@ function evaluateString(expression: unknown, context: Context): unknown {
     return expression.replace(/\$(route|fields|ui)\.([A-Za-z0-9_.]+)/g, (_match: string, scope: string, valuePath: string) => {
       const source = scope === "route" ? context.route : scope === "fields" ? context.fields : context.ui;
       const resolved = getByPath(source, valuePath);
-      return resolved == null ? "" : JSON.stringify(resolved) ?? "";
+      if (resolved == null) {
+        return "";
+      }
+
+      if (typeof resolved === "string" || typeof resolved === "number" || typeof resolved === "boolean") {
+        return String(resolved);
+      }
+
+      return JSON.stringify(resolved) ?? "";
     });
   }
 

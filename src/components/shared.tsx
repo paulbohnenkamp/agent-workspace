@@ -1,63 +1,100 @@
-import React from "react";
+import React from 'react';
 
-import type { LooseRecord, WorkspaceComponent, WorkspaceComponentProps } from "../../packages/types/src/workspace";
+import type {
+  LooseRecord,
+  WorkspaceActionDefinition,
+  WorkspaceActionValue,
+  WorkspaceComponent,
+  WorkspaceComponentProps,
+} from '../../packages/types/src/workspace';
 
 export function asArray(value: unknown): LooseRecord[] {
   return Array.isArray(value) ? (value as LooseRecord[]) : [];
 }
 
 export function asRecord(value: unknown): LooseRecord {
-  return value && typeof value === "object" ? (value as LooseRecord) : {};
+  return value && typeof value === 'object' ? (value as LooseRecord) : {};
 }
 
-export function asString(value: unknown, fallback = ""): string {
-  return typeof value === "string" ? value : fallback;
+export function asString(value: unknown, fallback = ''): string {
+  return typeof value === 'string' ? value : fallback;
 }
 
 export function asNumber(value: unknown, fallback = 0): number {
-  return typeof value === "number" ? value : fallback;
+  return typeof value === 'number' ? value : fallback;
 }
 
 export function isRecord(value: unknown): value is LooseRecord {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
 export function asBulletText(value: unknown): string {
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return value;
   }
 
   if (value == null) {
-    return "";
+    return '';
   }
 
-  return JSON.stringify(value) ?? "";
+  return JSON.stringify(value) ?? '';
 }
 
 export function titleCase(value: string): string {
   return value
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
     .split(/[_-]+/)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+    .join(' ');
+}
+
+export function displayActionLabel(value: string): string {
+  return /\s/.test(value) ? value : titleCase(value);
+}
+
+export function normalizeActionDefinition(
+  action: WorkspaceActionValue,
+  defaultVariant: 'primary' | 'secondary' = 'secondary'
+): Required<WorkspaceActionDefinition> {
+  if (typeof action === 'string') {
+    return {
+      label: displayActionLabel(action),
+      variant: defaultVariant,
+    };
+  }
+
+  return {
+    label: displayActionLabel(asString(action.label, 'Action')),
+    variant:
+      action.variant === 'primary'
+        ? 'primary'
+        : action.variant === 'secondary'
+          ? 'secondary'
+          : defaultVariant,
+  };
 }
 
 export function toneForStatus(status: string): string {
   const normalized = status.toLowerCase();
 
-  if (normalized.includes("strong") || normalized.includes("advance") || normalized.includes("approved") || normalized.includes("online")) {
-    return "positive";
+  if (
+    normalized.includes('strong') ||
+    normalized.includes('advance') ||
+    normalized.includes('approved') ||
+    normalized.includes('online')
+  ) {
+    return 'positive';
   }
 
-  if (normalized.includes("pending") || normalized.includes("review")) {
-    return "notice";
+  if (normalized.includes('pending') || normalized.includes('review')) {
+    return 'notice';
   }
 
-  if (normalized.includes("feedback") || normalized.includes("concern")) {
-    return "warning";
+  if (normalized.includes('feedback') || normalized.includes('concern')) {
+    return 'warning';
   }
 
-  return "neutral";
+  return 'neutral';
 }
 
 export function pickRecord(bind: LooseRecord, keys: string[]): LooseRecord {
@@ -93,7 +130,7 @@ export function Panel({
   caption,
   meta,
   children,
-  className = "",
+  className = '',
 }: {
   title?: string;
   caption?: string;
@@ -126,9 +163,11 @@ export function renderListItems(items: LooseRecord[], emptyLabel: string): React
 
   return items.map((item, index) => (
     <article className="workspace-record" key={`${asString(item.id, `item-${index}`)}-${index}`}>
-      <strong>{asString(item.title ?? item.name ?? item.label, "Item")}</strong>
+      <strong>{asString(item.title ?? item.name ?? item.label, 'Item')}</strong>
       {asString(item.detail ?? item.body ?? item.summary) ? (
-        <span className="workspace-muted">{asString(item.detail ?? item.body ?? item.summary)}</span>
+        <span className="workspace-muted">
+          {asString(item.detail ?? item.body ?? item.summary)}
+        </span>
       ) : null}
     </article>
   ));

@@ -55,31 +55,31 @@ That means:
 
 Canonical component aliases:
 
-| Alias | Purpose |
-| --- | --- |
-| `shell` | Shell-level hero or frame content |
-| `rail` | Side rail content or narrow support panel |
-| `canvas` | Main workspace canvas or broad body |
-| `section` | Reusable labeled section block |
-| `stack` | Vertical stack of related content |
-| `grid` | Responsive grid of cards or cells |
-| `toolbar` | Compact action bar or control strip |
-| `badge` | Inline status pill or tone label |
-| `panel` | Generic bordered container for a block of content |
-| `card` | Compact summary card for a record or metric |
-| `list` | Generic item list or record list |
-| `document` | Sectioned document or record view |
-| `text` | Plain text or prose block |
-| `divider` | Separator line, optionally labeled |
-| `header` | Hero/header area for a view or shell slot |
-| `queue` | Ordered list of work items or review items |
+| Alias         | Purpose                                                    |
+| ------------- | ---------------------------------------------------------- |
+| `shell`       | Shell-level hero or frame content                          |
+| `rail`        | Side rail content or narrow support panel                  |
+| `canvas`      | Main workspace canvas or broad body                        |
+| `section`     | Reusable labeled section block                             |
+| `stack`       | Vertical stack of related content                          |
+| `grid`        | Responsive grid of cards or cells                          |
+| `toolbar`     | Compact action bar or control strip                        |
+| `badge`       | Inline status pill or tone label                           |
+| `panel`       | Generic bordered container for a block of content          |
+| `card`        | Compact summary card for a record or metric                |
+| `list`        | Generic item list or record list                           |
+| `document`    | Sectioned document or record view                          |
+| `text`        | Plain text or prose block                                  |
+| `divider`     | Separator line, optionally labeled                         |
+| `header`      | Hero/header area for a view or shell slot                  |
+| `queue`       | Ordered list of work items or review items                 |
 | `summaryCard` | Compact summary panel for a person, artifact, or assistant |
-| `timeline` | Message or event timeline |
-| `composer` | Input surface for drafting or replying |
-| `tabs` | Tabbed artifact or document sections |
-| `sources` | Evidence or knowledge source list |
-| `statusList` | Runtime or agent status list |
-| `actions` | Action button stack |
+| `timeline`    | Message or event timeline                                  |
+| `composer`    | Input surface for drafting or replying                     |
+| `tabs`        | Tabbed artifact or document sections                       |
+| `sources`     | Evidence or knowledge source list                          |
+| `statusList`  | Runtime or agent status list                               |
+| `actions`     | Action button stack                                        |
 
 When to use each alias:
 
@@ -95,7 +95,7 @@ When to use each alias:
 - `tabs`: use for switching between artifact sections or document panels.
 - `sources`: use for evidence, citations, or linked knowledge sources.
 - `statusList`: use for agent/runtime status rows or operational health lists.
-- `actions`: use for a small stack of call-to-action buttons.
+- `actions`: use for a small stack of call-to-action buttons; action metadata may declare `primary` or `secondary` hierarchy.
 
 Good:
 

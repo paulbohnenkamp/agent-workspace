@@ -1,6 +1,6 @@
 # Example Projects
 
-These examples turn the archetype dashboards into filesystem-first Architecture V3 projects.
+These examples show what the platform looks like when the architecture becomes a real product surface.
 
 If you are here to continue an active implementation slice, start with [`plans/index.md`](../../plans/index.md). These examples are reference material and working samples, not the current handoff.
 

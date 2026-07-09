@@ -10,12 +10,7 @@
     },
     "chrome": {
       "leftNav": true,
-      "topTabs": [
-        "workspace",
-        "my-tasks",
-        "knowledge",
-        "analytics"
-      ]
+      "topTabs": ["workspace", "my-tasks", "knowledge", "analytics"]
     }
   },
   "context": {
@@ -69,12 +64,12 @@
   "layout": {
     "type": "grid",
     "columns": [
-      "minmax(16rem, 18rem)",
-      "minmax(16rem, 18rem)",
+      "minmax(18rem, 20rem)",
+      "minmax(18rem, 20rem)",
       "minmax(0, 1fr)",
       "minmax(16rem, 18rem)"
     ],
-    "gap": "1rem",
+    "gap": "0",
     "regions": [
       {
         "id": "queue",
@@ -105,22 +100,15 @@
         "title": "Candidate Review Queue",
         "bind": {
           "projection": "item_queue",
-          "selectedId": "$fields.selectedCandidateId"
+          "selectedId": "$fields.selectedCandidateId",
+          "total": 12
         }
       }
     ],
     "assistant": [
       {
-        "component": "summaryCard",
-        "title": "AI Assistant",
-        "bind": {
-          "candidate": "$fields.selectedCandidate",
-          "artifact": "$fields.candidateEvaluation"
-        }
-      },
-      {
         "component": "timeline",
-        "title": "Discussion",
+        "title": "Chat",
         "bind": {
           "thread": "$fields.candidateThread"
         }
@@ -141,12 +129,7 @@
       },
       {
         "component": "tabs",
-        "tabs": [
-          "evaluation-summary",
-          "interview-brief",
-          "follow-up-draft",
-          "scorecard"
-        ],
+        "tabs": ["evaluation-summary", "interview-brief", "follow-up-draft", "scorecard"],
         "bind": {
           "artifact": "$fields.candidateEvaluation"
         }
@@ -171,10 +154,18 @@
         "component": "actions",
         "title": "Actions",
         "actions": [
-          "advance_candidate",
-          "request_revision",
-          "schedule_interview",
-          "policy_check"
+          {
+            "label": "Schedule Interview",
+            "variant": "primary"
+          },
+          {
+            "label": "Add Reviewer",
+            "variant": "secondary"
+          },
+          {
+            "label": "Refresh Summary",
+            "variant": "secondary"
+          }
         ],
         "bind": {
           "candidateId": "$fields.selectedCandidateId"

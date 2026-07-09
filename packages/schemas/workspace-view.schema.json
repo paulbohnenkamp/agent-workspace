@@ -155,7 +155,25 @@
         "actions": {
           "type": "array",
           "items": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["label"],
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["primary", "secondary"]
+                  }
+                }
+              }
+            ]
           }
         },
         "bind": {
