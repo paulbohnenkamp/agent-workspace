@@ -19,6 +19,7 @@ Workflow:
 | Tighten loader/schema validation for `views/` | planned | [plans/view-metadata-validation.md](./view-metadata-validation.md) | Next slice after the workspace UI milestone. |
 | ESLint Config and Generated Artifacts Cleanup | planned | [plans/eslint-config-and-generated-artifacts-cleanup.md](./eslint-config-and-generated-artifacts-cleanup.md) | Removes the remaining lint warning and narrows generated-file scope. |
 | Package Lint Cleanup | planned | [plans/package-lint-cleanup.md](./package-lint-cleanup.md) | Clears the remaining package source lint backlog. |
+| Continuous integration | in progress | [plans/continuous-integration.md](./continuous-integration.md) | Runs the existing build, lint, and test contract on GitHub pushes and pull requests. |
 ## Completed
 
 - [Workspace UI slice milestone](./workspace-ui-slice-milestone.md) - done, outcome summary captured in the plan file
