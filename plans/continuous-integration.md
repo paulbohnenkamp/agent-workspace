@@ -48,12 +48,13 @@ Run the repository's primary quality checks automatically for every push and pul
 
 ## Status
 
-- `ready to verify`
+- `done`
 
 ## Completion Notes
 
 - Added a least-privilege GitHub Actions workflow for clean install, lint, package builds, workspace build, and tests.
-- Local verification passed; GitHub pull-request verification remains.
+- Local verification passed.
+- GitHub pull-request verification passed on a clean Ubuntu runner.
 
 ## Outcome Summary
 
@@ -63,4 +64,4 @@ Run the repository's primary quality checks automatically for every push and pul
 
 - Build tool: npm workspaces
 - Expected verification command: `npm ci && npm run build && npm run lint && npm run build:workspace && npm test`
-- Current blocker, if any: pending GitHub pull-request check
+- Current blocker, if any: none
