@@ -45,7 +45,7 @@ function cloneParticipant(participant: Participant): Participant {
 function cloneResource(resource: Resource): Resource {
   return {
     ...resource,
-    content: resource.content as unknown,
+    content: resource.content,
     metadata: resource.metadata ? { ...resource.metadata } : undefined,
   };
 }

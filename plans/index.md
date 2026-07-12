@@ -21,6 +21,7 @@ Workflow:
 | Package Lint Cleanup | planned | [plans/package-lint-cleanup.md](./package-lint-cleanup.md) | Clears the remaining package source lint backlog. |
 ## Completed
 
+- [Continuous integration](./continuous-integration.md) - done, clean install/build/lint/test workflow verified on GitHub
 - [Workspace UI slice milestone](./workspace-ui-slice-milestone.md) - done, outcome summary captured in the plan file
 - [Root `src/` source layout migration](./src-layout-migration.md) - done, source code now lives under `src/`
 - [Package Types Lint Cleanup](./package-types-lint-cleanup.md) - done, shared type declarations are lint-clean
