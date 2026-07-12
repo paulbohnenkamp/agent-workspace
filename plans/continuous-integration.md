@@ -62,5 +62,5 @@ Run the repository's primary quality checks automatically for every push and pul
 ## Tooling / Verification Notes
 
 - Build tool: npm workspaces
-- Expected verification command: `npm ci && npm run lint && npm run build && npm run build:workspace && npm test`
+- Expected verification command: `npm ci && npm run build && npm run lint && npm run build:workspace && npm test`
 - Current blocker, if any: pending GitHub pull-request check
