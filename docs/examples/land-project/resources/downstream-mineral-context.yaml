@@ -1,0 +1,13 @@
+kind: resource
+id: downstream-mineral-context
+name: Downstream Mineral Administration Context
+version: 1.0.0
+description: Bounded orientation to downstream functions connected to land administration.
+content: |
+  Division orders, royalty calculations, joint-interest billing, suspense, and
+  payment compliance often consume ownership and lease information maintained by
+  land teams. The land project represents the records, analysis, and handoffs
+  needed by those functions, but it does not decide payments or replace
+  accounting, legal, or title review.
+metadata:
+  tags: [royalty, division-order, jib, downstream, scope-boundary]

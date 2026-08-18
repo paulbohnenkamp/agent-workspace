@@ -1,0 +1,14 @@
+kind: skill
+id: acreage-strategy
+name: Acreage Strategy
+version: 1.0.0
+description: Organize acreage opportunities against supplied development goals and land constraints.
+tools:
+  - id: parcel-register
+  - id: land-matter-tracker
+instructions: |
+  Compare opportunities using supplied location, continuity, rights, timing,
+  ownership complexity, development need, and risk criteria. State assumptions and
+  identify the authorized business decision required; do not provide valuation or
+  investment advice.
+metadata: {tags: [landman, acreage, strategy, acquisition]}

@@ -31,7 +31,7 @@ export const SummaryCard: WorkspacePrimitiveComponent = ({ node, interpreted }) 
       className="workspace-panel--summary-card"
     >
       <div className="workspace-stack">
-        {hasRecord ? (
+        {hasRecord && bind.showActions !== false ? (
           <div>
             <strong>{asString(record.name ?? record.title ?? record.label, 'Record')}</strong>
             <p className="workspace-muted">

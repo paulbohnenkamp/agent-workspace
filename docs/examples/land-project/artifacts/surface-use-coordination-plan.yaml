@@ -1,0 +1,16 @@
+kind: artifact-type
+id: surface-use-coordination-plan
+name: Surface Use and Right of Way Coordination Plan
+version: 1.0.0
+description: Coordination plan for surface access, facilities, easements, or rights-of-way.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    requested_use: {type: string}
+    affected_parties: {type: array, items: {type: string}}
+    instruments_needed: {type: array, items: {type: string}}
+    agency_dependencies: {type: array, items: {type: string}}
+    landowner_actions: {type: array, items: {type: string}}
+    status: {type: string}
+metadata: {tags: [surface, easement, right-of-way, coordination]}

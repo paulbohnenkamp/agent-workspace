@@ -1,0 +1,9 @@
+kind: tool
+id: coordination-brief-builder
+name: Coordination Brief Builder
+version: 1.0.0
+description: Assemble status, deadlines, blockers, decisions, and artifact links into a review brief.
+implementation:
+  type: platform_service
+  service: artifact_builder
+metadata: {tags: [land, status, artifacts, coordination]}

@@ -1,0 +1,13 @@
+kind: skill
+id: land-portfolio-development-handoff
+name: Land Portfolio and Development Handoff
+version: 1.0.0
+description: Prepare land status and rights readiness information for development teams.
+tools:
+  - id: land-work-queue
+  - id: coordination-brief-builder
+instructions: |
+  Summarize acreage, title, lease, surface, pooling, regulatory, and records
+  readiness by matter. Identify blockers, evidence, decisions, and accountable
+  owners for handoff to geology, drilling, regulatory, legal, and accounting.
+metadata: {tags: [portfolio, development, handoff, operations]}

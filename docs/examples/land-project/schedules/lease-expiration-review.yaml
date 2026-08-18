@@ -1,0 +1,14 @@
+kind: schedule
+id: lease-expiration-review
+name: Lease Expiration Review
+version: 1.0.0
+description: Review upcoming lease and rights dates and identify required follow-up.
+trigger:
+  type: cron
+  expression: "0 8 * * 1"
+  timezone: America/Denver
+action:
+  type: agent_run
+  agent_id: lease-rights-administrator
+enabled: true
+metadata: {tags: [land, leases, expiration, review]}

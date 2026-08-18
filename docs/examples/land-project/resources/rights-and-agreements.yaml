@@ -1,0 +1,17 @@
+kind: resource
+id: rights-and-agreements
+name: Rights and Agreements
+version: 1.0.0
+description: Common instruments used to secure and administer land rights.
+content: |
+  Common instruments include deeds, oil-and-gas leases, assignments, amendments,
+  easements, rights-of-way, surface-use agreements, access agreements, releases,
+  memoranda, and recorded notices. Each instrument should be tracked with parties,
+  legal description, execution date, effective date, term, recording information,
+  obligations, and related documents.
+
+  A document summary is not a substitute for the document or legal review. When
+  terms conflict, identify the conflict and escalate rather than choosing an
+  interpretation silently.
+metadata:
+  tags: [leases, easements, rights-of-way, documents]

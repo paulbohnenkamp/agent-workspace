@@ -622,6 +622,32 @@ Default behavior should be:
 5. Add examples
 6. Add tests
 
+### Building Another Example Project
+
+Use existing examples as structural references before inventing a new project
+shape. Read Architecture V3, the relevant specification and ADR, and
+`docs/examples/README.md` first. Then:
+
+1. Create the standard filesystem project with `project.yaml`, `agents/`,
+   `resources/`, `artifacts/`, `schedules/`, and optional `views/`.
+2. Keep agent instructions in `agent.yaml` and bind agents to locally defined
+   Skills and Tools.
+3. Express domain behavior in YAML packages, resources, artifacts, schedules,
+   view metadata, and sample projected-state fixtures. Keep platform TypeScript
+   domain-neutral.
+4. Borrow the shared workspace composition from the project archetype images:
+   work queue, AI Assistant, primary artifact/work surface, and context panels
+   for sources, agents, and actions.
+5. Treat workflow views as reusable operational surfaces, not automatically as
+   one-to-one mappings to agent roles or human job functions.
+6. Use only aliases registered by `src/ComponentRegistry.tsx`; do not add
+   page-specific renderers or domain-specific component aliases.
+7. Parse YAML, resolve references, validate view metadata and aliases, and run
+   relevant tests and builds before marking the example complete.
+
+Do not introduce packs, manifests, domain class hierarchies, or parallel
+container/capability concepts to make an example feel complete.
+
 ### When You're Confused
 
 1. Check ARCHITECTURE_V3.md
@@ -663,10 +689,14 @@ For workspace UI work, preserve the metadata-driven model. Do not treat sample v
    - View-specific structure belongs in metadata (`view.json` and related definitions), not buried inside renderer conditionals.
    - Renderer code should interpret metadata, not silently redefine it.
 
-6. **Prove reuse before polishing**
+6. **Use a consistent icon system**
+   - Workspace shell navigation should use reusable SVG icon primitives with accessible labels and tooltips.
+   - Do not use Unicode glyphs as the primary navigation icon system; glyphs vary by platform and make the shell feel improvised.
+
+7. **Prove reuse before polishing**
    - Before investing in heavy visual refinement, ensure the renderer changes can support at least two different workspace views without copy-paste or view-specific hacks.
 
-7. **Borrow before inventing**
+8. **Borrow before inventing**
    - Before changing workspace composition or registry patterns, inspect adjacent systems such as `emwizard` for proven registry, builder, and container patterns.
    - Prefer copying and adapting the existing `emwizard` TypeScript structural patterns where they fit, while implementing new UI code in React with functional components.
 

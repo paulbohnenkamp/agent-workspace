@@ -1,0 +1,16 @@
+kind: artifact-type
+id: land-records-compliance-report
+name: Land Records and Compliance Report
+version: 1.0.0
+description: Completeness and exception report for land records and administrative controls.
+schema:
+  type: object
+  properties:
+    reporting_period: {type: string}
+    records_reviewed: {type: integer}
+    completeness_findings: {type: array, items: {type: string}}
+    recording_exceptions: {type: array, items: {type: string}}
+    overdue_actions: {type: array, items: {type: string}}
+    audit_evidence: {type: array, items: {type: string}}
+    escalations: {type: array, items: {type: string}}
+metadata: {tags: [records, compliance, audit, administration]}

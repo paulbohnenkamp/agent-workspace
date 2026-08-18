@@ -118,7 +118,7 @@ These three areas are the highest-leverage path to turning the repository from a
 
 ### 2.0 Workspace UI Slice
 
-**Status:** In progress
+**Status:** Done
 
 The platform now has a clear UI architecture:
 
@@ -222,7 +222,7 @@ This means UI should be developed as an early proving slice, not deferred until 
 
 ### 2.6 Documentation Story and Release Flow
 
-**Status:** Planned
+**Status:** Repository slice complete; external companion guide remains
 
 **Work:**
 - [ ] Shorten the root README into a product-style entry point
@@ -386,6 +386,38 @@ This means UI should be developed as an early proving slice, not deferred until 
 - [ ] Validate that project structure, projections, and UI states stay aligned
 
 **Deliverable:** A usable project workspace flow for one real scenario
+
+### 3.6 Land Management and Land Administration Project
+
+**Status:** Working repository slice complete; companion guide remains
+
+**Work:**
+- [x] Add the Architecture V3 land-department example project
+- [x] Add landman, acquisition, title, pooling, surface, and development workflows
+- [x] Add lease administration, division-order, royalty-owner, and records/compliance workflows
+- [x] Add WV title, pooling, unitization, and Appalachian land-domain resources
+- [x] Add shared land-management and land-administration artifact schemas
+- [x] Add acquisition, curative, lease, division-order, owner-relations, and compliance schedules
+- [x] Add acquisition, title, lease, owner-relations, and portfolio workspace views
+- [x] Add the implementation specification at `docs/specs/land-project.md`
+- [ ] Add the novice-oriented BookForge guide at `books/land-project/book.yaml` in the BookForge repository
+- [x] Validate package references, workspace views, and repository tests/build
+
+**Deliverable:** A complete educational land-management and land-administration project example with a companion domain-learning guide
+
+### 3.7 Land Workspace UI
+
+**Status:** Working repository slice complete; production hardening remains
+
+**Work:**
+- [x] Add the dedicated land workspace demo entrypoint and routes
+- [x] Populate all five views with representative projected state
+- [x] Preserve the shared queue, AI Assistant, artifact, and context-rail composition
+- [x] Add in-memory event and projection behavior for simulated coordination actions
+- [x] Add future-example authoring guidance to repository documentation
+- [x] Validate land routes, views, actions, tests, and builds
+
+**Deliverable:** A polished five-view land workspace demonstrating eight agents across shared operational surfaces
 
 ---
 
@@ -833,6 +865,46 @@ The following are interesting areas for future exploration. Do NOT implement the
 1. Build as optional extensions (new package kinds)
 2. Build as separate tools/systems
 3. Build as examples showing how to use the platform
+
+### Microsoft/.NET Application and Runtime Option
+
+**Status:** Future exploration — not part of the land demo
+
+Evaluate a Microsoft/.NET implementation path for organizations that prefer
+ASP.NET Core, Entity Framework Core, Microsoft Entra ID, Azure services, and
+Microsoft operational tooling. This is an implementation/deployment option,
+not a change to Architecture V3 or the package ontology.
+
+**Possible Future Approach:**
+
+- Keep the Next.js workspace UI initially and place an ASP.NET Core API behind
+  it.
+- Port repository and event persistence interfaces to C# implementations using
+  Entity Framework Core and PostgreSQL or Azure SQL.
+- Load the same filesystem YAML packages with a .NET YAML library; do not move
+  project, agent, skill, tool, resource, artifact, schedule, or view definitions
+  into C# classes.
+- Use Microsoft Entra ID for authentication and authorization.
+- Use ASP.NET Core SignalR for live projection, agent-run, notification, and
+  assistant updates.
+- Use Azure OpenAI behind the existing provider-neutral LLM/tool boundary.
+- Compare a future Blazor frontend only after the React/Next.js and ASP.NET
+  Core boundary is proven.
+
+**Work Required:**
+
+- Create a separate .NET solution and adapter boundary without replacing the
+  current TypeScript runtime prematurely.
+- Port package loading, view interpretation inputs, event append, projections,
+  runs, threads, and artifact persistence incrementally.
+- Define compatibility tests that render the same project/view metadata and
+  compare event and projection behavior across implementations.
+- Establish deployment, identity, secrets, telemetry, and integration guidance
+  for Azure-hosted environments.
+
+**Deliverable:** A separately deployable ASP.NET Core implementation option
+that interoperates with the Architecture V3 filesystem packages and preserves
+the same event, projection, artifact, and workspace behavior.
 
 ### Multi-Agent Coordination
 

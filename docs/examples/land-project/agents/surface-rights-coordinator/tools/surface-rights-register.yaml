@@ -1,0 +1,9 @@
+kind: tool
+id: surface-rights-register
+name: Surface Rights Register
+version: 1.0.0
+description: Read and maintain supplied surface-use, easement, and right-of-way records.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [surface, rights, documents]}

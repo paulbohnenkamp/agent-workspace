@@ -1,0 +1,13 @@
+kind: skill
+id: appalachian-curative-review
+name: Appalachian Curative Review
+version: 1.0.0
+description: Identify Appalachian title risks such as severed estates and incomplete heirship records.
+tools:
+  - id: title-record-review
+  - id: curative-task-tracker
+instructions: |
+  Pay particular attention to severed mineral and surface estates, long chains of
+  title, missing death or heirship records, legal-description conflicts, and
+  overlapping conveyances. Preserve evidence and escalate any legal conclusion.
+metadata: {tags: [west-virginia, appalachian, title, curative]}

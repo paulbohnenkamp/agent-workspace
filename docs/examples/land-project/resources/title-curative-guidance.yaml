@@ -1,0 +1,17 @@
+kind: resource
+id: title-curative-guidance
+name: Title and Curative Guidance
+version: 1.0.0
+description: General workflow for reviewing title and planning cures.
+content: |
+  Review the legal description and chain of title, identify ownership changes,
+  severances, liens, gaps, probate issues, missing parties, conflicting interests,
+  and recording concerns. Classify each finding by impact and confidence, identify
+  the evidence relied upon, propose a cure or information request, assign an owner,
+  and set a follow-up date.
+
+  Title examination is fact- and jurisdiction-dependent. The agent should flag
+  uncertainty, preserve source references, and escalate material questions to a
+  qualified title professional or attorney.
+metadata:
+  tags: [title, curative, ownership, legal-review]

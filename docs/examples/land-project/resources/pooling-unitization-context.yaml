@@ -1,0 +1,15 @@
+kind: resource
+id: pooling-unitization-context
+name: Pooling and Unitization Context
+version: 1.0.0
+description: General educational context for organizing pooling and unitization work.
+content: |
+  Pooling or unitization combines interests or acreage for coordinated
+  development under applicable documents and law. Land teams track affected
+  tracts, owners, lease provisions, consents, notices, recorded instruments,
+  unit boundaries, and unresolved questions. Operations and legal teams determine
+  the actual decision and compliance path.
+
+  Do not infer a statutory threshold, notice rule, consent requirement, or right
+  to develop from this resource. Treat supplied rules as inputs requiring review.
+metadata: {tags: [pooling, unitization, development, west-virginia]}

@@ -1,0 +1,16 @@
+kind: resource
+id: land-handoffs
+name: Land Handoff Guidance
+version: 1.0.0
+description: Handoff relationships between land management and administration.
+content: |
+  Land management creates and protects rights through acquisition, negotiation,
+  title, surface, pooling, and development work. Land administration preserves
+  the record and turns executed instruments and validated ownership into lease,
+  division-order, owner-relations, and compliance workflows.
+
+  Every handoff should identify the source artifact, effective date, parties,
+  interest or obligation affected, downstream consumer, missing information,
+  approval status, and accountable owner. Handoffs do not transfer legal or
+  accounting authority.
+metadata: {tags: [handoffs, land-management, land-administration, workflow]}

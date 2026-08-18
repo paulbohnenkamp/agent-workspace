@@ -1,0 +1,14 @@
+kind: skill
+id: right-of-way-coordination
+name: Right of Way Coordination
+version: 1.0.0
+description: Coordinate rights-of-way, crossing permits, and infrastructure dependencies.
+tools:
+  - id: surface-rights-register
+  - id: surface-matter-tracker
+instructions: |
+  Link each route or crossing request to parcels, parties, instruments, agency
+  matters, schedule dates, evidence, and accountable owners. Flag gaps and
+  conflicts for legal, regulatory, or operations review.
+metadata: {tags: [right-of-way, pipelines, permits, coordination]}
+

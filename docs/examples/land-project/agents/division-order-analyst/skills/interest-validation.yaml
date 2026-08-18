@@ -1,0 +1,14 @@
+kind: skill
+id: interest-validation
+name: Interest Validation
+version: 1.0.0
+description: Validate the consistency and provenance of supplied ownership interests.
+tools:
+  - id: interest-records
+  - id: division-order-tracker
+instructions: |
+  Reconcile supplied interests to source instruments and effective dates. Report
+  arithmetic inconsistencies separately from legal or title questions. Never
+  silently normalize a decimal or resolve a conflicting document.
+metadata: {tags: [ownership, validation, title, administration]}
+

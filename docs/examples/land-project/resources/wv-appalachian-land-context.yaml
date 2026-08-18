@@ -1,0 +1,15 @@
+kind: resource
+id: wv-appalachian-land-context
+name: West Virginia Appalachian Land Context
+version: 1.0.0
+description: Educational context for Appalachian land and title work.
+content: |
+  Appalachian land work may involve long ownership histories, severed mineral
+  estates, incomplete death and heirship records, overlapping rights, and complex
+  legal descriptions. These conditions make landman research, title review,
+  curative work, and source preservation especially important.
+
+  This is educational context, not a title opinion or statement of current law.
+  Verify live requirements with authoritative West Virginia sources and qualified
+  title and legal professionals.
+metadata: {tags: [west-virginia, appalachian, title, landman]}

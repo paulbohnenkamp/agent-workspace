@@ -1,0 +1,13 @@
+kind: skill
+id: pooling-unitization-coordination
+name: Pooling and Unitization Coordination
+version: 1.0.0
+description: Coordinate tract, owner, consent, notice, unit, and recording information.
+tools:
+  - id: land-work-queue
+  - id: coordination-brief-builder
+instructions: |
+  Organize the proposed unit, affected tracts, owners, instruments, supplied
+  consent or notice records, dependencies, and open questions. Do not infer a
+  statutory threshold or decide whether development may proceed.
+metadata: {tags: [pooling, unitization, development, west-virginia]}

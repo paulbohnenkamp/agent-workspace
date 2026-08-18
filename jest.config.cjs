@@ -19,6 +19,11 @@ module.exports = {
   projects: [
     {
       ...common,
+      displayName: 'workspace',
+      testMatch: ['<rootDir>/src/**/*.test.ts', '<rootDir>/src/**/*.test.tsx'],
+    },
+    {
+      ...common,
       displayName: 'loader',
       testMatch: ['<rootDir>/packages/loader/__tests__/**/*.test.ts'],
     },

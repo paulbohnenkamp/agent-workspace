@@ -1,0 +1,17 @@
+kind: artifact-type
+id: pooling-unitization-record
+name: Pooling and Unitization Coordination Record
+version: 1.0.0
+description: Coordination record for tracts, owners, instruments, notices, and unit status.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    unit_summary: {type: string}
+    affected_tracts: {type: array, items: {type: string}}
+    affected_owners: {type: array, items: {type: string}}
+    supplied_consents_or_notices: {type: array, items: {type: string}}
+    recording_status: {type: string}
+    open_questions: {type: array, items: {type: string}}
+    professional_review_required: {type: boolean}
+metadata: {tags: [pooling, unitization, development]}

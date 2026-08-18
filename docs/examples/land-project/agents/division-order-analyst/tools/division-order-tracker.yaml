@@ -1,0 +1,9 @@
+kind: tool
+id: division-order-tracker
+name: Division Order Tracker
+version: 1.0.0
+description: Track division-order cases, missing signatures, exceptions, and handoffs.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [division-order, workflow, exceptions]}

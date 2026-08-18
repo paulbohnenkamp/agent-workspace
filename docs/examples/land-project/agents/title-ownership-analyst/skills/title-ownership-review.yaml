@@ -1,0 +1,15 @@
+kind: skill
+id: title-ownership-review
+name: Title and Ownership Review
+version: 1.0.0
+description: Summarize supplied title records and identify ownership questions.
+tools:
+  - id: title-record-review
+  - id: curative-task-tracker
+instructions: |
+  1. Confirm the legal description and document set being reviewed.
+  2. Build a source-linked chronology of supplied conveyances and interests.
+  3. Identify gaps, conflicting descriptions, missing parties, severances,
+     probate questions, liens, and unresolved ownership fractions.
+  4. Separate facts, inferences, confidence, and questions for professional review.
+metadata: {tags: [title, ownership, review]}

@@ -1,0 +1,9 @@
+kind: tool
+id: land-work-queue
+name: Land Work Queue
+version: 1.0.0
+description: Read and update cross-functional land matter work queues.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [land, queue, work-management]}

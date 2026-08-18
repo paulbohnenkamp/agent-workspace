@@ -1,0 +1,16 @@
+kind: resource
+id: lease-administration-guidance
+name: Lease Administration Guidance
+version: 1.0.0
+description: Recordkeeping guidance for executed leases and related instruments.
+content: |
+  A lease administration record should preserve the instrument, parties, legal
+  description, effective date, primary term, extensions, rentals, bonus, royalty,
+  pooling and depth language, development or production obligations, notices,
+  assignments, amendments, recording data, and open questions. Track dates from
+  the source document and distinguish a stated term from an interpretation.
+
+  Held-by-production and similar continuation concepts are document- and
+  jurisdiction-dependent. Flag them for qualified review rather than deciding
+  that a lease continues or expires.
+metadata: {tags: [leases, administration, obligations, held-by-production]}

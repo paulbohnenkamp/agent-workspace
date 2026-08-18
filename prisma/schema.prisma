@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ProjectRecord {
+  id          String        @id
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  events      EventRecord[]
+  projections ProjectionRecord[]
+  threads     ThreadRecord[]
+  assistantRuns AssistantRunRecord[]
+}
+
+model ThreadRecord {
+  id        String             @id
+  projectId String
+  matterId  String
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  project   ProjectRecord      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  messages  MessageRecord[]
+  runs      AssistantRunRecord[]
+
+  @@index([projectId, matterId])
+}
+
+model MessageRecord {
+  id        String       @id
+  threadId  String
+  role      String
+  content   String
+  createdAt DateTime     @default(now())
+  thread    ThreadRecord @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@index([threadId, createdAt])
+}
+
+model AssistantRunRecord {
+  id          String              @id
+  projectId   String
+  threadId    String
+  mode        String
+  status      String
+  query       String
+  response    String
+  startedAt   DateTime            @default(now())
+  completedAt DateTime?
+  project     ProjectRecord       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  thread      ThreadRecord        @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  citations   AssistantCitation[]
+
+  @@index([projectId, startedAt])
+}
+
+model AssistantCitation {
+  id       String             @id
+  runId    String
+  sourceId String
+  title    String
+  href     String
+  run      AssistantRunRecord @relation(fields: [runId], references: [id], onDelete: Cascade)
+}
+
+model EventRecord {
+  id          String        @id
+  projectId   String
+  type        String
+  targetId    String
+  actor       String
+  detail      String
+  payload     Json?
+  occurredAt  DateTime      @default(now())
+  project     ProjectRecord @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, occurredAt])
+  @@index([projectId, targetId])
+}
+
+model ProjectionRecord {
+  id          String        @id
+  projectId   String
+  projection  String
+  recordKey   String
+  state       Json
+  updatedAt   DateTime      @updatedAt
+  project     ProjectRecord @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, projection, recordKey])
+  @@index([projectId, projection])
+}

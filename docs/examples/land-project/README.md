@@ -6,6 +6,8 @@ commercial rights needed to explore, drill, and produce. It coordinates with
 landowners, surface owners, legal teams, operators, accounting, and government
 agencies.
 
+![Land workspace showing a work queue, AI Assistant, portfolio artifact, and context panels](../../images/projects/land-project.png)
+
 The project has two connected tracks:
 
 - **Land management and landman work:** acreage strategy, acquisition, negotiation, title, curative work, pooling and unitization coordination, surface access, and development support.

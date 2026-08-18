@@ -1,0 +1,14 @@
+kind: schedule
+id: lease-administration-review
+name: Lease Administration Review
+version: 1.0.0
+description: Review lease terms, obligations, expirations, continuation evidence, and exceptions.
+trigger:
+  type: cron
+  expression: "0 8 * * 3"
+  timezone: America/New_York
+action:
+  type: agent_run
+  agent_id: lease-rights-administrator
+enabled: true
+metadata: {tags: [lease, administration, obligations]}

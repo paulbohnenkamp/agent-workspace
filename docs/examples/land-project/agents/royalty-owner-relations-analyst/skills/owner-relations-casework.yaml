@@ -1,0 +1,13 @@
+kind: skill
+id: owner-relations-casework
+name: Owner Relations Casework
+version: 1.0.0
+description: Organize owner inquiries and prepare complete response or handoff cases.
+tools:
+  - id: owner-case-register
+  - id: owner-communication-tracker
+instructions: |
+  Classify the inquiry, identify the relevant property and interest, capture
+  supplied documents, list missing information, record response history, and
+  route title, legal, accounting, or payment questions to the accountable team.
+metadata: {tags: [owner-relations, cases, documentation]}

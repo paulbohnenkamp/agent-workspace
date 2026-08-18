@@ -1,0 +1,14 @@
+kind: schedule
+id: pooling-regulatory-review
+name: Pooling and Regulatory Deadline Review
+version: 1.0.0
+description: Review pooling and unitization coordination, stated agency, recording, notice, and submission deadlines.
+trigger:
+  type: cron
+  expression: "0 11 * * 4"
+  timezone: America/Denver
+action:
+  type: agent_run
+  agent_id: land-operations-coordinator
+enabled: true
+metadata: {tags: [land, pooling, unitization, regulatory, deadlines, review]}

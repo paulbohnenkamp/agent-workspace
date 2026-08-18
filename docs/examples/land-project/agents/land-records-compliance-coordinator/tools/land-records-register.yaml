@@ -1,0 +1,9 @@
+kind: tool
+id: land-records-register
+name: Land Records Register
+version: 1.0.0
+description: Read and maintain land instruments, metadata, source references, and record status.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [land-records, documents, metadata]}

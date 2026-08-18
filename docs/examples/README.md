@@ -20,7 +20,10 @@ example-project/
   schedules/
 ```
 
-The hiring example also includes a working workspace UI slice under `views/` that is rendered by the `src/` workspace pipeline during the repo smoke test.
+The hiring example includes a working workspace UI slice under `views/` that is
+rendered by the `src/` workspace pipeline during the repository smoke test. The
+land example includes a Next.js application slice backed by the same project
+and view package model.
 
 When authoring workspace views in the examples, use the canonical component aliases from the registry:
 
@@ -63,12 +66,12 @@ To see that slice locally, run `npm run build:workspace`, then `npm run workspac
 
 | Example | Domain | Archetype image |
 |---------|--------|-----------------|
-| [Decision Project](./decision-project/README.md) | Strategic decisions | [image](../images/projects/decision-project.png) |
-| [Finance Project](./finance-project/README.md) | Financial planning and analysis | [image](../images/projects/finance-project.png) |
-| [Hiring Project](./hiring-project/README.md) | Talent management and hiring | [image](../images/projects/hiring-project.png) |
-| [Land project](./land-project/README.md) | Land management and administration | Not available |
-| [Partner Project](./partner-project/README.md) | Partner relationship management | [image](../images/projects/partner-project.png) |
-| [Systems Project](./systems-project/README.md) | Systems management and operations | [image](../images/projects/systems-project.png) |
+| [Decision Project](./decision-project/README.md) | Strategic decisions | [Decision workspace image](../images/projects/decision-project.png) |
+| [Finance Project](./finance-project/README.md) | Financial planning and analysis | [Finance workspace image](../images/projects/finance-project.png) |
+| [Hiring Project](./hiring-project/README.md) | Talent management and hiring | [Hiring workspace image](../images/projects/hiring-project.png) |
+| [Land project](./land-project/README.md) | Land management and administration | [Land workspace image](../images/projects/land-project.png) |
+| [Partner Project](./partner-project/README.md) | Partner relationship management | [Partner workspace image](../images/projects/partner-project.png) |
+| [Systems Project](./systems-project/README.md) | Systems management and operations | [Systems workspace image](../images/projects/systems-project.png) |
 
 ## Navigation
 

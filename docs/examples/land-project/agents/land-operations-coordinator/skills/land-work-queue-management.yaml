@@ -1,0 +1,14 @@
+kind: skill
+id: land-work-queue-management
+name: Land Work Queue Management
+version: 1.0.0
+description: Maintain an auditable cross-functional queue for land matters.
+tools:
+  - id: land-work-queue
+  - id: coordination-brief-builder
+instructions: |
+  1. Group matters by lifecycle stage, owner, status, dependency, and next date.
+  2. Surface blocked work, missing decisions, aging items, and deadline risk.
+  3. Link work to the relevant acquisition, title, lease, curative, or surface artifact.
+  4. Produce a concise portfolio status report and an explicit decision queue.
+metadata: {tags: [land, queue, portfolio, coordination]}

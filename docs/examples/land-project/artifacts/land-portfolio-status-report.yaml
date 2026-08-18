@@ -1,0 +1,15 @@
+kind: artifact-type
+id: land-portfolio-status-report
+name: Land Portfolio Status Report
+version: 1.0.0
+description: Periodic status view of land matters, deadlines, risks, and decisions.
+schema:
+  type: object
+  properties:
+    reporting_period: {type: string}
+    matters_reviewed: {type: integer}
+    status_summary: {type: array, items: {type: string}}
+    upcoming_deadlines: {type: array, items: {type: string}}
+    material_risks: {type: array, items: {type: string}}
+    decisions_needed: {type: array, items: {type: string}}
+metadata: {tags: [portfolio, reporting, land]}

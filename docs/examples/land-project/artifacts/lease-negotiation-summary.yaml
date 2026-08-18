@@ -1,0 +1,16 @@
+kind: artifact-type
+id: lease-negotiation-summary
+name: Lease Negotiation Summary
+version: 1.0.0
+description: Summary of supplied lease negotiation facts, terms, open points, and approvals.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    parties: {type: array, items: {type: string}}
+    requested_rights: {type: array, items: {type: string}}
+    proposed_terms: {type: array, items: {type: string}}
+    open_points: {type: array, items: {type: string}}
+    approvals: {type: array, items: {type: string}}
+    next_actions: {type: array, items: {type: string}}
+metadata: {tags: [landman, leases, negotiation]}

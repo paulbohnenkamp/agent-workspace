@@ -1,0 +1,14 @@
+kind: skill
+id: division-order-preparation
+name: Division Order Preparation
+version: 1.0.0
+description: Organize supplied ownership and lease information for division-order review.
+tools:
+  - id: interest-records
+  - id: division-order-tracker
+instructions: |
+  1. Identify the property, unit, owners, instruments, effective dates, and source records.
+  2. Compare supplied interest fractions and flag missing or inconsistent data.
+  3. Track signature, notice, title, and approval exceptions.
+  4. Prepare a division-order analysis for qualified accounting, title, or legal review.
+metadata: {tags: [division-order, ownership, administration]}

@@ -1,0 +1,9 @@
+kind: tool
+id: compliance-exception-tracker
+name: Compliance Exception Tracker
+version: 1.0.0
+description: Track administrative exceptions, evidence gaps, owners, and due dates.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [compliance, exceptions, audit]}

@@ -1,0 +1,9 @@
+kind: tool
+id: rights-deadline-tracker
+name: Rights Deadline Tracker
+version: 1.0.0
+description: Track stated lease, recording, notice, renewal, and agency deadlines.
+implementation:
+  type: platform_service
+  service: project_schedule_store
+metadata: {tags: [leases, deadlines, schedules]}

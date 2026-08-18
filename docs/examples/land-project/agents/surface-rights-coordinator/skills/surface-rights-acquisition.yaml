@@ -1,0 +1,14 @@
+kind: skill
+id: surface-rights-acquisition
+name: Surface Rights Acquisition
+version: 1.0.0
+description: Organize requests and agreements needed for surface access and facilities.
+tools:
+  - id: surface-rights-register
+  - id: surface-matter-tracker
+instructions: |
+  Capture requested use, legal description, affected surface owners, requested
+  instrument, operational need, agency dependency, negotiation status, and
+  unresolved questions. Prepare a surface-use coordination plan without deciding
+  compensation, enforceability, or permit sufficiency.
+metadata: {tags: [surface, acquisition, access]}

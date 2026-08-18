@@ -1,0 +1,14 @@
+kind: resource
+id: regulatory-coordination
+name: Regulatory Coordination Principles
+version: 1.0.0
+description: Coordination practices for government and regulatory work.
+content: |
+  Track the agency or recording office, matter or permit identifier, required
+  submission, responsible party, due date, status, dependencies, notices, and
+  evidence of submission. Separate an agency requirement confirmed from a matter
+  requiring research. Do not infer a permit, notice period, pooling rule, or filing
+  requirement from this general resource; jurisdiction-specific requirements must
+  be verified with current authoritative sources and appropriate professionals.
+metadata:
+  tags: [regulatory, agencies, deadlines, coordination]

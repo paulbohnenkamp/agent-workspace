@@ -35,6 +35,14 @@ function validateActionEntry(
   if (action.variant != null && action.variant !== 'primary' && action.variant !== 'secondary') {
     pushError(errors, `${path}.variant`, "expected value 'primary' or 'secondary'");
   }
+
+  if (action.actionId != null && typeof action.actionId !== 'string') {
+    pushError(errors, `${path}.actionId`, 'expected a string');
+  }
+
+  if (action.targetId != null && typeof action.targetId !== 'string') {
+    pushError(errors, `${path}.targetId`, 'expected a string');
+  }
 }
 
 function pushError(errors: WorkspaceViewValidationError[], path: string, message: string): void {
