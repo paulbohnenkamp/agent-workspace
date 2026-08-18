@@ -13,7 +13,7 @@ The project has two connected tracks:
 - **Land management and landman work:** acreage strategy, acquisition, negotiation, title, curative work, pooling and unitization coordination, surface access, and development support.
 - **Land administration:** lease records, ownership interests, lease obligations, division orders, royalty-owner cases, records, compliance, and downstream handoffs.
 
-## What it demonstrates
+## What it covers
 
 - Acquisition intake and parcel prioritization
 - Acreage strategy, lease acquisition, and landowner negotiation

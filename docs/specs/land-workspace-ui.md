@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Provide a dedicated, fully populated demo of the land project using the same
+Provide a dedicated, fully populated workspace for the land project using the same
 metadata-driven workspace composition as the existing project examples.
 
 The UI is educational and hypothetical. West Virginia and Appalachian content
@@ -36,9 +36,9 @@ The layout is shared. View-specific content comes from `view.json` metadata,
 bindings, projected state, and artifacts. No view-specific renderer branches or
 land-specific component aliases are allowed.
 
-## Demo behavior
+## Workspace behavior
 
-The dedicated land demo exposes routes for all five views and uses
+The dedicated land workspace exposes routes for all five views and uses
 representative projected state covering both land-management and land-
 administration work. It includes acquisition, title, curative, lease, surface,
 pooling, division-order, royalty-owner, records, compliance, deadlines,

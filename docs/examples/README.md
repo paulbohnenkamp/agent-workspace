@@ -38,7 +38,7 @@ The registry is the alias map; implementations live one per file under `src/comp
 Start from an existing example's filesystem shape. Read the repository guide,
 Architecture V3, the relevant specification, and the relevant ADR. Then create
 `project.yaml`, `agents/`, `resources/`, `artifacts/`, `schedules/`, and, when
-the project demonstrates UI, `views/`.
+the project includes UI, `views/`.
 
 Keep instructions in `agent.yaml`, use locally defined Skills and Tools, and
 keep domain behavior in YAML, resources, artifacts, schedules, view metadata,

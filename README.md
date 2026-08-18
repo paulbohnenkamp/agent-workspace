@@ -7,10 +7,9 @@ human-agent collaboration.**
 
 ![Land workspace showing a work queue, AI Assistant, portfolio artifact, and context panels](docs/images/projects/land-project.png)
 
-Agent Workspace explores what an agent platform needs beyond a
-single-prompt demo: durable projects, reusable capabilities, resumable
-work, human review, auditable outcomes, and a UI projected from the
-underlying system.
+Agent Workspace explores what an agent platform needs beyond a single prompt:
+durable projects, reusable capabilities, resumable work, human review,
+auditable outcomes, and a UI projected from the underlying system.
 
 The repository includes a working React 19 and TypeScript workspace
 slice, reusable components, metadata-driven view interpretation and
@@ -39,7 +38,7 @@ projections.
 > complete production runtime, persistence, schema enforcement,
 > scheduling, and model-provider integrations are still being built.
 
-## What this repository demonstrates
+## What this repository includes
 
 ### React and TypeScript application architecture
 
@@ -111,7 +110,7 @@ Key implementation points:
 This allows the same rendering infrastructure to support multiple views
 without copying screen-specific layout code.
 
-## Working workspace example
+## Working workspace examples
 
 The repository is not limited to the hiring scenario. The project archetypes
 show the same workspace composition across decision, finance, hiring, land,
@@ -127,14 +126,22 @@ surface is defined.
 | [Partner workspace](docs/images/projects/partner-project.png) | [Partner Project](docs/examples/partner-project/README.md) |
 | [Systems workspace](docs/images/projects/systems-project.png) | [Systems Project](docs/examples/systems-project/README.md) |
 
-The newest and most substantial application direction is the
-[land-project](docs/examples/land-project/README.md), a land-management
-workspace with five reusable workflow views, eight specialized agents, and a
-Next.js application slice. It is the best place to see where the platform is
-headed; the archetype gallery above shows the broader set of domains already
-represented in the repository.
+The newest and most substantial workspace is the
+[Land project](docs/examples/land-project/README.md), which coordinates
+land-management and land-administration work through five reusable workflow
+views and eight specialized agents:
 
-The hiring project demonstrates three named views over one project
+- **Acquisition and Rights Queue** --- acquisition, title, lease, and surface-rights work
+- **Title and Curative Review** --- title review, missing records, and curative follow-up
+- **Lease Administration Queue** --- lease obligations, deadlines, and records
+- **Division Orders and Owner Relations** --- ownership changes, division orders, and owner cases
+- **Integrated Land Portfolio** --- cross-functional readiness, handoffs, and management review
+
+The working land workspace is rendered from the project packages, view metadata,
+and projected state. The archetype gallery above shows the broader set of
+domains represented in the repository.
+
+The hiring project provides three named views over one project
 model:
 
 -   **Candidate Review** --- candidate context, evaluation information,

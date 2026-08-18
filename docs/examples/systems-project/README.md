@@ -45,7 +45,7 @@ systems-project/
     monthly-capacity-review.yaml
 ```
 
-## What It Demonstrates
+## What it covers
 
 - Control-plane workflows for systems, databases, services, and operational targets
 - Monitoring, provisioning, maintenance, and incident work inside one project

@@ -5,7 +5,7 @@ version: 1.0.0
 description: |
   Systems management and operational control-plane framework.
 
-  This project demonstrates agent-assisted target review, provisioning,
+  This project supports agent-assisted target review, provisioning,
   maintenance planning, incident response, and change approval workflows.
 
 agents:

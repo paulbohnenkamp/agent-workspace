@@ -5,7 +5,7 @@ version: 1.0.0
 description: |
   Talent management, hiring, and onboarding framework.
 
-  This project demonstrates coordination of recruitment, candidate
+  This project supports coordination of recruitment, candidate
   evaluation, policy compliance, and employee onboarding.
 
 agents:

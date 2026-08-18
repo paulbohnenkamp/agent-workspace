@@ -410,14 +410,14 @@ This means UI should be developed as an early proving slice, not deferred until 
 **Status:** Working repository slice complete; production hardening remains
 
 **Work:**
-- [x] Add the dedicated land workspace demo entrypoint and routes
+- [x] Add the dedicated land workspace entrypoint and routes
 - [x] Populate all five views with representative projected state
 - [x] Preserve the shared queue, AI Assistant, artifact, and context-rail composition
 - [x] Add in-memory event and projection behavior for simulated coordination actions
 - [x] Add future-example authoring guidance to repository documentation
 - [x] Validate land routes, views, actions, tests, and builds
 
-**Deliverable:** A polished five-view land workspace demonstrating eight agents across shared operational surfaces
+**Deliverable:** A polished five-view land workspace supporting eight agents across shared operational surfaces
 
 ---
 
@@ -868,7 +868,7 @@ The following are interesting areas for future exploration. Do NOT implement the
 
 ### Microsoft/.NET Application and Runtime Option
 
-**Status:** Future exploration — not part of the land demo
+**Status:** Future exploration — not part of the land workspace
 
 Evaluate a Microsoft/.NET implementation path for organizations that prefer
 ASP.NET Core, Entity Framework Core, Microsoft Entra ID, Azure services, and
@@ -1036,7 +1036,7 @@ Each phase must:
 - [ ] Scaffolding gets projects started in 5 minutes
 - [ ] Validation catches mistakes immediately
 - [ ] Documentation is auto-generated and complete
-- [ ] UI demo path makes the architecture understandable to new contributors quickly
+- [ ] UI path makes the architecture understandable to new contributors quickly
 
 ---
 

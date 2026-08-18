@@ -22,7 +22,7 @@ Workflow:
 | Dynamic Workspace UI | in progress | [plans/dynamic-workspace-ui.md](./dynamic-workspace-ui.md) | Next.js/Prisma land workspace foundation and professional dynamic shell; persistence, auth, and live LLM phases remain. |
 ## Completed
 
-- [Land Workspace UI Milestone](./land-workspace-ui-milestone.md) - done, all five land views render through the shared workspace composition with in-memory demo actions
+- [Land Workspace UI Milestone](./land-workspace-ui-milestone.md) - done, all five land views render through the shared workspace composition with in-memory actions
 
 - [Continuous integration](./continuous-integration.md) - done, clean install/build/lint/test workflow verified on GitHub
 - [Workspace UI slice milestone](./workspace-ui-slice-milestone.md) - done, outcome summary captured in the plan file

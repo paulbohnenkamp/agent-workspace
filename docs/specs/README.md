@@ -24,10 +24,10 @@ Rule of thumb:
 - [Dynamic workspace UI](./dynamic-workspace-ui.md): Next.js application,
   Prisma/PostgreSQL persistence, grounded assistant behavior, and the shared
   professional workspace visual system.
-- [Demo-ready land workflow](./land-demo-workflow.md): repeatable five-view,
-  eight-agent land walkthrough with event-backed state, deterministic/live
-  assistant modes, and seed/reset operations.
+- [Land workflow](./land-workflow.md): repeatable five-view, eight-agent land
+  workflow with event-backed state, deterministic/live assistant modes, and
+  seed/reset operations.
 - [Land project](./land-project.md): the eight-agent land-management and
   land-administration example.
 - [Land workspace UI](./land-workspace-ui.md): the current metadata-driven
-  five-view land demo and its transitional renderer behavior.
+  five-view land workspace and its transitional renderer behavior.

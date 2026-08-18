@@ -11,7 +11,7 @@ The land workspace is the first target, but the application must support the
 existing hiring, finance, decision, and systems examples through the same
 metadata-driven composition model.
 
-The UI is an educational and hypothetical demonstration. West Virginia and
+The UI is an educational and hypothetical application. West Virginia and
 Appalachian content must remain clearly labeled as educational context. The
 application must not present generated output as legal advice, a title opinion,
 a permit determination, a payment decision, or accounting advice.
@@ -214,7 +214,8 @@ not be used as primary navigation or action icons.
 ### Phase 1: Application foundation
 
 - Add a Next.js application boundary without changing V3 package semantics.
-- Reuse the auth demo's Prisma/PostgreSQL setup and session approach.
+- Reuse the authentication example's Prisma/PostgreSQL setup and session
+  approach.
 - Establish application services, repository interfaces, and a Prisma adapter.
 - Add shared Tailwind tokens, shadcn primitives, and Lucide icons.
 
@@ -223,7 +224,7 @@ not be used as primary navigation or action icons.
 - Render project and view metadata through the Next.js shell.
 - Implement queue selection, context panels, tabs, responsive layout, and
   loading/error states.
-- Replace static demo state with repository-backed projections.
+- Replace static fixture state with repository-backed projections.
 - Preserve the current five land routes as application routes.
 
 ### Phase 3: Events, artifacts, and actions

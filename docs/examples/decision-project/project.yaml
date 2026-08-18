@@ -5,7 +5,7 @@ version: 1.0.0
 description: |
   Framework for strategic decision-making with agent-driven analysis.
 
-  This project demonstrates how the Agent Platform supports complex
+  This project shows how the Agent Platform supports complex
   organizational decisions through structured analysis, multi-agent
   collaboration, and versioned artifacts.
 

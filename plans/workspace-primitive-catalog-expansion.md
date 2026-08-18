@@ -21,7 +21,7 @@ Expand the workspace component registry from the earlier 13-item generic catalog
 - Inventory the broader primitive vocabulary, including shell, layout, container, and content primitives.
 - Add generic registry entries for the missing primitives.
 - Keep all component and alias names generic, short, and reusable.
-- Update any docs/examples/tests that should demonstrate the expanded catalog.
+- Update any docs/examples/tests that should show the expanded catalog.
 
 ### Out of scope
 

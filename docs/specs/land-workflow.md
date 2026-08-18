@@ -1,13 +1,13 @@
-# Demo-ready land workflow specification
+# Land workflow specification
 
 ## Summary
 
-Define a repeatable, PostgreSQL-backed land workflow demonstration across the
+Define a repeatable, PostgreSQL-backed land workflow across the
 five reusable workspace views and eight specialized agents.
 
-The demo supports two assistant modes:
+The workflow supports two assistant modes:
 
-- deterministic mode for reliable presentations and automated tests;
+- deterministic mode for reliable local workflows and automated tests;
 - live mode for provider-backed LLM responses.
 
 Both modes use PostgreSQL as the source of truth for events, projections,
@@ -26,8 +26,8 @@ determinations, payment entitlements, or accounting decisions.
 - Update or rebuild projections after each event.
 - Refresh the selected workspace from projections rather than initial fixture
   state.
-- Provide an idempotent seed/reset operation for the land demo project.
-- Keep package definitions unchanged when resetting demo runtime state.
+- Provide an idempotent seed/reset operation for the land project.
+- Keep package definitions unchanged when resetting local runtime state.
 
 Supported action events:
 
@@ -114,7 +114,7 @@ LAND_ASSISTANT_MODE=deterministic|live
 - Use fixed responses keyed by view, matter, action, and available sources.
 - Return citations to project resources and artifacts.
 - Expose missing information and escalation language.
-- Remain the default for local demonstrations and automated tests.
+- Remain the default for local workflows and automated tests.
 - Require no external provider credentials.
 
 ### Live mode
@@ -138,7 +138,7 @@ The assistant response boundary must expose:
 - status: `complete`, `streaming`, `needs-review`, or `failed`;
 - escalation or missing-source metadata.
 
-## Demo operations
+## Operations
 
 Document and implement these repeatable operations:
 
@@ -149,10 +149,10 @@ npm run dev
 ```
 
 The reset operation must restore baseline matters and projections, remove
-demo-created events, messages, runs, and artifacts, and produce the same
-starting state every time.
+events, messages, runs, and artifacts created during local work, and produce
+the same starting state every time.
 
-A local demo identity may be used for development. Any authentication bypass
+A local identity may be used during development. Any authentication bypass
 must be explicitly development-only and unavailable in production
 configuration.
 
@@ -184,7 +184,7 @@ Expose repository interfaces for:
 - artifact and artifact-version reads;
 - thread and message persistence;
 - assistant runs and citations;
-- demo seed and reset operations.
+- seed and reset operations.
 
 The Prisma adapter implements these interfaces. Workspace UI code must not
 import Prisma directly.
@@ -234,7 +234,7 @@ may be introduced.
 
 - PostgreSQL is the persistence source of truth for both assistant modes.
 - Deterministic assistant mode is the default.
-- Five view-centered walkthroughs are the primary demo narrative.
+- Five view-centered workflows are the primary product narrative.
 - The current Next.js workspace remains the frontend.
 - Existing V3 filesystem packages remain authoritative.
 - Live LLM integration is optional at runtime but must be implemented behind a
