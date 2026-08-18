@@ -7,10 +7,9 @@ human-agent collaboration.**
 
 ![Land workspace showing a work queue, AI Assistant, portfolio artifact, and context panels](docs/images/projects/land-project.png)
 
-Agent Workspace explores what an agent platform needs beyond a
-single-prompt demo: durable projects, reusable capabilities, resumable
-work, human review, auditable outcomes, and a UI projected from the
-underlying system.
+Agent Workspace explores what an agent platform needs beyond a single prompt:
+durable projects, reusable capabilities, resumable work, human review,
+auditable outcomes, and a UI projected from the underlying system.
 
 The repository includes a working React 19 and TypeScript workspace
 slice, reusable components, metadata-driven view interpretation and
