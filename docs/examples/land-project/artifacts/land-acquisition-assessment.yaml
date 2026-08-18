@@ -1,0 +1,17 @@
+kind: artifact-type
+id: land-acquisition-assessment
+name: Land Acquisition Assessment
+version: 1.0.0
+description: Assessment of a prospective parcel or rights acquisition.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    status: {type: string}
+    parcel_summary: {type: string}
+    business_purpose: {type: string}
+    ownership_questions: {type: array, items: {type: string}}
+    risks: {type: array, items: {type: string}}
+    recommendations: {type: array, items: {type: string}}
+    escalation_required: {type: boolean}
+metadata: {tags: [land, acquisition]}

@@ -1,0 +1,9 @@
+kind: tool
+id: curative-task-tracker
+name: Curative Task Tracker
+version: 1.0.0
+description: Track title findings, cure actions, owners, dependencies, and follow-up dates.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [title, curative, workflow]}

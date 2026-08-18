@@ -1,0 +1,9 @@
+kind: tool
+id: owner-communication-tracker
+name: Owner Communication Tracker
+version: 1.0.0
+description: Track owner inquiries, responses, missing documents, and downstream handoffs.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [owner-relations, communications, workflow]}

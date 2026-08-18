@@ -1,0 +1,14 @@
+kind: schedule
+id: owner-relations-review
+name: Owner Relations Review
+version: 1.0.0
+description: Review aging owner inquiries, ownership changes, documents, and handoffs.
+trigger:
+  type: cron
+  expression: "0 10 * * 4"
+  timezone: America/New_York
+action:
+  type: agent_run
+  agent_id: royalty-owner-relations-analyst
+enabled: true
+metadata: {tags: [owner-relations, royalty, title-changes]}

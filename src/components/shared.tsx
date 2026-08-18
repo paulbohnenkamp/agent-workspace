@@ -55,7 +55,7 @@ export function displayActionLabel(value: string): string {
 export function normalizeActionDefinition(
   action: WorkspaceActionValue,
   defaultVariant: 'primary' | 'secondary' = 'secondary'
-): Required<WorkspaceActionDefinition> {
+): WorkspaceActionDefinition & { label: string; variant: 'primary' | 'secondary' } {
   if (typeof action === 'string') {
     return {
       label: displayActionLabel(action),
@@ -71,6 +71,8 @@ export function normalizeActionDefinition(
         : action.variant === 'secondary'
           ? 'secondary'
           : defaultVariant,
+    actionId: action.actionId,
+    targetId: action.targetId,
   };
 }
 

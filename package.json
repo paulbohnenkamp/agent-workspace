@@ -9,20 +9,35 @@
   "scripts": {
     "build": "npm run build --workspace=@awp/types && npm run build --workspace=@awp/loader && npm run build --workspace=@awp/tools && npm run build --workspace=@awp/runtime && npm run build --workspace=@awp/schemas",
     "build:workspace": "tsc -p tsconfig.workspace.json",
+    "dev": "next dev --webpack",
+    "build:web": "next build --webpack",
+    "start": "next start",
     "test": "jest --config ./jest.config.cjs",
     "workspace": "npm run build:workspace && node build/src/server.js",
+    "land-workspace": "npm run build:workspace && node build/src/land-server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "demo:land:seed": "tsx scripts/land-demo.ts seed",
+    "demo:land:reset": "tsx scripts/land-demo.ts reset"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.62.1",
+    "@tailwindcss/postcss": "^4.2.1",
     "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.13",
+    "dotenv": "^17.4.2",
     "eslint": "^9.39.4",
+    "eslint-config-next": "^16.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -30,14 +45,23 @@
     "jest": "^30.0.5",
     "json-schema-to-typescript": "^13.0.0",
     "prettier": "^3.9.4",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^4.2.1",
     "ts-jest": "^29.4.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.63.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.31.0",
+    "next": "^16.3.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   }
 }

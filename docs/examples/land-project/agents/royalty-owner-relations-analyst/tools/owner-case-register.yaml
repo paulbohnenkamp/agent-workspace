@@ -1,0 +1,9 @@
+kind: tool
+id: owner-case-register
+name: Owner Case Register
+version: 1.0.0
+description: Read and maintain supplied owner, interest, documentation, and case records.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [owner-relations, royalty, records]}

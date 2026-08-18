@@ -1,0 +1,17 @@
+kind: artifact-type
+id: royalty-owner-case
+name: Royalty Owner or Ownership Change Case
+version: 1.0.0
+description: Administrative case for an owner inquiry, title change, or royalty handoff.
+schema:
+  type: object
+  properties:
+    case_id: {type: string}
+    owner_or_interest: {type: string}
+    inquiry_type: {type: string}
+    documents_received: {type: array, items: {type: string}}
+    missing_information: {type: array, items: {type: string}}
+    status: {type: string}
+    response_history: {type: array, items: {type: string}}
+    handoffs: {type: array, items: {type: string}}
+metadata: {tags: [owner-relations, royalty, title-changes]}

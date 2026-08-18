@@ -1,0 +1,15 @@
+kind: resource
+id: owner-relations-guidance
+name: Owner Relations and Documentation Guidance
+version: 1.0.0
+description: Guidance for organizing owner inquiries and ownership-change records.
+content: |
+  Owner-relations cases may involve address changes, deed or conveyance records,
+  death and heirship documentation, powers of attorney, title updates, lease
+  questions, division orders, royalties, and payment handoffs. Record the request,
+  submitted documents, owner or interest identifier, status, missing information,
+  responsible team, and response history.
+
+  Agents may organize supplied documentation and draft questions. They must not
+  decide heirship, title, payment entitlement, or legal sufficiency.
+metadata: {tags: [owner-relations, title-changes, division-orders, documentation]}

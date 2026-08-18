@@ -1,0 +1,18 @@
+kind: artifact-type
+id: lease-administration-record
+name: Lease Administration Record
+version: 1.0.0
+description: Administrative record for an executed lease and related instruments.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    instrument_ids: {type: array, items: {type: string}}
+    parties: {type: array, items: {type: string}}
+    effective_date: {type: string}
+    primary_term: {type: string}
+    obligations: {type: array, items: {type: string}}
+    continuation_evidence: {type: array, items: {type: string}}
+    upcoming_dates: {type: array, items: {type: string}}
+    exceptions: {type: array, items: {type: string}}
+metadata: {tags: [lease, administration, obligations]}

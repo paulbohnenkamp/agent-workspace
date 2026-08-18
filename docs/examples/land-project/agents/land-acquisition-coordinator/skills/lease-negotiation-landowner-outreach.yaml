@@ -1,0 +1,13 @@
+kind: skill
+id: lease-negotiation-landowner-outreach
+name: Lease Negotiation and Landowner Outreach
+version: 1.0.0
+description: Track landowner outreach, lease negotiation terms, and approval status.
+tools:
+  - id: parcel-register
+  - id: land-matter-tracker
+instructions: |
+  Record outreach, parties, requested rights, proposed and accepted terms,
+  open points, documents, approvals, and next actions. Keep negotiation facts
+  separate from legal interpretation and commercial authority.
+metadata: {tags: [landman, negotiation, leases, landowners]}

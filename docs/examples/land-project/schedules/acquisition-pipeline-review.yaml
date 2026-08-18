@@ -1,0 +1,14 @@
+kind: schedule
+id: acquisition-pipeline-review
+name: Acquisition Pipeline Review
+version: 1.0.0
+description: Review prospective acquisitions, missing intake information, and decisions needed.
+trigger:
+  type: cron
+  expression: "0 10 * * 3"
+  timezone: America/Denver
+action:
+  type: agent_run
+  agent_id: land-acquisition-coordinator
+enabled: true
+metadata: {tags: [land, acquisition, pipeline, review]}

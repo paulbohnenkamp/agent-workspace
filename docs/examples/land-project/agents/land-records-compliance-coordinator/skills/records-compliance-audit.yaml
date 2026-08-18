@@ -1,0 +1,14 @@
+kind: skill
+id: records-compliance-audit
+name: Records and Compliance Audit
+version: 1.0.0
+description: Check land records for completeness, provenance, status, and unresolved exceptions.
+tools:
+  - id: land-records-register
+  - id: compliance-exception-tracker
+instructions: |
+  Review the required record set, source references, approvals, recording data,
+  dates, ownership fields, obligations, and downstream handoffs. Report missing
+  or conflicting evidence and distinguish an administrative gap from a legal
+  conclusion.
+metadata: {tags: [records, compliance, audit]}

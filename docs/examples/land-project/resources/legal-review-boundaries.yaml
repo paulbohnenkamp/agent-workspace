@@ -1,0 +1,14 @@
+kind: resource
+id: legal-review-boundaries
+name: Legal Review Boundaries
+version: 1.0.0
+description: Boundaries for educational agent assistance in land administration.
+content: |
+  Agents may organize documents, extract stated terms, compare supplied facts,
+  calculate transparent arithmetic, identify missing information, draft questions,
+  and prepare review artifacts. Agents must not give legal advice, declare title
+  marketable, determine enforceability, cite unverified statutes, or make a final
+  regulatory or commercial decision. Label assumptions and route material issues
+  to authorized people.
+metadata:
+  tags: [legal, safety, escalation, review]

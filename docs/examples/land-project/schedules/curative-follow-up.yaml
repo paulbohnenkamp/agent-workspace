@@ -1,0 +1,14 @@
+kind: schedule
+id: curative-follow-up
+name: Curative Follow-up
+version: 1.0.0
+description: Review open title and curative actions for aging or blocked work.
+trigger:
+  type: cron
+  expression: "0 9 * * 2"
+  timezone: America/Denver
+action:
+  type: agent_run
+  agent_id: title-ownership-analyst
+enabled: true
+metadata: {tags: [land, title, curative, review]}

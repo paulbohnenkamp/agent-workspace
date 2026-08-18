@@ -1,0 +1,16 @@
+kind: resource
+id: land-department-roles
+name: Land Department Roles
+version: 1.0.0
+description: Roles and handoffs involved in land administration.
+content: |
+  The land department coordinates acquisition and rights administration across
+  landowners, surface owners, mineral owners, title and legal teams, geology,
+  drilling, regulatory, accounting, and operations. A land agent or coordinator
+  keeps matters moving; title specialists establish ownership context; legal
+  counsel interprets documents and law; operations teams define the business need.
+
+  Agents may summarize, organize, and flag issues, but people with appropriate
+  authority make legal, commercial, and regulatory decisions.
+metadata:
+  tags: [land, roles, coordination]

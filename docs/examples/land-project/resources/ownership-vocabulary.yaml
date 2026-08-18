@@ -1,0 +1,20 @@
+kind: resource
+id: ownership-vocabulary
+name: Ownership Vocabulary
+version: 1.0.0
+description: Plain-language vocabulary for oil-and-gas land interests.
+content: |
+  Surface estate describes rights to use the surface. Mineral estate describes
+  subsurface minerals and may be severed from the surface estate. A lease gives
+  an operator contractual rights from a mineral owner; leasehold or working
+  interest describes the operator-side economic and operating interest subject
+  to the agreement. Royalty interest receives a share of production or revenue
+  under the applicable instrument. An overriding royalty interest is a carved
+  out revenue interest commonly associated with a leasehold interest. Net revenue
+  interest is a revenue share after applicable burdens and should never be
+  inferred without reviewing the governing documents.
+
+  These terms vary by document and jurisdiction. Preserve the source document,
+  ownership fractions, effective dates, and assumptions in every analysis.
+metadata:
+  tags: [ownership, mineral-rights, surface-rights, vocabulary]

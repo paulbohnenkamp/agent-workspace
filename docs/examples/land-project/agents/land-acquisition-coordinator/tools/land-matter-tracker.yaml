@@ -1,0 +1,9 @@
+kind: tool
+id: land-matter-tracker
+name: Land Matter Tracker
+version: 1.0.0
+description: Track land matters, owners, statuses, dependencies, and next actions.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [land, workflow, queue]}

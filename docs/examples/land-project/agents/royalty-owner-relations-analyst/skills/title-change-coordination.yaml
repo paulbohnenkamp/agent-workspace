@@ -1,0 +1,14 @@
+kind: skill
+id: title-change-coordination
+name: Title Change Coordination
+version: 1.0.0
+description: Coordinate supplied deeds, estate, heirship, and ownership-change documents.
+tools:
+  - id: owner-case-register
+  - id: owner-communication-tracker
+instructions: |
+  Track the requested change, instrument or estate document, recording status,
+  affected interest, missing evidence, title review status, and next handoff.
+  Do not determine heirship or accept a document as legally sufficient.
+metadata: {tags: [title-changes, heirship, owner-relations]}
+

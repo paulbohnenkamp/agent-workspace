@@ -1,0 +1,14 @@
+kind: skill
+id: lease-expiration-administration
+name: Lease Expiration Administration
+version: 1.0.0
+description: Track lease dates, obligations, continuation evidence, and review queues.
+tools:
+  - id: rights-register
+  - id: rights-deadline-tracker
+instructions: |
+  Track source-stated primary terms, extensions, rentals, production or
+  development obligations, notices, assignments, amendments, and continuation
+  evidence. Flag possible expiration or held-by-production questions for legal
+  and land review rather than deciding them.
+metadata: {tags: [leases, expiration, held-by-production, administration]}

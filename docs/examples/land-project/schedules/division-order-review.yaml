@@ -1,0 +1,14 @@
+kind: schedule
+id: division-order-review
+name: Division Order Review
+version: 1.0.0
+description: Review ownership, interest, signature, title-change, and downstream exceptions.
+trigger:
+  type: cron
+  expression: "0 9 * * 4"
+  timezone: America/New_York
+action:
+  type: agent_run
+  agent_id: division-order-analyst
+enabled: true
+metadata: {tags: [division-order, ownership, administration]}

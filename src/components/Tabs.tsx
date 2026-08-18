@@ -1,5 +1,5 @@
 import type { WorkspacePrimitiveComponent } from './shared';
-import { asArray, asBulletText, asNumber, asRecord, asString, Badge } from './shared';
+import { asArray, asBulletText, asRecord, asString, Badge } from './shared';
 
 export const Tabs: WorkspacePrimitiveComponent = ({ node }) => {
   const bind = asRecord(node.bind);
@@ -7,6 +7,7 @@ export const Tabs: WorkspacePrimitiveComponent = ({ node }) => {
   const sections = asArray(artifact.sections);
   const tabs = Array.isArray(node.tabs) ? node.tabs : [];
   const verdict = asString(artifact.verdict ?? artifact.status);
+  const score = typeof artifact.score === 'number' ? artifact.score : undefined;
 
   return (
     <section className="workspace-document">
@@ -37,7 +38,7 @@ export const Tabs: WorkspacePrimitiveComponent = ({ node }) => {
           </p>
         </div>
         <div className="workspace-document__header-meta">
-          <strong className="workspace-score">{asNumber(artifact.score)}</strong>
+          {score != null ? <strong className="workspace-score">{score}</strong> : null}
           {verdict ? <Badge label={verdict} /> : null}
         </div>
       </header>

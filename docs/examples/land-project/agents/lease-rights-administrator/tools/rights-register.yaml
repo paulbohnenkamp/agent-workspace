@@ -1,0 +1,9 @@
+kind: tool
+id: rights-register
+name: Rights Register
+version: 1.0.0
+description: Read and maintain supplied lease, easement, and right-of-way records.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [leases, easements, rights-of-way]}

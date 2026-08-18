@@ -1,0 +1,17 @@
+kind: artifact-type
+id: division-order-analysis
+name: Division Order Analysis
+version: 1.0.0
+description: Source-linked analysis of supplied ownership and division-order information.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    property_or_unit: {type: string}
+    owners: {type: array, items: {type: string}}
+    interest_findings: {type: array, items: {type: string}}
+    decimal_findings: {type: array, items: {type: string}}
+    signature_or_notice_exceptions: {type: array, items: {type: string}}
+    downstream_handoffs: {type: array, items: {type: string}}
+    title_or_legal_review_required: {type: boolean}
+metadata: {tags: [division-order, ownership, administration]}

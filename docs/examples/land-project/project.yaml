@@ -1,0 +1,105 @@
+kind: project
+id: land-project
+name: Oil and Gas Land Management and Administration
+version: 1.0.0
+description: |
+  Land department workflow for acquiring, administering, and coordinating
+  surface and mineral rights needed for energy development.
+
+  This example demonstrates landman work, title review, lease and rights
+  administration, division-order and owner-relations cases, curative work,
+  records compliance, and cross-functional follow-through.
+
+agents:
+  - id: land-acquisition-coordinator
+    name: Land Acquisition Coordinator
+  - id: title-ownership-analyst
+    name: Title and Ownership Analyst
+  - id: lease-rights-administrator
+    name: Lease and Rights Administrator
+  - id: land-operations-coordinator
+    name: Land Operations Coordinator
+  - id: surface-rights-coordinator
+    name: Surface Rights Coordinator
+  - id: division-order-analyst
+    name: Division Order Analyst
+  - id: royalty-owner-relations-analyst
+    name: Royalty and Owner Relations Analyst
+  - id: land-records-compliance-coordinator
+    name: Land Records and Compliance Coordinator
+
+resources:
+  - id: land-department-roles
+    name: Land Department Roles
+  - id: ownership-vocabulary
+    name: Ownership Vocabulary
+  - id: rights-and-agreements
+    name: Rights and Agreements
+  - id: title-curative-guidance
+    name: Title and Curative Guidance
+  - id: regulatory-coordination
+    name: Regulatory Coordination Principles
+  - id: legal-review-boundaries
+    name: Legal Review Boundaries
+  - id: downstream-mineral-context
+    name: Downstream Mineral Administration Context
+  - id: wv-appalachian-land-context
+    name: West Virginia Appalachian Land Context
+  - id: pooling-unitization-context
+    name: Pooling and Unitization Context
+  - id: lease-administration-guidance
+    name: Lease Administration Guidance
+  - id: owner-relations-guidance
+    name: Owner Relations and Documentation Guidance
+  - id: land-handoffs
+    name: Land Handoff Guidance
+
+schedules:
+  - id: lease-expiration-review
+    name: Lease Expiration Review
+  - id: curative-follow-up
+    name: Curative Follow-up
+  - id: acquisition-pipeline-review
+    name: Acquisition Pipeline Review
+  - id: pooling-regulatory-review
+    name: Pooling and Regulatory Deadline Review
+  - id: lease-administration-review
+    name: Lease Administration Review
+  - id: division-order-review
+    name: Division Order Review
+  - id: owner-relations-review
+    name: Owner Relations Review
+  - id: records-compliance-review
+    name: Records and Compliance Review
+
+artifacts:
+  - id: land-acquisition-assessment
+    name: Land Acquisition Assessment
+  - id: lease-negotiation-summary
+    name: Lease Negotiation Summary
+  - id: title-examination-report
+    name: Title Examination Report
+  - id: curative-action-plan
+    name: Curative Action Plan
+  - id: pooling-unitization-record
+    name: Pooling and Unitization Coordination Record
+  - id: surface-use-coordination-plan
+    name: Surface Use and Right of Way Coordination Plan
+  - id: lease-rights-summary
+    name: Lease and Rights Summary
+  - id: lease-administration-record
+    name: Lease Administration Record
+  - id: division-order-analysis
+    name: Division Order Analysis
+  - id: royalty-owner-case
+    name: Royalty Owner or Ownership Change Case
+  - id: land-records-compliance-report
+    name: Land Records and Compliance Report
+  - id: land-portfolio-status-report
+    name: Land Portfolio Status Report
+
+metadata:
+  domain: oil-and-gas-land
+  complexity: high
+  team: land
+  tags: [land, acquisition, title, leases, surface-rights, coordination]

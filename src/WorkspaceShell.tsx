@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { WorkspaceIcon, type WorkspaceIconName } from './WorkspaceIcon';
+
 import type {
   WorkspaceInterpretedView,
   WorkspaceNavigationItem,
@@ -107,6 +109,12 @@ export function workspaceStyles(): string {
       font-size: 1rem;
       text-decoration: none;
     }
+    .workspace-rail__icon {
+      display: grid;
+      place-items: center;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
     .workspace-rail__item.is-active {
       background: var(--accent-soft);
       border-color: #a9cfdc;
@@ -154,6 +162,7 @@ export function workspaceStyles(): string {
       color: var(--ink);
       font-size: 0.9rem;
       text-transform: capitalize;
+      text-decoration: none;
     }
     .workspace-topbar__tab.is-active {
       color: #1263d8;
@@ -492,6 +501,9 @@ export function workspaceStyles(): string {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
+    }
+    .workspace-action-form {
+      display: contents;
     }
     .workspace-queue-controls {
       display: grid;
@@ -1015,18 +1027,42 @@ export function WorkspaceShell({
 }) {
   const activeView = interpreted.view.id.replace(/-workspace$/, '');
   const topTabs = interpreted.view.shell?.chrome?.topTabs ?? [];
+  const projectTitle = interpreted.state.project.title;
+  const isLandWorkspace = projectTitle.toLowerCase().includes('land');
+  const landRailIcons: Record<string, WorkspaceIconName> = {
+    'acquisition-rights-queue': 'acquisition',
+    'title-curative-review': 'title',
+    'lease-administration-queue': 'lease',
+    'division-order-owner-relations-queue': 'owners',
+    'land-portfolio': 'portfolio',
+  };
+  const hiringRailIcons: Record<string, WorkspaceIconName> = {
+    'open-roles-board': 'workspace',
+    'candidate-review': 'review',
+  };
+
+  function topTabHref(tab: string): string {
+    const normalized = tab.toLowerCase();
+    const matchingNavigation = navigation.find((item) => {
+      const haystack = `${item.id} ${item.label}`.toLowerCase();
+      return haystack.includes(normalized) || (normalized === 'workspace' && item.id.includes('acquisition'));
+    });
+
+    return matchingNavigation?.href ?? `#${normalized.replace(/\s+/g, '-')}`;
+  }
 
   return (
     <div className="workspace-app">
       <div className="workspace-frame">
         <aside className="workspace-rail" aria-label="Workspace navigation">
           <div className="workspace-rail__brand" aria-hidden="true">
-            H
+            {projectTitle.charAt(0).toUpperCase()}
           </div>
           <nav className="workspace-rail__nav">
             {navigation.map((item) => {
-              const symbol =
-                item.id === 'open-roles-board' ? '⌂' : item.id === 'candidate-review' ? '◉' : '✓';
+              const iconName = isLandWorkspace
+                ? landRailIcons[item.id] ?? 'workspace'
+                : hiringRailIcons[item.id] ?? 'completed';
 
               return (
                 <a
@@ -1036,7 +1072,7 @@ export function WorkspaceShell({
                   aria-label={item.label}
                   title={item.label}
                 >
-                  {symbol}
+                  <span className="workspace-rail__icon"><WorkspaceIcon name={iconName} /></span>
                 </a>
               );
             })}
@@ -1051,16 +1087,21 @@ export function WorkspaceShell({
             {topTabs.length > 0 ? (
               <nav className="workspace-topbar__tabs" aria-label="Workspace sections">
                 {topTabs.map((tab, index) => (
-                  <span
+                  <a
                     className={`workspace-topbar__tab ${index === 0 ? 'is-active' : ''}`.trim()}
+                    href={topTabHref(tab)}
                     key={tab}
                   >
                     {formatTabLabel(tab)}
-                  </span>
+                  </a>
                 ))}
               </nav>
             ) : null}
-            <div className="workspace-topbar__search">Search candidates, roles, and more...</div>
+            <div className="workspace-topbar__search">
+              {isLandWorkspace
+                ? 'Search parcels, leases, owners, and more...'
+                : 'Search candidates, roles, and more...'}
+            </div>
             <div className="workspace-topbar__actions" aria-label="Workspace actions">
               <span className="workspace-topbar__action workspace-topbar__badge" aria-hidden="true">
                 🔔

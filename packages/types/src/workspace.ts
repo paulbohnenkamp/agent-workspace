@@ -60,6 +60,8 @@ export type WorkspaceActionVariant = 'primary' | 'secondary';
 export type WorkspaceActionDefinition = {
   label: string;
   variant?: WorkspaceActionVariant;
+  actionId?: string;
+  targetId?: string;
 };
 
 export type WorkspaceActionValue = string | WorkspaceActionDefinition;

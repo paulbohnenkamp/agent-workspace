@@ -5,7 +5,7 @@ human-agent collaboration.**
 
 [![CI](https://github.com/paulbohnenkamp/agent-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/paulbohnenkamp/agent-workspace/actions/workflows/ci.yml)
 
-![Hiring Workspace example](docs/images/projects/hiring-project.png)
+![Land workspace showing a work queue, AI Assistant, portfolio artifact, and context panels](docs/images/projects/land-project.png)
 
 Agent Workspace explores what an agent platform needs beyond a
 single-prompt demo: durable projects, reusable capabilities, resumable
@@ -113,6 +113,27 @@ without copying screen-specific layout code.
 
 ## Working workspace example
 
+The repository is not limited to the hiring scenario. The project archetypes
+show the same workspace composition across decision, finance, hiring, land,
+partner, and systems work, while the filesystem examples show how each product
+surface is defined.
+
+| Workspace image | Project example |
+| --- | --- |
+| [Decision workspace](docs/images/projects/decision-project.png) | [Decision Project](docs/examples/decision-project/README.md) |
+| [Finance workspace](docs/images/projects/finance-project.png) | [Finance Project](docs/examples/finance-project/README.md) |
+| [Hiring workspace](docs/images/projects/hiring-project.png) | [Hiring Project](docs/examples/hiring-project/README.md) |
+| [Land workspace](docs/images/projects/land-project.png) | [Land Project](docs/examples/land-project/README.md) |
+| [Partner workspace](docs/images/projects/partner-project.png) | [Partner Project](docs/examples/partner-project/README.md) |
+| [Systems workspace](docs/images/projects/systems-project.png) | [Systems Project](docs/examples/systems-project/README.md) |
+
+The newest and most substantial application direction is the
+[land-project](docs/examples/land-project/README.md), a land-management
+workspace with five reusable workflow views, eight specialized agents, and a
+Next.js application slice. It is the best place to see where the platform is
+headed; the archetype gallery above shows the broader set of domains already
+represented in the repository.
+
 The hiring project demonstrates three named views over one project
 model:
 
@@ -125,7 +146,8 @@ model:
 The example is under
 [`docs/examples/hiring-project`](docs/examples/hiring-project). Its
 filesystem definitions and view metadata are loaded by the same pipeline
-used by the React workspace renderer.
+used by the React workspace renderer. See
+[`docs/examples`](docs/examples/README.md) for the complete project catalog.
 
 ## Platform model
 
@@ -329,6 +351,7 @@ agent-workspace/
 -   Reusable component registry and catalog
 -   Metadata-driven fields, regions, bindings, and layouts
 -   Multiple named hiring-project views
+-   A Next.js land workspace slice with a persistent assistant composer
 -   View and component-alias validation
 -   Root-level build, lint, test, and workspace-UI verification
 -   GitHub Actions CI
@@ -354,6 +377,8 @@ See [`ROADMAP.md`](ROADMAP.md) for the detailed implementation map and
 -   [`AGENTS.md`](AGENTS.md)
 -   [`docs/README.md`](docs/README.md)
 -   [`docs/architecture/ARCHITECTURE_V3.md`](docs/architecture/ARCHITECTURE_V3.md)
+-   [`docs/examples/land-project/README.md`](docs/examples/land-project/README.md)
+-   [`docs/examples/README.md`](docs/examples/README.md)
 -   [`docs/examples/hiring-project/README.md`](docs/examples/hiring-project/README.md)
 -   [`plans/index.md`](plans/index.md)
 -   [`CHANGELOG.md`](CHANGELOG.md)

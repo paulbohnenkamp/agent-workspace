@@ -1,0 +1,25 @@
+{
+  "id": "land-portfolio",
+  "title": "Integrated Land Portfolio",
+  "route": "/land/portfolio",
+  "description": "Portfolio workspace connecting landman work, rights readiness, administration, deadlines, handoffs, and decisions.",
+  "shell": {"type": "workspace-shell", "chrome": {"leftNav": true, "topTabs": ["workspace", "portfolio", "deadlines", "handoffs"]}},
+  "fields": [
+    {"name": "selectedMatterId", "source": "$route.matterId"},
+    {"name": "selectedMatter", "source": "projection.item_queue", "select": {"id": "$fields.selectedMatterId"}},
+    {"name": "selectedArtifact", "source": "projection.artifact_versions", "select": {"id": "$fields.selectedMatterId"}},
+    {"name": "selectedThread", "source": "projection.thread_index", "select": {"threadFor": "land-matter:$fields.selectedMatterId"}},
+    {"name": "selectedAgents", "source": "projection.agent_activity", "select": {"relatedTo": "land-matter:$fields.selectedMatterId"}},
+    {"name": "sources", "source": "projection.knowledge_links"},
+    {"name": "portfolioStatus", "source": "projection.portfolio_status"}
+  ],
+  "layout": {"type": "grid", "columns": ["minmax(16rem, 19rem)", "minmax(15rem, 18rem)", "minmax(28rem, 1fr)", "minmax(17rem, 20rem)"], "gap": "0", "regions": [
+    {"id": "queue", "columnStart": 1, "columnSpan": 1}, {"id": "assistant", "columnStart": 2, "columnSpan": 1}, {"id": "main", "columnStart": 3, "columnSpan": 1}, {"id": "context", "columnStart": 4, "columnSpan": 1}
+  ]},
+  "regions": {
+    "queue": [{"component": "queue", "title": "Land Portfolio", "bind": {"projection": "item_queue", "selectedId": "$fields.selectedMatterId", "sort": "risk_and_deadline"}}],
+    "assistant": [{"component": "summaryCard", "title": "AI Assistant", "bind": {"record": "$fields.selectedMatter", "artifact": "$fields.selectedArtifact", "showActions": false}}, {"component": "statusList", "title": "Portfolio Readiness", "bind": {"runs": "$fields.portfolioStatus"}}, {"component": "composer"}],
+    "main": [{"component": "header", "bind": {"matter": "$fields.selectedMatter"}}, {"component": "tabs", "tabs": ["portfolio-status", "rights-readiness", "deadlines", "handoffs"], "bind": {"artifact": "$fields.selectedArtifact"}}, {"component": "timeline", "title": "Recent Land Activity", "bind": {"projection": "agent_activity"}}],
+    "context": [{"component": "sources", "title": "Knowledge Sources", "bind": {"sources": "$fields.sources"}}, {"component": "statusList", "title": "Agents", "bind": {"runs": "$fields.selectedAgents"}}, {"component": "actions", "title": "Actions", "actions": [{"label": "Mark Handoff Ready", "variant": "primary", "actionId": "mark-handoff-ready"}, {"label": "Assign Matter", "actionId": "assign-matter"}, {"label": "Create Follow-up Task", "actionId": "record-administrative-follow-up"}], "bind": {"targetId": "$fields.selectedMatterId"}}]
+  }
+}

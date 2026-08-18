@@ -1,0 +1,14 @@
+kind: skill
+id: land-administration-reconciliation
+name: Land Administration Reconciliation
+version: 1.0.0
+description: Reconcile land-management artifacts with administrative records and handoffs.
+tools:
+  - id: land-records-register
+  - id: compliance-exception-tracker
+instructions: |
+  Compare acquisition, title, lease, surface, pooling, division-order, owner,
+  and compliance artifacts. Identify mismatched parties, dates, interests,
+  statuses, and unacknowledged downstream impacts. Create explicit follow-up
+  work instead of silently changing a record.
+metadata: {tags: [land-management, land-administration, reconciliation]}

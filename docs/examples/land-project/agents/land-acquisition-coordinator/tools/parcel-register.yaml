@@ -1,0 +1,9 @@
+kind: tool
+id: parcel-register
+name: Parcel Register
+version: 1.0.0
+description: Read and update hypothetical parcel, rights, and contact records.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [land, parcel, records]}

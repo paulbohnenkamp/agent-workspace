@@ -1,0 +1,14 @@
+kind: skill
+id: curative-action-planning
+name: Curative Action Planning
+version: 1.0.0
+description: Convert title findings into prioritized, owned, and traceable follow-up actions.
+tools:
+  - id: curative-task-tracker
+  - id: title-record-review
+instructions: |
+  For each supported finding, record the evidence, impact, proposed information
+  request or cure, responsible party, dependency, target date, and escalation
+  status. Do not prescribe a legally sufficient cure without qualified review.
+metadata: {tags: [title, curative, escalation]}
+

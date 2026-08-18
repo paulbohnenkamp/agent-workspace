@@ -1,0 +1,16 @@
+kind: artifact-type
+id: lease-rights-summary
+name: Lease and Rights Summary
+version: 1.0.0
+description: Structured summary of supplied lease and related rights instruments.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    instruments: {type: array, items: {type: string}}
+    effective_date: {type: string}
+    expiration_date: {type: string}
+    obligations: {type: array, items: {type: string}}
+    rights_and_restrictions: {type: array, items: {type: string}}
+    open_questions: {type: array, items: {type: string}}
+metadata: {tags: [leases, rights, obligations]}

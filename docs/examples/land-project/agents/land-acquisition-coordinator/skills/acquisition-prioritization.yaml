@@ -1,0 +1,15 @@
+kind: skill
+id: acquisition-prioritization
+name: Acquisition Prioritization
+version: 1.0.0
+description: Rank acquisition matters using supplied business criteria and risk context.
+tools:
+  - id: parcel-register
+  - id: land-matter-tracker
+instructions: |
+  Compare matters using stated business urgency, rights needed, timing,
+  information completeness, dependencies, and known risks. Do not invent a
+  valuation or make an unapproved commercial decision. Explain the criteria,
+  assumptions, and human decision required for each recommendation.
+metadata: {tags: [land, acquisition, prioritization]}
+

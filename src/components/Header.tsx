@@ -7,6 +7,8 @@ export const Header: WorkspacePrimitiveComponent = ({ node }) => {
     'record',
     'entity',
     'candidate',
+    'matter',
+    'selectedMatter',
     'artifact',
     'item',
     'assistant',

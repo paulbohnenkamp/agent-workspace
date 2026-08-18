@@ -1,0 +1,15 @@
+kind: skill
+id: lease-obligation-tracking
+name: Lease Obligation Tracking
+version: 1.0.0
+description: Extract and monitor obligations and dates stated in lease-related documents.
+tools:
+  - id: rights-register
+  - id: rights-deadline-tracker
+instructions: |
+  1. Record the instrument, parties, effective date, term, stated options,
+     obligations, notice requirements, and recording information.
+  2. Link each obligation to its source text and responsible owner.
+  3. Flag approaching dates, missing evidence, conflicts, and ambiguous language.
+  4. Prepare a lease and rights summary for human review.
+metadata: {tags: [leases, obligations, expiration]}

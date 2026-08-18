@@ -14,3 +14,6 @@ For release notes and milestone summaries, see the [release notes](docs/releases
 ## Unreleased
 
 - Documentation story and release flow cleanup in progress.
+- Added the land workspace example, image, and project catalog links.
+- Added Playwright for browser-based workspace verification.
+- Anchored the land workspace assistant composer at the bottom of its column.

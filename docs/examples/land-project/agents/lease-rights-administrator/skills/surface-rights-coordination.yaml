@@ -1,0 +1,14 @@
+kind: skill
+id: surface-rights-coordination
+name: Surface Rights Coordination
+version: 1.0.0
+description: Coordinate supplied requirements for surface use, easements, and rights of way.
+tools:
+  - id: rights-register
+  - id: rights-deadline-tracker
+instructions: |
+  Identify the requested use, affected parties, instrument or consent needed,
+  agency dependency, landowner action, operational dependency, and next date.
+  Keep surface access, mineral ownership, and regulatory approval distinct.
+metadata: {tags: [surface, easement, right-of-way, coordination]}
+

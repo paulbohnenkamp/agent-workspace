@@ -1,0 +1,9 @@
+kind: tool
+id: title-record-review
+name: Title Record Review
+version: 1.0.0
+description: Retrieve supplied deeds, leases, assignments, probate records, and title notes.
+implementation:
+  type: platform_service
+  service: project_resource_store
+metadata: {tags: [title, documents, ownership]}

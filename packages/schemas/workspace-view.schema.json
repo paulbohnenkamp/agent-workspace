@@ -170,6 +170,12 @@
                   "variant": {
                     "type": "string",
                     "enum": ["primary", "secondary"]
+                  },
+                  "actionId": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": "string"
                   }
                 }
               }

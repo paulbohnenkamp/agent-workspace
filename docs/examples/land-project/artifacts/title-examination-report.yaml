@@ -1,0 +1,16 @@
+kind: artifact-type
+id: title-examination-report
+name: Title Examination Report
+version: 1.0.0
+description: Evidence-based summary of title and ownership findings.
+schema:
+  type: object
+  properties:
+    matter_id: {type: string}
+    legal_description: {type: string}
+    ownership_summary: {type: string}
+    findings: {type: array, items: {type: string}}
+    source_documents: {type: array, items: {type: string}}
+    confidence: {type: string}
+    legal_review_required: {type: boolean}
+metadata: {tags: [title, ownership, legal-review]}

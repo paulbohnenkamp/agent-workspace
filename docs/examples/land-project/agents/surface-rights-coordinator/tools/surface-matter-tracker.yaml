@@ -1,0 +1,9 @@
+kind: tool
+id: surface-matter-tracker
+name: Surface Matter Tracker
+version: 1.0.0
+description: Track affected parties, negotiations, permits, dependencies, and surface deadlines.
+implementation:
+  type: platform_service
+  service: project_work_queue
+metadata: {tags: [surface, coordination, queue]}

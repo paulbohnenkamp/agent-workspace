@@ -1,0 +1,15 @@
+kind: skill
+id: acquisition-intake
+name: Acquisition Intake
+version: 1.0.0
+description: Turn a proposed parcel or rights opportunity into a complete review intake.
+tools:
+  - id: parcel-register
+  - id: land-matter-tracker
+instructions: |
+  1. Capture the requested parcel, legal description if known, business purpose,
+     requested rights, target timing, known parties, and source documents.
+  2. Identify missing information and create explicit follow-up tasks.
+  3. Record dependencies on title, legal, regulatory, surface, and operations teams.
+  4. Prepare a land acquisition assessment with assumptions and escalation flags.
+metadata: {tags: [land, acquisition, intake]}
