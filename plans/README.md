@@ -1,8 +1,8 @@
 # Plans
 
-This directory holds active implementation handoff files.
+This directory contains implementation handoff files.
 
-Use plans to answer:
+Use plans to answer these questions:
 
 - What work is currently active?
 - What is the scope of the slice?
@@ -11,7 +11,7 @@ Use plans to answer:
 
 Workflow:
 
-1. Do not start implementation work without creating or updating a plan.
+1. Before starting implementation work, create or update a plan.
 2. Start from [plans/TEMPLATE.md](./TEMPLATE.md).
 3. Create or update a plan file for the slice.
 4. Track active work in [plans/index.md](./index.md).

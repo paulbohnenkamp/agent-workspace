@@ -1,30 +1,45 @@
-# Agent Workspace
+# Agent workspace
 
-**A metadata-driven React/TypeScript workspace and event-oriented
-runtime for long-running human-agent collaboration.**
+**A metadata-driven React and TypeScript workspace for long-running
+human-agent collaboration.**
 
 [![CI](https://github.com/paulbohnenkamp/agent-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/paulbohnenkamp/agent-workspace/actions/workflows/ci.yml)
 
 ![Hiring Workspace example](docs/images/projects/hiring-project.png)
 
-Agent Workspace explores what an enterprise agent platform needs after
-the single-prompt demo: durable projects, reusable capabilities,
-resumable work, human review, auditable outcomes, and a UI that is a
-projection of the underlying system rather than a second source of
-truth.
+Agent Workspace explores what an agent platform needs beyond a
+single-prompt demo: durable projects, reusable capabilities, resumable
+work, human review, auditable outcomes, and a UI projected from the
+underlying system.
 
 The repository includes a working React 19 and TypeScript workspace
-slice, a reusable component system, metadata-driven view interpretation
-and validation, typed platform packages, an event-oriented runtime
-model, tests, CI, architecture records, specifications, implementation
-plans, and working examples.
+slice, reusable components, metadata-driven view interpretation and
+validation, typed platform packages, an event-oriented runtime model,
+tests, CI, architecture records, specifications, implementation plans,
+and working examples.
+
+The repository also contains an early Next.js application slice for the
+dynamic workspace direction. It uses the land project metadata and projected
+state, a Lucide-based shell, and a Prisma/PostgreSQL persistence boundary.
+
+Run the dynamic app with:
+
+```bash
+npm run dev
+```
+
+Then open
+`http://localhost:3000/land/land-portfolio?matterId=portfolio-001`.
+Configure the PostgreSQL path with `DATABASE_URL`. A fixture-backed route is
+available while the database repository is connected to the application
+projections.
 
 > **Project status:** Active development. The architecture, type model,
 > repository harness, and React workspace slice are substantial; the
 > complete production runtime, persistence, schema enforcement,
 > scheduling, and model-provider integrations are still being built.
 
-## What This Repository Demonstrates
+## What this repository demonstrates
 
 ### React and TypeScript application architecture
 
@@ -96,7 +111,7 @@ Key implementation points:
 This allows the same rendering infrastructure to support multiple views
 without copying screen-specific layout code.
 
-## Working Workspace Example
+## Working workspace example
 
 The hiring project demonstrates three named views over one project
 model:
@@ -112,7 +127,7 @@ The example is under
 filesystem definitions and view metadata are loaded by the same pipeline
 used by the React workspace renderer.
 
-## Platform Model
+## Platform model
 
 Agent Workspace is project-centric and intentionally layered.
 
@@ -154,7 +169,7 @@ Project definitions + resources + views
 The authoritative architecture is documented in
 [`docs/architecture/ARCHITECTURE_V3.md`](docs/architecture/ARCHITECTURE_V3.md).
 
-## TypeScript Packages
+## TypeScript packages
 
 The repository is organized as a workspace of focused packages:
 
@@ -183,7 +198,7 @@ The code favors stable interfaces, composition, provider patterns,
 repository abstractions, and explicit boundaries over deep inheritance
 or domain-specific framework code.
 
-## Harness-Engineering Workflow
+## Harness engineering workflow
 
 This repository is also an example of harness engineering: the code is
 only one part of the system used to develop the code safely.
@@ -226,7 +241,7 @@ requirements should become faster and more consistent because the
 repository itself teaches contributors how the system is intended to
 work.
 
-## Engineering Principles
+## Engineering principles
 
 -   **Metadata owns structure.** Views declare composition; renderers
     interpret it.
@@ -248,7 +263,7 @@ TypeScript/Preact framework work. All code in this repository is an
 independent React-first implementation and contains no proprietary
 source.
 
-## Quick Start
+## Quick start
 
 ### Requirements
 
@@ -288,7 +303,7 @@ example routes include:
 /hiring/approval-queue
 ```
 
-## Repository Map
+## Repository map
 
 ``` text
 agent-workspace/
@@ -301,7 +316,7 @@ agent-workspace/
 └── CHANGELOG.md
 ```
 
-## Current Implementation Status
+## Current implementation status
 
 ### Working today
 
@@ -334,7 +349,7 @@ agent-workspace/
 See [`ROADMAP.md`](ROADMAP.md) for the detailed implementation map and
 [`plans/index.md`](plans/index.md) for the current work queue.
 
-## Start Here
+## Start here
 
 -   [`AGENTS.md`](AGENTS.md)
 -   [`docs/README.md`](docs/README.md)

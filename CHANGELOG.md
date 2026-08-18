@@ -2,9 +2,9 @@
 
 This file tracks the user-facing history of the repository.
 
-For release notes and milestone summaries, see [docs/releases/README.md](docs/releases/README.md).
+For release notes and milestone summaries, see the [release notes](docs/releases/README.md).
 
-## 2026-07-09
+## July 9, 2026
 
 - Shortened the root README into a product-style entry point.
 - Added a releases landing page and a changelog entry point.
