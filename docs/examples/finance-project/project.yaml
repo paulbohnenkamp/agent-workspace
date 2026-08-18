@@ -5,7 +5,7 @@ version: 1.0.0
 description: |
   Financial planning, analysis, and reporting framework.
 
-  This project demonstrates agent-driven financial management including
+  This project supports agent-driven financial management including
   data gathering, report generation, forecasting, and audit trails.
 
 agents:

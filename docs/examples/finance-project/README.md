@@ -38,7 +38,7 @@ finance-project/
     annual-forecast.yaml
 ```
 
-## What It Demonstrates
+## What it covers
 
 - Multi-agent financial analysis
 - Recurring reporting schedules

@@ -3,12 +3,12 @@
 ## Goal
 
 Build and polish all five land-project workspace views using the shared project
-archetype layout and an in-memory event/projection demo state.
+archetype layout and an in-memory event/projection state.
 
 ## Scope
 
 - Add the land workspace specification and future-example authoring guidance.
-- Add a dedicated land demo entrypoint and routes.
+- Add a dedicated land workspace entrypoint and routes.
 - Add representative land-management and land-administration projected state.
 - Add generic action metadata and in-memory simulated actions.
 - Improve shared rendering only where the land data requires it.

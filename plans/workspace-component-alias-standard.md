@@ -22,7 +22,7 @@ Define and enforce a single, generic, one-to-one alias convention for workspace 
 - Inventory the complete reusable component catalog and map each alias to exactly one component.
 - Update `src/ComponentRegistry.tsx` to expose the canonical alias set.
 - Update all `view.json` files to use the canonical aliases.
-- Update docs and markdown examples that mention or demonstrate component aliases.
+- Update docs and markdown examples that mention or show component aliases.
 - Add guardrails so unknown or duplicate aliases fail clearly.
 
 ### Out of scope

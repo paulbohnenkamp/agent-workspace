@@ -62,7 +62,7 @@ hiring-project/
     quarterly-policy-review.yaml
 ```
 
-## What It Demonstrates
+## What it covers
 
 - Multi-human and multi-agent collaboration around hiring work
 - Work that pauses and resumes across many events, reviews, and handoffs

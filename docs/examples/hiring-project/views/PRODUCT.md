@@ -14,7 +14,7 @@ These views turn long-running hiring work into a clear, navigable workspace. The
 Calm, rigorous, trustworthy. The UI should feel operational and composed rather than flashy, helping users stay oriented while juggling reviews, approvals, and agent-generated material. It should communicate that the system is serious about process, but still approachable for everyday use.
 
 ## Anti-references
-This should not feel like a consumer recruiting marketplace, a playful HR portal, or a generic AI demo with decorative gradients and chat-first theatrics. Avoid noisy dashboards, over-branded marketing patterns, novelty interactions, and anything that makes policy or approval work feel casual.
+This should not feel like a consumer recruiting marketplace, a playful HR portal, or a generic AI chat product with decorative gradients and chat-first theatrics. Avoid noisy dashboards, over-branded marketing patterns, novelty interactions, and anything that makes policy or approval work feel casual.
 
 ## Design Principles
 1. Keep the work legible. Surface queue state, artifact status, discussion, and next actions in a way that reduces scanning cost.

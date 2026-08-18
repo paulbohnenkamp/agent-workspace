@@ -38,7 +38,7 @@ projections.
 > complete production runtime, persistence, schema enforcement,
 > scheduling, and model-provider integrations are still being built.
 
-## What this repository demonstrates
+## What this repository includes
 
 ### React and TypeScript application architecture
 
@@ -133,7 +133,7 @@ Next.js application slice. It is the best place to see where the platform is
 headed; the archetype gallery above shows the broader set of domains already
 represented in the repository.
 
-The hiring project demonstrates three named views over one project
+The hiring project provides three named views over one project
 model:
 
 -   **Candidate Review** --- candidate context, evaluation information,

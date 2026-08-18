@@ -36,7 +36,7 @@ decision-project/
     weekly-synthesis.yaml
 ```
 
-## What It Demonstrates
+## What it covers
 
 - Multi-agent decision analysis
 - Shared project context through resources

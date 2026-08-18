@@ -34,7 +34,7 @@ Do not add new handwritten JavaScript for:
 - component registries
 - layout builders
 - view interpreters
-- demo/runtime UI entrypoints
+- runtime UI entrypoints
 
 Generated JavaScript output is fine. Source of truth is not.
 

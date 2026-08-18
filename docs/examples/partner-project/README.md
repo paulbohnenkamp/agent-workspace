@@ -37,7 +37,7 @@ partner-project/
     annual-strategy.yaml
 ```
 
-## What It Demonstrates
+## What it covers
 
 - External relationship workflows inside one project
 - Contract and performance artifacts as first-class outputs

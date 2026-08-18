@@ -5,7 +5,7 @@ version: 1.0.0
 description: |
   Partner relationship management and collaboration framework.
 
-  This project demonstrates management of complex partnerships including
+  This project supports management of complex partnerships including
   contract analysis, performance tracking, and relationship coordination.
 
 agents:
