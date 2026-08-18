@@ -1,8 +1,8 @@
-# Architecture Overview
+# Architecture overview
 
 Architecture V3 models the platform in three explicit layers:
 
-If you are resuming active implementation work, start with [`plans/index.md`](../../plans/index.md). This page explains the frozen model; the plan index tracks the live slice.
+If you are resuming implementation work, start with the [plan index](../../plans/index.md). This page explains the frozen model; the plan index tracks the active slice.
 
 - **Collaboration and work**: Project, Agent, Skill, Artifact, Thread, Run, Resource, Schedule, Channel
 - **Integration and capability**: Connector, Tool
@@ -14,15 +14,15 @@ Its runtime behavior is organized around three connected ideas:
 - **Wake-on-event execution** lets agents stop, wait, and resume from relevant events or schedules
 - **Evaluation as a sidecar concern** keeps quality assessment outside the primary execution loop
 
-## Learning Path
+## Learning path
 
-1. Read the [authoritative specification](./ARCHITECTURE_V3.md).
-2. Read the relevant [ADRs](./adr/README.md).
+1. Read the [authoritative architecture specification](./ARCHITECTURE_V3.md).
+2. Read the relevant [architecture decision records](./adr/README.md).
 3. Compare the model with the [project archetypes](../project-archetypes/README.md).
 4. Inspect the [example projects](../examples/README.md).
-5. Read the [source packages](../../packages/README.md).
+5. Read the [source package documentation](../../packages/README.md).
 
-## Platform Flow
+## Platform flow
 
 ```text
 Project filesystem

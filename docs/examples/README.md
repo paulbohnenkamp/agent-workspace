@@ -1,8 +1,8 @@
-# Example Projects
+# Example projects
 
-These examples show what the platform looks like when the architecture becomes a real product surface.
+These examples show how the platform model becomes a product surface.
 
-If you are here to continue an active implementation slice, start with [`plans/index.md`](../../plans/index.md). These examples are reference material and working samples, not the current handoff.
+If you are continuing an active implementation slice, start with the [plan index](../../plans/index.md). These examples are reference material and working samples, not the current handoff.
 
 Each example directory is itself the project root:
 
@@ -30,7 +30,27 @@ When authoring workspace views in the examples, use the canonical component alia
 
 The registry is the alias map; implementations live one per file under `src/components/`.
 
-Workspace views are composed in layers:
+## Add another example
+
+Start from an existing example's filesystem shape. Read the repository guide,
+Architecture V3, the relevant specification, and the relevant ADR. Then create
+`project.yaml`, `agents/`, `resources/`, `artifacts/`, `schedules/`, and, when
+the project demonstrates UI, `views/`.
+
+Keep instructions in `agent.yaml`, use locally defined Skills and Tools, and
+keep domain behavior in YAML, resources, artifacts, schedules, view metadata,
+and sample projected state. Use registered generic components and the shared
+workspace composition shown in the project archetype images: work queue, AI
+Assistant, primary artifact/work surface, and right-side panels for knowledge
+sources, agents, and actions.
+
+Views are workflow surfaces, not necessarily job functions. Multiple agents,
+human users, and handoffs may use one view. Before completion, parse every YAML
+package, resolve references, validate views and component aliases, and run the
+relevant tests and builds. Do not add packs, manifests, or a new domain
+ontology to an example.
+
+Workspace views are composed in these layers:
 
 1. `view.json` declares the shell, layout, regions, and node order.
 2. The loader validates the view and resolves aliases against the registry.
@@ -39,13 +59,14 @@ Workspace views are composed in layers:
 
 To see that slice locally, run `npm run build:workspace`, then `npm run workspace` from the repo root and open `http://127.0.0.1:4010/`, or run `node build/src/render-workspace.smoke.js` after building to verify the rendered views.
 
-## Examples
+## Available examples
 
-| Example | Domain | Archetype Image |
+| Example | Domain | Archetype image |
 |---------|--------|-----------------|
 | [Decision Project](./decision-project/README.md) | Strategic decisions | [image](../images/projects/decision-project.png) |
 | [Finance Project](./finance-project/README.md) | Financial planning and analysis | [image](../images/projects/finance-project.png) |
 | [Hiring Project](./hiring-project/README.md) | Talent management and hiring | [image](../images/projects/hiring-project.png) |
+| [Land project](./land-project/README.md) | Land management and administration | Not available |
 | [Partner Project](./partner-project/README.md) | Partner relationship management | [image](../images/projects/partner-project.png) |
 | [Systems Project](./systems-project/README.md) | Systems management and operations | [image](../images/projects/systems-project.png) |
 

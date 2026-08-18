@@ -1,10 +1,10 @@
-# Plans Index
+# Plans index
 
 This file is the durable entry point for active implementation work.
 
 Workflow:
 
-1. Do not start implementation work without an active plan.
+1. Before starting implementation work, create or update an active plan.
 2. Start from `plans/TEMPLATE.md`.
 3. Create or update a plan file under `plans/`.
 4. Work the plan until the acceptance criteria are met.
@@ -19,7 +19,10 @@ Workflow:
 | Tighten loader/schema validation for `views/` | planned | [plans/view-metadata-validation.md](./view-metadata-validation.md) | Next slice after the workspace UI milestone. |
 | ESLint Config and Generated Artifacts Cleanup | planned | [plans/eslint-config-and-generated-artifacts-cleanup.md](./eslint-config-and-generated-artifacts-cleanup.md) | Removes the remaining lint warning and narrows generated-file scope. |
 | Package Lint Cleanup | planned | [plans/package-lint-cleanup.md](./package-lint-cleanup.md) | Clears the remaining package source lint backlog. |
+| Dynamic Workspace UI | in progress | [plans/dynamic-workspace-ui.md](./dynamic-workspace-ui.md) | Next.js/Prisma land workspace foundation and professional dynamic shell; persistence, auth, and live LLM phases remain. |
 ## Completed
+
+- [Land Workspace UI Milestone](./land-workspace-ui-milestone.md) - done, all five land views render through the shared workspace composition with in-memory demo actions
 
 - [Continuous integration](./continuous-integration.md) - done, clean install/build/lint/test workflow verified on GitHub
 - [Workspace UI slice milestone](./workspace-ui-slice-milestone.md) - done, outcome summary captured in the plan file

@@ -1,13 +1,13 @@
 # Releases
 
-Release notes and milestone summaries live here.
+Release notes and milestone summaries are collected here.
 
-This page is the release front door for the repository. Use it when you want to see what changed without reading the full history.
+Use this page to see what changed without reading the full history.
 
-## Latest Notes
+## Latest notes
 
-- [2026-07-09 - Documentation story and release flow cleanup](./2026-07-09-documentation-story-and-release-flow-cleanup.md)
-- [2026-07-09 - Workspace UI slice milestone](./2026-07-09-workspace-ui-slice-milestone.md)
+- [Documentation story and release flow cleanup, July 9, 2026](./2026-07-09-documentation-story-and-release-flow-cleanup.md)
+- [Workspace UI slice milestone, July 9, 2026](./2026-07-09-workspace-ui-slice-milestone.md)
 
 ## History
 
