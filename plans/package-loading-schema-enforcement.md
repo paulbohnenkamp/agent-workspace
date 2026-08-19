@@ -61,11 +61,19 @@ kinds, references, or dependency graphs are invalid.
 
 ## Completion Notes
 
-- Work not started.
+- Initial slice complete: schema-enabled package loads now fail closed on
+  validation errors, report the YAML source and field path, and avoid caching
+  invalid packages. Required version validation is now consistent for package
+  definitions that expose version metadata.
+- Added a broken filesystem fixture covering the fatal validation contract.
+- Remaining work is the broader schema inventory, reference/dependency
+  diagnostics, and duplicate/version conflict behavior.
 
 ## Outcome Summary
 
-- Pending implementation.
+- The loader now has a deterministic fatal-validation boundary; the remaining
+  plan work will make the underlying package schemas and dependency contracts
+  complete.
 
 ## Tooling / Verification Notes
 
