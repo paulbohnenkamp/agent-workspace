@@ -7,6 +7,8 @@ import {
   formatWorkspaceViewValidationErrors,
   validateWorkspaceView,
   validateWorkspaceViewComponents,
+  validateWorkspaceViewReferences,
+  validateWorkspaceViewOverlay,
 } from "./view-validation";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -52,9 +54,11 @@ export function loadView(projectRoot: string, viewId: string, renderer = "react"
   const baseErrors = validateWorkspaceView(baseView);
   const baseComponentErrors = validateWorkspaceViewComponents(baseView, registry);
 
-  if (baseErrors.length > 0 || baseComponentErrors.length > 0) {
+  const baseReferenceErrors = validateWorkspaceViewReferences(baseView);
+
+  if (baseErrors.length > 0 || baseComponentErrors.length > 0 || baseReferenceErrors.length > 0) {
     throw new Error(
-      formatWorkspaceViewValidationErrors(`${viewId}/view.json`, [...baseErrors, ...baseComponentErrors]),
+      formatWorkspaceViewValidationErrors(`${viewId}/view.json`, [...baseErrors, ...baseComponentErrors, ...baseReferenceErrors]),
     );
   }
 
@@ -65,15 +69,21 @@ export function loadView(projectRoot: string, viewId: string, renderer = "react"
   }
 
   const rendererView = readJson<Partial<WorkspaceViewDefinition>>(rendererPath);
+  const overlayErrors = validateWorkspaceViewOverlay(rendererView, viewId, renderer);
+  if (overlayErrors.length > 0) {
+    throw new Error(formatWorkspaceViewValidationErrors(`${viewId}/${renderer}/view.json`, overlayErrors));
+  }
   const mergedView = deepMerge(baseView, rendererView);
   const mergedErrors = validateWorkspaceView(mergedView);
   const mergedComponentErrors = validateWorkspaceViewComponents(mergedView, registry);
+  const mergedReferenceErrors = validateWorkspaceViewReferences(mergedView);
 
-  if (mergedErrors.length > 0 || mergedComponentErrors.length > 0) {
+  if (mergedErrors.length > 0 || mergedComponentErrors.length > 0 || mergedReferenceErrors.length > 0) {
     throw new Error(
       formatWorkspaceViewValidationErrors(`${viewId}/${renderer}/view.json`, [
         ...mergedErrors,
         ...mergedComponentErrors,
+        ...mergedReferenceErrors,
       ]),
     );
   }
