@@ -73,6 +73,12 @@ state across in-memory, file-backed, and database-backed implementations.
 - The next implementation must define the shared event envelope and recovery
   contract between those paths; artifact versions and agent sessions are not
   yet represented in the Prisma persistence model.
+- Added canonical `appendEvent` and `listEvents` operations to the runtime
+  repository contract. In-memory and file-backed implementations reject
+  project mismatches and duplicate event IDs, update projections through the
+  event reducer, and have parity fixtures against replayed state.
+- Remaining work is the Prisma adapter, artifact-version persistence, and
+  durable thread/run/session parity.
 
 ## Outcome Summary
 

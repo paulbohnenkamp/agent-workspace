@@ -388,6 +388,12 @@ export type ProjectRepository = {
   /** Load project context */
   load(projectId: string): Promise<ProjectState | undefined>;
 
+  /** Append one canonical event and update the persisted projection */
+  appendEvent(projectId: string, event: Event): Promise<void>;
+
+  /** Read canonical events in persistence order */
+  listEvents(projectId: string): Promise<Event[]>;
+
   /** Delete project */
   delete(projectId: string): Promise<void>;
 

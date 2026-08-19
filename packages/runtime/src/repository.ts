@@ -4,8 +4,9 @@
 
 import { mkdir, readFile, readdir, rename, rm, writeFile } from 'fs/promises';
 import * as path from 'path';
+import { Event } from '@awp/types';
 import { ProjectState, ProjectRepository } from './types';
-import { replayProjectEvents } from './event-projection';
+import { applyEventToProjectState, replayProjectEvents } from './event-projection';
 
 type SerializedProjectState = {
   projectionVersion?: number;
@@ -35,6 +36,36 @@ function cloneProjectState(context: ProjectState): ProjectState {
     resources: [...context.resources],
     schedules: [...context.schedules],
   };
+}
+
+function cloneEvent(event: Event): Event {
+  return {
+    ...event,
+    payload: event.payload ? { ...event.payload } : undefined,
+    metadata: event.metadata ? { ...event.metadata } : undefined,
+  };
+}
+
+async function appendEventToRepository(
+  repository: ProjectRepository,
+  projectId: string,
+  event: Event,
+): Promise<void> {
+  if (event.projectId !== projectId) {
+    throw new Error(`Event project mismatch: expected ${projectId}, received ${event.projectId}`);
+  }
+
+  const context = await repository.load(projectId);
+  if (!context) {
+    throw new Error(`Project not found: ${projectId}`);
+  }
+  if (context.events.some((existing) => existing.id === event.id)) {
+    throw new Error(`Event already exists: ${event.id}`);
+  }
+
+  context.events.push(cloneEvent(event));
+  applyEventToProjectState(context, event);
+  await repository.save(context);
 }
 
 function serializeProjectState(context: ProjectState): SerializedProjectState {
@@ -104,6 +135,15 @@ export class InMemoryProjectRepository implements ProjectRepository {
     }
 
     return Promise.resolve(cloneProjectState(context));
+  }
+
+  appendEvent(projectId: string, event: Event): Promise<void> {
+    return appendEventToRepository(this, projectId, event);
+  }
+
+  listEvents(projectId: string): Promise<Event[]> {
+    const context = this.projects.get(projectId);
+    return Promise.resolve(context ? context.events.map(cloneEvent) : []);
   }
 
   /**
@@ -192,6 +232,14 @@ export class FileProjectRepository implements ProjectRepository {
         throw error;
       }
     });
+  }
+
+  appendEvent(projectId: string, event: Event): Promise<void> {
+    return appendEventToRepository(this, projectId, event);
+  }
+
+  listEvents(projectId: string): Promise<Event[]> {
+    return this.load(projectId).then((context) => context?.events.map(cloneEvent) ?? []);
   }
 
   /**
