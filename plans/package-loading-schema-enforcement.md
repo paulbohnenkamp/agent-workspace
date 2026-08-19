@@ -66,8 +66,10 @@ kinds, references, or dependency graphs are invalid.
   invalid packages. Required version validation is now consistent for package
   definitions that expose version metadata.
 - Added a broken filesystem fixture covering the fatal validation contract.
-- Remaining work is the broader schema inventory, reference/dependency
-  diagnostics, and duplicate/version conflict behavior.
+- Reference resolution now distinguishes missing IDs from IDs that resolve to
+  the wrong package kind, with typed diagnostics and fixture coverage.
+- Remaining work is the broader schema inventory and duplicate/version
+  conflict behavior.
 
 ## Outcome Summary
 
