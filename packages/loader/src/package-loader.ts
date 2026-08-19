@@ -116,9 +116,13 @@ export class PackageLoader {
       if (this.options.validateSchema) {
         const validation = this.validate(pkg);
         if (validation.errors.length > 0) {
-          result.warnings = (result.warnings ?? []).concat(
-            validation.errors.map((e) => e.message),
-          );
+          return {
+            ...result,
+            success: false,
+            error: `Schema validation failed for ${yamlPath}: ${validation.errors
+              .map((error) => `${error.path ? `${error.path}: ` : ''}${error.message}`)
+              .join('; ')}`,
+          };
         }
       }
 
@@ -158,6 +162,7 @@ export class PackageLoader {
     const errors: ValidationError[] = [];
     const warnings: ValidationError[] = [];
     const packageId = this.getPackageId(pkg);
+    const packageRecord = pkg as unknown as Record<string, unknown>;
 
     // Check required fields
     if (opts.checkRequired) {
@@ -170,7 +175,7 @@ export class PackageLoader {
       if (!pkg.name) {
         errors.push({ message: 'Missing required field: name', severity: 'error' });
       }
-      if ('version' in pkg && !pkg.version) {
+      if (!packageRecord.version) {
         errors.push({ message: 'Missing required field: version', severity: 'error' });
       }
     }
@@ -183,7 +188,7 @@ export class PackageLoader {
       if (typeof pkg.name !== 'string') {
         errors.push({ message: 'Field name must be string', path: 'name', severity: 'error' });
       }
-      if ('version' in pkg && typeof pkg.version !== 'string') {
+      if (typeof packageRecord.version !== 'string') {
         errors.push({ message: 'Field version must be string', path: 'version', severity: 'error' });
       }
     }

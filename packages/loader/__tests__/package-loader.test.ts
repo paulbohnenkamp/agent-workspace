@@ -4,6 +4,9 @@
 
 import { PackageLoader, PackageRegistry } from '../src';
 import { Agent, Tool, Skill } from '@awp/types';
+import { mkdtemp, rm, writeFile } from 'fs/promises';
+import { tmpdir } from 'os';
+import * as path from 'path';
 
 describe('PackageLoader', () => {
   describe('discovery', () => {
@@ -98,6 +101,24 @@ describe('PackageLoader', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors.some((e) => e.path === 'id')).toBe(true);
+    });
+
+    it('should fail package loading when schema validation is enabled', async () => {
+      const directory = await mkdtemp(path.join(tmpdir(), 'awp-loader-'));
+      try {
+        const packagePath = path.join(directory, 'broken.yaml');
+        await writeFile(packagePath, 'kind: agent\nid: broken\nname: 42\nversion: 1.0.0\n');
+        const loader = new PackageLoader({ rootPath: directory, validateSchema: true });
+
+        const result = await loader.loadPackage(packagePath);
+
+        expect(result.success).toBe(false);
+        expect(result.error).toContain('Schema validation failed');
+        expect(result.error).toContain('name: Field name must be string');
+        expect(loader.getAllPackages()).toHaveLength(0);
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
     });
   });
 });
