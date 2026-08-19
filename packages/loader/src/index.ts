@@ -22,6 +22,7 @@ export type {
   PackageKind,
   AnyPackage,
   PackageRef,
+  IncompatiblePackageRef,
   ReferenceResolutionResult,
   ValidationOptions,
   ValidationError,
