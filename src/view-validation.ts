@@ -68,6 +68,35 @@ function validateField(field: unknown, path: string, errors: WorkspaceViewValida
   }
 }
 
+function collectExpressions(value: unknown, path: string, callback: (expression: string, path: string) => void): void {
+  if (typeof value === 'string') {
+    callback(value, path);
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectExpressions(item, `${path}[${index}]`, callback));
+    return;
+  }
+
+  if (isPlainObject(value)) {
+    Object.entries(value).forEach(([key, item]) => collectExpressions(item, `${path}.${key}`, callback));
+  }
+}
+
+function validateExpressions(value: unknown, path: string, fieldNames: Set<string>, errors: WorkspaceViewValidationError[]): void {
+  collectExpressions(value, path, (expression, expressionPath) => {
+    const references = expression.matchAll(/\$(route|fields|ui)\.([A-Za-z0-9_.]+)/g);
+    for (const reference of references) {
+      const scope = reference[1];
+      const fieldName = reference[2]?.split('.')[0];
+      if (scope === 'fields' && fieldName && !fieldNames.has(fieldName)) {
+        pushError(errors, expressionPath, `references unknown field "${fieldName}"`);
+      }
+    }
+  });
+}
+
 function validateLayoutRegion(
   region: unknown,
   path: string,
@@ -126,9 +155,14 @@ function validateLayout(
     return;
   }
 
-  layout.regions.forEach((region, index) =>
+  const regionIds = new Set<string>();
+  layout.regions.forEach((region, index) => {
     validateLayoutRegion(region, `${path}.regions[${index}]`, errors)
-  );
+    if (isPlainObject(region) && typeof region.id === 'string') {
+      if (regionIds.has(region.id)) pushError(errors, `${path}.regions[${index}].id`, `duplicate region id "${region.id}"`);
+      regionIds.add(region.id);
+    }
+  });
 }
 
 function validateViewNode(
@@ -200,6 +234,47 @@ function validateRegions(view: LooseRecord, errors: WorkspaceViewValidationError
 
     nodes.forEach((node, index) => validateViewNode(node, `regions.${regionId}[${index}]`, errors));
   });
+}
+
+export function validateWorkspaceViewReferences(view: unknown): WorkspaceViewValidationError[] {
+  const errors: WorkspaceViewValidationError[] = [];
+  if (!isPlainObject(view)) return errors;
+
+  const fields = Array.isArray(view.fields) ? view.fields : [];
+  const fieldNames = new Set<string>();
+  fields.forEach((field, index) => {
+    if (!isPlainObject(field) || typeof field.name !== 'string') return;
+    if (fieldNames.has(field.name)) {
+      pushError(errors, `fields[${index}].name`, `duplicate field name "${field.name}"`);
+    }
+    validateExpressions(field.source, `fields[${index}].source`, fieldNames, errors);
+    validateExpressions(field.select, `fields[${index}].select`, fieldNames, errors);
+    fieldNames.add(field.name);
+  });
+
+  validateExpressions(view.context, 'context', fieldNames, errors);
+  validateExpressions(view.regions, 'regions', fieldNames, errors);
+  return errors;
+}
+
+export function validateWorkspaceViewOverlay(
+  overlay: unknown,
+  baseViewId: string,
+  renderer: string,
+): WorkspaceViewValidationError[] {
+  const errors: WorkspaceViewValidationError[] = [];
+  if (!isPlainObject(overlay)) return errors;
+
+  if (overlay.extends !== `../view.json`) {
+    pushError(errors, 'extends', 'expected "../view.json" for a renderer overlay');
+  }
+  if (overlay.renderer !== renderer) {
+    pushError(errors, 'renderer', `expected renderer "${renderer}"`);
+  }
+  if (overlay.id != null && overlay.id !== baseViewId) {
+    pushError(errors, 'id', `expected base view id "${baseViewId}"`);
+  }
+  return errors;
 }
 
 function validateComponentAlias(

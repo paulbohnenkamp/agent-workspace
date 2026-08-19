@@ -132,7 +132,7 @@ accessibility checks cover the primary flows.
 
 ### 2. Validate view metadata and references
 
-**Status:** In progress
+**Status:** Done
 
 **Plan:** [plans/view-metadata-validation.md](plans/view-metadata-validation.md)
 
@@ -144,7 +144,9 @@ paths and messages, while all current hiring and land views pass.
 
 ### 3. Complete the event-canonical runtime path
 
-**Status:** Next
+**Status:** In progress
+
+**Plan:** [plans/event-canonical-runtime.md](plans/event-canonical-runtime.md)
 
 Close the gap between the runtime types and actual execution behavior:
 

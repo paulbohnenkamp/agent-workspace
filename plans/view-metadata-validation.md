@@ -56,18 +56,24 @@ Tighten workspace view loading so broken `views/` files fail fast with clear err
 
 ## Status
 
-`in progress`
+`done`
 
 ## Completion Notes
 
-- 
+- Added duplicate field and layout-region detection.
+- Added `$fields.*` reference validation across field sources, selections,
+  context, and region bindings.
+- Added renderer-overlay identity checks for `extends`, `renderer`, and base
+  view IDs.
+- Included focused validation fixtures and preserved all existing example views.
 
 ## Outcome Summary
 
-- 
+- Workspace view metadata now fails fast with actionable paths for structural,
+  reference, and renderer-overlay errors.
 
 ## Tooling / Verification Notes
 
 - Build tool: `npm run build:workspace`
 - Expected verification command: `node build/src/render-workspace.smoke.js`
-- Current blocker, if any: none yet
+- Current blocker, if any: none
