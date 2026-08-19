@@ -16,9 +16,7 @@ Workflow:
 | Roadmap Item | Status | Plan | Notes |
 | --- | --- | --- | --- |
 | Documentation story and release flow cleanup | in progress | [plans/docs-story-and-release-flow-cleanup.md](./docs-story-and-release-flow-cleanup.md) | Shortens the README, adds changelog/release entry points, and makes the docs read like a product story. |
-| Tighten loader/schema validation for `views/` | planned | [plans/view-metadata-validation.md](./view-metadata-validation.md) | Next slice after the workspace UI milestone. |
-| ESLint Config and Generated Artifacts Cleanup | planned | [plans/eslint-config-and-generated-artifacts-cleanup.md](./eslint-config-and-generated-artifacts-cleanup.md) | Removes the remaining lint warning and narrows generated-file scope. |
-| Package Lint Cleanup | planned | [plans/package-lint-cleanup.md](./package-lint-cleanup.md) | Clears the remaining package source lint backlog. |
+| Tighten loader/schema validation for `views/` | in progress | [plans/view-metadata-validation.md](./view-metadata-validation.md) | Active next slice: fail-fast view structure, field, region, and renderer-overlay validation. |
 | Dynamic Workspace UI | in progress | [plans/dynamic-workspace-ui.md](./dynamic-workspace-ui.md) | Next.js/Prisma land workspace foundation and professional dynamic shell; persistence, auth, and live LLM phases remain. |
 ## Completed
 
@@ -33,3 +31,4 @@ Workflow:
 - [Workspace Component Alias Standard](./workspace-component-alias-standard.md) - done, workspace view aliases are now generic and validated
 - [Workspace Component Catalog](./workspace-component-catalog.md) - done, registry now exposes generic primitives and composites
 - [Workspace Primitive Catalog Expansion](./workspace-primitive-catalog-expansion.md) - done, registry is thin and components live one per file
+- [Durable Authorized Workspace Slice](./durable-authorized-workspace.md) - done, PostgreSQL migration/seed and authenticated authorization E2E verification passed

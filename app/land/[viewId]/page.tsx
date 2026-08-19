@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import {
   AlertCircle,
   ArrowUpRight,
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 import { landDefaultMatterIds, landViewIds } from '../../../src/land-workspace';
+import { AuthorizationError, requireLandAccess } from '../../../lib/authorization';
 import { loadLandWorkspace, records, text } from '../../../lib/land-workspace';
 import { AssistantComposer } from './AssistantComposer';
 
@@ -47,6 +49,12 @@ export default async function LandWorkspacePage({
   searchParams: Promise<{ matterId?: string }>;
 }) {
   const [{ viewId }, query] = await Promise.all([params, searchParams]);
+  try {
+    await requireLandAccess(query.matterId);
+  } catch (error) {
+    if (error instanceof AuthorizationError && error.status === 401) redirect('/');
+    throw error;
+  }
   const interpreted = await loadLandWorkspace(viewId, query.matterId);
   const state = interpreted.state;
   const selectedMatter = (interpreted.fields.selectedMatter ?? {}) as Record<string, unknown>;

@@ -259,6 +259,7 @@ export function applyLandAction(
   targetId: string,
   eventId: string,
   timestamp = nowLabel,
+  actor = 'Demo Workspace User',
 ): LandActionResult {
   const state = cloneState(sourceState);
   const target = (state.item_queue ?? []).find((item) => item.id === targetId);
@@ -267,7 +268,7 @@ export function applyLandAction(
     id: eventId,
     type: `land.${actionId}`,
     targetId,
-    actor: 'Demo Workspace User',
+    actor,
     timestamp,
     detail: `${actionId.split('-').join(' ')} for ${targetName}`,
   };
@@ -326,8 +327,8 @@ export class LandDemoStore {
     this.events = [];
   }
 
-  applyAction(actionId: string, targetId: string): LandDemoEvent {
-    const result = applyLandAction(this.state, actionId, targetId, `land-event-${this.events.length + 1}`);
+  applyAction(actionId: string, targetId: string, actor = 'Demo Workspace User'): LandDemoEvent {
+    const result = applyLandAction(this.state, actionId, targetId, `land-event-${this.events.length + 1}`, nowLabel, actor);
     this.state = result.state;
     const event = result.event;
     this.events.push(event);

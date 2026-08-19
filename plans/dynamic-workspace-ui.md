@@ -28,11 +28,11 @@ slice:
 
 - Add browser-level coverage for the PostgreSQL-backed action and assistant
   flows once a test database is available.
-- Persist assistant threads, messages, runs, and citations through the Prisma
-  adapter; the current endpoint has the provider boundary and deterministic
-  response contract but does not yet persist assistant records.
-- Promote the authentication/session approach from `../nextjs-auth-demo` and
-  enforce project/matter authorization.
+- Verify assistant thread, message, citation, and run persistence through the
+  Prisma adapter; the repository implementation now records these entities,
+  but database-backed end-to-end coverage remains.
+- Complete database/browser verification for the authentication/session
+  approach adapted from `../nextjs-auth-demo` and project/matter authorization.
 - Add streaming transport to the provider-neutral live adapter.
 - Add shadcn/ui primitives and browser/accessibility coverage for the dynamic
   workspace flows.

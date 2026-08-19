@@ -20,7 +20,7 @@ function jsonState(state: WorkspaceStateRecord): Prisma.InputJsonObject {
 export type LandWorkspaceRepository = {
   getState(): Promise<WorkspaceStateRecord>;
   getEvents(): Promise<LandDemoEvent[]>;
-  appendAction(actionId: string, targetId: string): Promise<LandDemoEvent>;
+  appendAction(actionId: string, targetId: string, actor?: string): Promise<LandDemoEvent>;
   seed(): Promise<void>;
   reset(): Promise<void>;
   recordAssistantRun?(record: LandAssistantRecord): Promise<void>;
@@ -47,8 +47,8 @@ export class InMemoryLandWorkspaceRepository implements LandWorkspaceRepository 
     return Promise.resolve(this.store.getEvents());
   }
 
-  appendAction(actionId: string, targetId: string): Promise<LandDemoEvent> {
-    return Promise.resolve(this.store.applyAction(actionId, targetId));
+  appendAction(actionId: string, targetId: string, actor?: string): Promise<LandDemoEvent> {
+    return Promise.resolve(this.store.applyAction(actionId, targetId, actor));
   }
 
   seed(): Promise<void> {
@@ -88,7 +88,7 @@ export class PrismaLandWorkspaceRepository implements LandWorkspaceRepository {
     }));
   }
 
-  async appendAction(actionId: string, targetId: string): Promise<LandDemoEvent> {
+  async appendAction(actionId: string, targetId: string, actor = 'Demo Workspace User'): Promise<LandDemoEvent> {
     return this.client.$transaction(async (transaction) => {
       const current = await transaction.projectionRecord.findUnique({
         where: { projectId_projection_recordKey: { projectId, projection, recordKey } },
@@ -100,6 +100,7 @@ export class PrismaLandWorkspaceRepository implements LandWorkspaceRepository {
         targetId,
         `land-event-${randomUUID()}`,
         timestamp.toISOString(),
+        actor,
       );
 
       await transaction.projectRecord.upsert({

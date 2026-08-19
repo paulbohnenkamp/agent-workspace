@@ -56,7 +56,7 @@ Tighten workspace view loading so broken `views/` files fail fast with clear err
 
 ## Status
 
-- `planned`
+`in progress`
 
 ## Completion Notes
 

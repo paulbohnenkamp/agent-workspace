@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { AuthorizationError, requireLandAccess } from '../../../../lib/authorization';
 import { appendLandAction } from '../../../../lib/land-workspace';
 
 const supportedActions = new Set([
@@ -17,10 +18,21 @@ export async function POST(request: Request) {
   const actionId = String(form.get('actionId') ?? 'record-administrative-follow-up');
   const viewId = String(form.get('viewId') ?? 'land-portfolio');
 
+  let actor: string | undefined;
+  try {
+    const access = await requireLandAccess(targetId);
+    actor = access?.user.email;
+  } catch (error) {
+    if (error instanceof AuthorizationError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    throw error;
+  }
+
   if (!supportedActions.has(`land.${actionId}`)) {
     return NextResponse.json({ error: 'Unsupported land action' }, { status: 400 });
   }
 
-  await appendLandAction(actionId, targetId);
+  await appendLandAction(actionId, targetId, actor);
   return NextResponse.redirect(new URL(`/land/${viewId}?matterId=${targetId}`, request.url));
 }
