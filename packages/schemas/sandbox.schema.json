@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/sandbox.schema.json",
+  "allOf": [{ "$ref": "package.schema.json" }, { "type": "object", "properties": { "kind": { "const": "sandbox" }, "limits": { "type": "object" }, "permissions": { "type": "object" }, "environment": { "type": "object" } } }]
+}

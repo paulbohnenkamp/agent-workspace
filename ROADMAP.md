@@ -162,7 +162,7 @@ resume the correct agent session, and recover its current state from events.
 
 ### 4. Harden package loading and schema enforcement
 
-**Status:** In progress
+**Status:** Done
 
 **Plan:** [plans/package-loading-schema-enforcement.md](plans/package-loading-schema-enforcement.md)
 
@@ -179,7 +179,9 @@ broken fixtures fail with deterministic diagnostics.
 
 ### 5. Establish the persistence boundary
 
-**Status:** Next
+**Status:** In progress
+
+**Plan:** [plans/persistence-boundary.md](plans/persistence-boundary.md)
 
 Unify the file-backed runtime foundation and application persistence behind a
 clear repository boundary. Add artifact version storage, projection recovery,

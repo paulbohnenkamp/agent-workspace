@@ -17,7 +17,7 @@ Workflow:
 | --- | --- | --- | --- |
 | Documentation story and release flow cleanup | in progress | [plans/docs-story-and-release-flow-cleanup.md](./docs-story-and-release-flow-cleanup.md) | Shortens the README, adds changelog/release entry points, and makes the docs read like a product story. |
 | Dynamic Workspace UI | in progress | [plans/dynamic-workspace-ui.md](./dynamic-workspace-ui.md) | Next.js/Prisma land workspace foundation and professional dynamic shell; streaming and live agent phases remain. |
-| Package loading and schema enforcement | in progress | [plans/package-loading-schema-enforcement.md](./package-loading-schema-enforcement.md) | Make package schemas, references, and dependency failures deterministic and actionable. |
+| Establish the persistence boundary | in progress | [plans/persistence-boundary.md](./persistence-boundary.md) | Unify runtime repositories and application persistence around durable event/projection recovery. |
 ## Completed
 
 - [Land Workspace UI Milestone](./land-workspace-ui-milestone.md) - done, all five land views render through the shared workspace composition with in-memory actions
@@ -34,3 +34,4 @@ Workflow:
 - [Durable Authorized Workspace Slice](./durable-authorized-workspace.md) - done, PostgreSQL migration/seed and authenticated authorization E2E verification passed
 - [View Metadata Validation](./view-metadata-validation.md) - done, structural, field-reference, and renderer-overlay validation verified with smoke tests
 - [Event-Canonical Runtime Path](./event-canonical-runtime.md) - done, bounded agent execution now persists and replays waiting/resumed sessions
+- [Package Loading and Schema Enforcement](./package-loading-schema-enforcement.md) - done, all filesystem package kinds have schemas and duplicate/reference diagnostics are deterministic

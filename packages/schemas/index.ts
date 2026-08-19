@@ -14,6 +14,17 @@ import participant from "./participant.schema.json";
 import policies from "./policies.schema.json";
 import permissions from "./permissions.schema.json";
 import workspaceView from "./workspace-view.schema.json";
+import packageSchema from "./package.schema.json";
+import project from "./project.schema.json";
+import agent from "./agent.schema.json";
+import tool from "./tool.schema.json";
+import skill from "./skill.schema.json";
+import channel from "./channel.schema.json";
+import connectorPackage from "./connector-package.schema.json";
+import schedule from "./schedule.schema.json";
+import resource from "./resource.schema.json";
+import sandbox from "./sandbox.schema.json";
+import artifactType from "./artifact-type.schema.json";
 
 export {
   connectorDefinition,
@@ -24,4 +35,28 @@ export {
   policies,
   permissions,
   workspaceView,
+  packageSchema,
+  project,
+  agent,
+  tool,
+  skill,
+  channel,
+  connectorPackage,
+  schedule,
+  resource,
+  sandbox,
+  artifactType,
+};
+
+export const packageSchemas = {
+  project,
+  agent,
+  tool,
+  skill,
+  channel,
+  connector: connectorPackage,
+  schedule,
+  resource,
+  sandbox,
+  'artifact-type': artifactType,
 };

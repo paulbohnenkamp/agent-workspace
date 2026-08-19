@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/schedule.schema.json",
+  "allOf": [{ "$ref": "package.schema.json" }, { "type": "object", "properties": { "kind": { "const": "schedule" }, "type": { "type": "string", "minLength": 1 }, "trigger": { "type": "object" }, "action": { "type": "object" } } }]
+}

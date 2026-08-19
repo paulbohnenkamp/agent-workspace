@@ -57,7 +57,7 @@ kinds, references, or dependency graphs are invalid.
 
 ## Status
 
-`in progress`
+`done`
 
 ## Completion Notes
 
@@ -68,14 +68,19 @@ kinds, references, or dependency graphs are invalid.
 - Added a broken filesystem fixture covering the fatal validation contract.
 - Reference resolution now distinguishes missing IDs from IDs that resolve to
   the wrong package kind, with typed diagnostics and fixture coverage.
-- Remaining work is the broader schema inventory and duplicate/version
-  conflict behavior.
+- Added canonical JSON Schemas for every filesystem package kind and wired the
+  loader to validate them with fatal, field-level diagnostics.
+- Decision, hiring, and land example projects all validate cleanly with the
+  schemas enabled.
+- Package registries now reject duplicate IDs by default, with explicit
+  `keep-first` and `replace` policies plus inspectable conflict records.
+- Full repository verification passed: 11 Jest suites / 119 tests, package and
+  workspace builds, lint, and workspace render smoke.
 
 ## Outcome Summary
 
-- The loader now has a deterministic fatal-validation boundary; the remaining
-  plan work will make the underlying package schemas and dependency contracts
-  complete.
+- The package loader now has a complete schema inventory, deterministic
+  reference diagnostics, and explicit duplicate/version conflict semantics.
 
 ## Tooling / Verification Notes
 

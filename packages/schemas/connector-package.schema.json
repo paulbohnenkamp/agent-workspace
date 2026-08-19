@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/connector-package.schema.json",
+  "allOf": [{ "$ref": "package.schema.json" }, { "type": "object", "required": ["type"], "properties": { "kind": { "const": "connector" }, "type": { "type": "string", "minLength": 1 }, "mode": { "enum": ["action", "knowledge", "hybrid"] }, "auth": { "type": "object" }, "config": { "type": "object" }, "capabilities": { "type": "array", "items": { "type": "string" } } } }]
+}

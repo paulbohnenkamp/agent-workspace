@@ -96,6 +96,12 @@ const issues = registry.validateReferences();
 const resolution = registry.resolveReferences();
 ```
 
+Package IDs are unique within a registry. Duplicate IDs throw by default so
+different versions cannot silently replace one another. Call `register` with
+`{ conflictPolicy: 'keep-first' }` or `{ conflictPolicy: 'replace' }` only when
+that behavior is intentional; all conflicts remain available through
+`getConflicts()`.
+
 ## Agent Packages
 
 Agent packages have a special filesystem-first structure:

@@ -6,6 +6,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from 'yaml';
 import { AnyPackage } from '@awp/types';
+import Ajv2020, { ErrorObject } from 'ajv/dist/2020';
+import { packageSchema, packageSchemas } from '@awp/schemas';
 import {
   LoaderOptions,
   PackageLoadResult,
@@ -26,6 +28,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 export class PackageLoader {
   private options: Required<LoaderOptions>;
   private loadedPackages = new Map<string, PackageLoadResult>();
+  private schemaValidator = new Ajv2020({ allErrors: true, strict: true });
 
   constructor(options: LoaderOptions) {
     this.options = {
@@ -164,6 +167,33 @@ export class PackageLoader {
     const packageId = this.getPackageId(pkg);
     const packageRecord = pkg as unknown as Record<string, unknown>;
 
+    if (opts.checkTypes && typeof packageRecord.kind === 'string') {
+      const schema = packageSchemas[packageRecord.kind as keyof typeof packageSchemas];
+      if (!schema) {
+        errors.push({
+          message: `Unsupported package kind: ${packageRecord.kind}`,
+          path: 'kind',
+          severity: 'error',
+        });
+      } else {
+        try {
+          this.schemaValidator.removeSchema(packageSchema.$id);
+          this.schemaValidator.addSchema(packageSchema, packageSchema.$id);
+          const validateSchema = this.schemaValidator.compile(schema);
+          if (!validateSchema(pkg)) {
+            for (const error of validateSchema.errors ?? []) {
+              errors.push(this.toValidationError(error));
+            }
+          }
+        } catch (error) {
+          errors.push({
+            message: `Unable to validate package schema: ${error instanceof Error ? error.message : String(error)}`,
+            severity: 'error',
+          });
+        }
+      }
+    }
+
     // Check required fields
     if (opts.checkRequired) {
       if (!pkg.kind) {
@@ -175,7 +205,7 @@ export class PackageLoader {
       if (!pkg.name) {
         errors.push({ message: 'Missing required field: name', severity: 'error' });
       }
-      if (!packageRecord.version) {
+      if (pkg.kind !== 'artifact-type' && !packageRecord.version) {
         errors.push({ message: 'Missing required field: version', severity: 'error' });
       }
     }
@@ -188,7 +218,7 @@ export class PackageLoader {
       if (typeof pkg.name !== 'string') {
         errors.push({ message: 'Field name must be string', path: 'name', severity: 'error' });
       }
-      if (typeof packageRecord.version !== 'string') {
+      if (pkg.kind !== 'artifact-type' && typeof packageRecord.version !== 'string') {
         errors.push({ message: 'Field version must be string', path: 'version', severity: 'error' });
       }
     }
@@ -198,6 +228,15 @@ export class PackageLoader {
       valid: errors.length === 0,
       errors,
       warnings,
+    };
+  }
+
+  private toValidationError(error: ErrorObject): ValidationError {
+    const path = error.instancePath.replace(/^\//, '').replace(/\//g, '.');
+    return {
+      message: error.message ?? 'Package does not match its schema',
+      path: path || undefined,
+      severity: 'error',
     };
   }
 
@@ -267,7 +306,7 @@ export function detectPackageKind(pkg: unknown): PackageKind | undefined {
   if (pkg.type === 'object' && pkg.properties && pkg.implementation) return 'tool';
   if (pkg.trigger) return 'schedule';
   if (pkg.agents) return 'project';
-  if (pkg.schema && pkg.structure) return 'artifact';
+  if (pkg.schema && pkg.structure) return 'artifact-type';
 
   return undefined;
 }

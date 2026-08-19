@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/artifact-type.schema.json",
+  "type": "object",
+  "required": ["kind", "id", "name"],
+  "properties": { "kind": { "const": "artifact-type" }, "id": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "description": { "type": "string" }, "schema": { "type": "object" }, "structure": { "type": "object" } },
+  "additionalProperties": true
+}
