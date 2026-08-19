@@ -79,6 +79,11 @@ state across in-memory, file-backed, and database-backed implementations.
   event reducer, and have parity fixtures against replayed state.
 - Remaining work is the Prisma adapter, artifact-version persistence, and
   durable thread/run/session parity.
+- Added application-side in-memory and Prisma adapters for the canonical
+  runtime event envelope, including routing IDs, timestamps, payload, and
+  metadata round-tripping.
+- Remaining work is durable projection parity, artifact versions, threads,
+  runs, and agent sessions.
 
 ## Outcome Summary
 
