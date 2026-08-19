@@ -68,6 +68,36 @@ export type AgentInstance = {
 }
 
 /**
+ * Provider-neutral request passed to an agent execution adapter.
+ * The runtime owns lifecycle and persistence; providers only produce a bounded result.
+ */
+export type AgentExecutionRequest = {
+  project: ProjectState['project'];
+  agent: Agent;
+  tools: Tool[];
+  skills: Skill[];
+  input?: Record<string, unknown>;
+  session: AgentSession;
+}
+
+/** Result returned by an agent execution adapter. */
+export type AgentExecutionResult = {
+  output?: Record<string, unknown>;
+  status?: 'succeeded' | 'waiting';
+  sessionContext?: Record<string, unknown>;
+  stopReason?: string;
+}
+
+/** A bounded, provider-neutral agent execution boundary. */
+export type AgentExecutionProvider = (
+  request: AgentExecutionRequest,
+) => Promise<AgentExecutionResult>;
+
+export type ProjectRuntimeOptions = {
+  agentProvider?: AgentExecutionProvider;
+}
+
+/**
  * ArtifactRecord - mutable artifact with version history
  */
 export type ArtifactRecord = {

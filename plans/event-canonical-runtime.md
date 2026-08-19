@@ -78,20 +78,30 @@ record canonical events, and recover the same projected state after restart.
 
 ## Status
 
-`in progress`
+`done`
 
 ## Completion Notes
 
-- What changed
-- What was verified
-- Any follow-up items
+- Added a provider-neutral bounded agent execution boundary while keeping the
+  runtime responsible for lifecycle, event emission, and projections.
+- Agent runs now create or resume sessions, associate runs with sessions, and
+  emit created, updated, waiting, and resumed session events.
+- File-backed persistence and event replay now recover the same session and run
+  projections; projection application explicitly rebinds every projected
+  collection.
+- Added a fixture covering provider resolution, waiting, file persistence,
+  replay, resume, and terminal success. Existing missing-agent/tool failures
+  remain auditable through `run.failed`.
+- Verified 11 Jest suites / 116 tests, package builds, workspace build, lint,
+  and workspace render smoke.
 
 ## Outcome Summary
 
-- Short summary of the finished plan
+- One bounded agent run can stop for an external event and later resume through
+  the same durable session, with canonical events reconstructing current state.
 
 ## Tooling / Verification Notes
 
 - Build tool: TypeScript, Jest, and existing workspace runtime scripts
 - Expected verification command: `npm test -- --runInBand && npm run build && npm run build:workspace`
-- Current blocker, if any: none yet
+- Current blocker, if any: none

@@ -6,6 +6,10 @@ import { ProjectRuntime } from '../src/project-runtime';
 import { PackageRegistry } from '@awp/loader';
 import { Project, Agent, Tool, Skill, Participant, Resource, Artifact, Thread } from '@awp/types';
 import { replayProjectEvents } from '../src/event-projection';
+import { FileProjectRepository } from '../src/repository';
+import { mkdtemp, rm } from 'fs/promises';
+import { tmpdir } from 'os';
+import * as path from 'path';
 
 describe('ProjectRuntime', () => {
   let runtime: ProjectRuntime;
@@ -226,6 +230,75 @@ describe('ProjectRuntime', () => {
 
       const context = runtime.getProjectState(projectId);
       expect(context?.runs.has(result.run.id)).toBe(true);
+    });
+
+    it('should persist, replay, and resume an agent session', async () => {
+      const provider = jest.fn(async ({ session }: { session: { context?: Record<string, unknown> } }) => {
+        if (session.context?.waitingFor || session.context?.resumedAt) {
+          return {
+            output: { resumed: true },
+            status: 'succeeded' as const,
+            stopReason: 'completed',
+          };
+        }
+
+        return {
+          output: { paused: true },
+          status: 'waiting' as const,
+          stopReason: 'human-review',
+          sessionContext: { waitingFor: 'human-review' },
+        };
+      });
+      const resumableRuntime = new ProjectRuntime(registry, { agentProvider: provider });
+      const project = await resumableRuntime.initializeProject({ project: testProject });
+      const first = await resumableRuntime.executeRun(project.project.id, {
+        targetKind: 'agent',
+        targetId: 'test-agent',
+        triggeredBy: 'user-001',
+      });
+
+      expect(first.success).toBe(true);
+      expect(first.run.output?.execution).toEqual(expect.objectContaining({ status: 'waiting' }));
+      expect(first.events.map((event) => event.name)).toEqual([
+        'agent_session.created',
+        'run.started',
+        'run.succeeded',
+        'agent_session.waiting',
+      ]);
+
+      const context = resumableRuntime.getProjectState(project.project.id)!;
+      const session = context.agentSessions.get(first.run.agentSessionId!);
+      expect(session?.context?.waitingFor).toBe('human-review');
+
+      const repositoryPath = await mkdtemp(path.join(tmpdir(), 'awp-runtime-'));
+      try {
+        const repository = new FileProjectRepository(repositoryPath);
+        await repository.save(context);
+        const restored = await repository.load(project.project.id);
+        expect(restored).toBeDefined();
+        const replayed = replayProjectEvents(restored!.events);
+        expect(replayed.agentSessions.get(first.run.agentSessionId!)?.context?.waitingFor)
+          .toBe('human-review');
+
+        const second = await resumableRuntime.executeRun(project.project.id, {
+          targetKind: 'agent',
+          targetId: 'test-agent',
+          triggeredBy: 'user-001',
+        });
+
+        expect(second.success).toBe(true);
+        expect(second.run.output?.resumed).toBe(true);
+        expect(second.events.map((event) => event.name)).toEqual([
+          'agent_session.updated',
+          'agent_session.resumed',
+          'run.started',
+          'run.succeeded',
+          'agent_session.updated',
+        ]);
+        expect(provider).toHaveBeenCalledTimes(2);
+      } finally {
+        await rm(repositoryPath, { recursive: true, force: true });
+      }
     });
   });
 

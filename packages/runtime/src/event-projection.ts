@@ -217,6 +217,7 @@ export function applyEventToProjection(
       break;
     }
 
+    case 'agent_session.created':
     case 'agent_session.waiting':
     case 'agent_session.resumed':
     case 'agent_session.updated': {
@@ -255,4 +256,9 @@ export function applyEventToProjectState(context: ProjectState, event: Event): v
   applyEventToProjection(projection, event);
 
   context.resources = projection.resources;
+  context.artifacts = projection.artifacts;
+  context.threads = projection.threads;
+  context.runs = projection.runs;
+  context.agentSessions = projection.agentSessions;
+  context.participants = projection.participants;
 }
