@@ -18,6 +18,8 @@ import {
   PackageKind,
   PackageRegistryStats,
   IncompatiblePackageRef,
+  PackageConflict,
+  PackageConflictPolicy,
 } from './types';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -35,8 +37,11 @@ export class PackageRegistry {
   private packages = new Map<string, PackageLoadResult>();
   private byKind = new Map<PackageKind, Set<string>>();
   private references = new Map<string, PackageRef[]>();
+  private conflicts: PackageConflict[] = [];
+  private conflictPolicy: PackageConflictPolicy;
 
-  constructor(packages?: PackageLoadResult[]) {
+  constructor(packages?: PackageLoadResult[], options: { conflictPolicy?: PackageConflictPolicy } = {}) {
+    this.conflictPolicy = options.conflictPolicy ?? 'error';
     if (packages) {
       for (const result of packages) {
         this.register(result);
@@ -47,14 +52,48 @@ export class PackageRegistry {
   /**
    * Register a loaded package
    */
-  register(result: PackageLoadResult): void {
+  register(
+    result: PackageLoadResult,
+    options: { conflictPolicy?: PackageConflictPolicy } = {},
+  ): void {
     const pkg = result.package;
     const id = this.getId(pkg);
+    const existing = this.packages.get(id);
+    const policy = options.conflictPolicy ?? this.conflictPolicy;
+
+    if (existing) {
+      const conflict: PackageConflict = {
+        id,
+        existing: {
+          sourcePath: existing.sourcePath,
+          version: this.getVersion(existing.package),
+          kind: existing.package.kind,
+        },
+        incoming: {
+          sourcePath: result.sourcePath,
+          version: this.getVersion(result.package),
+          kind: result.package.kind,
+        },
+        policy,
+      };
+      this.conflicts.push(conflict);
+
+      if (policy === 'error') {
+        throw new Error(
+          `Package ID conflict for '${id}': ${conflict.existing.sourcePath} `
+          + `(${conflict.existing.version ?? 'unversioned'}) conflicts with `
+          + `${conflict.incoming.sourcePath} (${conflict.incoming.version ?? 'unversioned'})`,
+        );
+      }
+      if (policy === 'keep-first') return;
+
+      this.removePackageIndex(id, existing.package.kind);
+    }
 
     this.packages.set(id, result);
 
     // Index by kind
-    const kind = pkg.kind as PackageKind;
+    const kind = pkg.kind;
     if (!this.byKind.has(kind)) {
       this.byKind.set(kind, new Set());
     }
@@ -62,6 +101,14 @@ export class PackageRegistry {
 
     // Extract references
     this.extractReferences(id, pkg);
+  }
+
+  getConflicts(): PackageConflict[] {
+    return this.conflicts.map((conflict) => ({
+      ...conflict,
+      existing: { ...conflict.existing },
+      incoming: { ...conflict.incoming },
+    }));
   }
 
   /**
@@ -124,7 +171,7 @@ export class PackageRegistry {
         } else if (target.kind === ref.kind) {
           resolved++;
         } else {
-          incompatible.push({ reference: ref, actualKind: target.kind as PackageKind });
+          incompatible.push({ reference: ref, actualKind: target.kind });
         }
       }
     }
@@ -207,7 +254,7 @@ export class PackageRegistry {
       const incompatible = refs.flatMap((ref) => {
         const target = this.get(ref.id);
         return target && target.kind !== ref.kind
-          ? [{ reference: ref, actualKind: target.kind as PackageKind }]
+          ? [{ reference: ref, actualKind: target.kind }]
           : [];
       });
       if (missing.length > 0 || incompatible.length > 0) {
@@ -359,6 +406,17 @@ export class PackageRegistry {
     this.packages.clear();
     this.byKind.clear();
     this.references.clear();
+    this.conflicts = [];
+  }
+
+  private getVersion(pkg: AnyPackage): string | undefined {
+    const record = pkg as unknown as Record<string, unknown>;
+    return typeof record.version === 'string' ? record.version : undefined;
+  }
+
+  private removePackageIndex(id: string, kind: PackageKind): void {
+    this.byKind.get(kind)?.delete(id);
+    this.references.delete(id);
   }
 
   /**

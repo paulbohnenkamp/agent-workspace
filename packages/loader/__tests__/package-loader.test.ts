@@ -46,6 +46,18 @@ describe('PackageLoader', () => {
       const hasTools = result.packages.some((p) => p.package.kind === 'tool');
       expect(hasTools).toBe(false);
     });
+
+    it('should validate representative example projects against the package schemas', async () => {
+      for (const rootPath of [
+        './docs/examples/decision-project',
+        './docs/examples/hiring-project',
+        './docs/examples/land-project',
+      ]) {
+        const loader = new PackageLoader({ rootPath, validateSchema: true });
+        const result = await loader.discover();
+        expect(result.failed).toEqual([]);
+      }
+    });
   });
 
   describe('validation', () => {
@@ -232,7 +244,7 @@ describe('PackageRegistry', () => {
         package: agentWithMissing,
         sourcePath: agentWithMissing.sourcePath,
         success: true,
-      });
+      }, { conflictPolicy: 'replace' });
 
       const issues = registry.validateReferences();
       const agentIssues = issues.find((i) => i.id === agentWithMissing.id);
@@ -314,6 +326,37 @@ describe('PackageRegistry', () => {
 
       const resolution = registry.resolveReferences();
       expect(resolution.circular.length).toBeGreaterThan(0);
+    });
+
+    it('should reject duplicate package IDs by default and support explicit replacement', () => {
+      const duplicate = { ...tool, sourcePath: '/tools/duplicate/search.yaml', version: '2.0.0' };
+
+      expect(() => registry.register({
+        package: duplicate,
+        sourcePath: duplicate.sourcePath,
+        success: true,
+      })).toThrow("Package ID conflict for 'search'");
+      expect(registry.getConflicts()).toEqual([
+        expect.objectContaining({
+          id: 'search',
+          policy: 'error',
+          existing: expect.objectContaining({ version: '1.0.0' }),
+          incoming: expect.objectContaining({ version: '2.0.0' }),
+        }),
+      ]);
+
+      registry.register({
+        package: duplicate,
+        sourcePath: duplicate.sourcePath,
+        success: true,
+      }, { conflictPolicy: 'replace' });
+      expect(registry.get<Tool>('search')?.version).toBe('2.0.0');
+
+      const kept = { ...tool, sourcePath: '/tools/kept/search.yaml', version: '3.0.0' };
+      registry.register({ package: kept, sourcePath: kept.sourcePath, success: true }, {
+        conflictPolicy: 'keep-first',
+      });
+      expect(registry.get<Tool>('search')?.version).toBe('2.0.0');
     });
   });
 

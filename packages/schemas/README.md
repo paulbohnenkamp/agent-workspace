@@ -26,6 +26,16 @@ const valid = validate(myProjectData);
 - **event.schema.json** - Audit trail and activity records
 - **participant.schema.json** - Humans and agents in projects
 - **resource.schema.json** - Shared context data
+- **package.schema.json** - Common filesystem package metadata
+- **project.schema.json** - Project package definition
+- **agent.schema.json** - Agent package definition
+- **tool.schema.json** - Tool package definition
+- **skill.schema.json** - Skill package definition
+- **channel.schema.json** - Channel package definition
+- **connector-package.schema.json** - Connector package definition
+- **schedule.schema.json** - Schedule package definition
+- **sandbox.schema.json** - Sandbox package definition
+- **artifact-type.schema.json** - Artifact type package definition
 
 ### Supporting Schemas
 

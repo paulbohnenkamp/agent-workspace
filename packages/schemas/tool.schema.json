@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/tool.schema.json",
+  "allOf": [{ "$ref": "package.schema.json" }, { "type": "object", "properties": { "kind": { "const": "tool" }, "connector": { "$ref": "#/$defs/ref" }, "implementation": { "type": "object" }, "parameters": { "type": "object" }, "returns": { "type": "object" }, "policy": { "type": "object" } } }],
+  "$defs": { "ref": { "type": "object", "required": ["id"], "properties": { "id": { "type": "string", "minLength": 1 }, "path": { "type": "string" } }, "additionalProperties": true } }
+}

@@ -23,6 +23,8 @@ export type {
   AnyPackage,
   PackageRef,
   IncompatiblePackageRef,
+  PackageConflict,
+  PackageConflictPolicy,
   ReferenceResolutionResult,
   ValidationOptions,
   ValidationError,

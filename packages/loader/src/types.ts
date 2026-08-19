@@ -25,7 +25,7 @@ export type PackageKind =
   | 'skill'
   | 'schedule'
   | 'resource'
-  | 'artifact'
+  | 'artifact-type'
   | 'channel'
   | 'connector'
   | 'sandbox';
@@ -111,6 +111,15 @@ export type PackageRef = {
 export type IncompatiblePackageRef = {
   reference: PackageRef;
   actualKind: PackageKind;
+}
+
+export type PackageConflictPolicy = 'error' | 'keep-first' | 'replace';
+
+export type PackageConflict = {
+  id: string;
+  existing: { sourcePath: string; version?: string; kind?: PackageKind };
+  incoming: { sourcePath: string; version?: string; kind?: PackageKind };
+  policy: PackageConflictPolicy;
 }
 
 /**

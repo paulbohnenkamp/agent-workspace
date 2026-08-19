@@ -10,6 +10,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@awp/schemas": "*",
     "@awp/types": "*",
     "yaml": "^2.3.0"
   },

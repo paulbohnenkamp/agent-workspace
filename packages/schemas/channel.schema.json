@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-workspace.dev/schemas/channel.schema.json",
+  "allOf": [{ "$ref": "package.schema.json" }, { "type": "object", "properties": { "kind": { "const": "channel" }, "type": { "type": "string", "minLength": 1 }, "config": { "type": "object" }, "implementation": { "type": "object" } } }]
+}
