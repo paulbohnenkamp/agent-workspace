@@ -25,9 +25,9 @@ The repository is a working vertical slice, not yet a complete platform:
   resumable sessions, authorization, complete validation, and persisted
   collaboration records.
 
-The next milestone is to make the existing dynamic workspace a durable,
-authorized, testable end-to-end slice. After that, deepen the platform runtime
-and package contracts before adding broad integrations.
+The durable workspace and event-canonical runtime milestones are now complete.
+The next implementation focus is deterministic package/schema enforcement,
+followed by a clearer persistence boundary before broad integrations.
 
 ## Status legend
 
@@ -144,7 +144,7 @@ paths and messages, while all current hiring and land views pass.
 
 ### 3. Complete the event-canonical runtime path
 
-**Status:** In progress
+**Status:** Done
 
 **Plan:** [plans/event-canonical-runtime.md](plans/event-canonical-runtime.md)
 
@@ -162,7 +162,9 @@ resume the correct agent session, and recover its current state from events.
 
 ### 4. Harden package loading and schema enforcement
 
-**Status:** Next
+**Status:** In progress
+
+**Plan:** [plans/package-loading-schema-enforcement.md](plans/package-loading-schema-enforcement.md)
 
 Move beyond the loader’s current basic checks:
 

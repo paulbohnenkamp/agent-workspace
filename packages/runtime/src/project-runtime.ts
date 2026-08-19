@@ -25,6 +25,9 @@ import {
   ArtifactRecord,
   ThreadRecord,
   ProjectStats,
+  AgentExecutionProvider,
+  AgentExecutionResult,
+  ProjectRuntimeOptions,
 } from './types';
 import { applyEventToProjectState } from './event-projection';
 
@@ -34,14 +37,17 @@ import { applyEventToProjectState } from './event-projection';
 export class ProjectRuntime {
   private contexts = new Map<string, ProjectState>();
   private registry: PackageRegistry;
+  private agentProvider: AgentExecutionProvider;
 
-  constructor(registry: PackageRegistry) {
+  constructor(registry: PackageRegistry, options: ProjectRuntimeOptions = {}) {
     this.registry = registry;
+    this.agentProvider = options.agentProvider ?? this.defaultAgentProvider;
   }
 
-  private appendEvent(context: ProjectState, event: Event): void {
+  private appendEvent(context: ProjectState, event: Event): Event {
     context.events.push(event);
     applyEventToProjectState(context, event);
+    return event;
   }
 
   /**
@@ -150,6 +156,34 @@ export class ProjectRuntime {
 
     const runId = randomUUID();
     const now = new Date().toISOString();
+    const eventStartIndex = context.events.length;
+    const emittedEvents: Event[] = [];
+    let agentSessionId: string | undefined;
+
+    if (request.targetKind === 'agent') {
+      const session = this.getOrCreateAgentSession(context, request.targetId, request.threadId, runId);
+      agentSessionId = session.id;
+      const existingWaitingFor = session.context?.waitingFor;
+      if (existingWaitingFor) {
+        const resumedSession = {
+          ...session,
+          status: 'active' as const,
+          updatedAt: new Date().toISOString(),
+          context: { ...session.context, waitingFor: undefined, resumedAt: new Date().toISOString() },
+        };
+        const agentInstance = context.agents.find((entry) => entry.agent.id === request.targetId);
+        if (agentInstance) agentInstance.session = resumedSession;
+        emittedEvents.push(this.appendEvent(context, {
+          id: randomUUID(),
+          name: 'agent_session.resumed',
+          timestamp: resumedSession.updatedAt,
+          projectId,
+          runId,
+          agentSessionId: session.id,
+          payload: { session: resumedSession },
+        }));
+      }
+    }
 
     // Create run record
     const run: Run = {
@@ -161,6 +195,7 @@ export class ProjectRuntime {
       targetKind: request.targetKind,
       targetId: request.targetId,
       threadId: request.threadId,
+      agentSessionId,
       input: request.input,
       metadata: request.metadata,
     };
@@ -182,7 +217,7 @@ export class ProjectRuntime {
         },
       },
     };
-    this.appendEvent(context, startEvent);
+    emittedEvents.push(this.appendEvent(context, startEvent));
 
     try {
       // Execute based on target kind
@@ -199,7 +234,7 @@ export class ProjectRuntime {
           break;
 
         case 'agent':
-          output = await this.executeAgent(context, request.targetId, request.input);
+          output = await this.executeAgent(context, request.targetId, request.input, runId);
           break;
 
         case 'schedule':
@@ -227,13 +262,25 @@ export class ProjectRuntime {
         runId,
         payload: { run: completedRun },
       };
-      this.appendEvent(context, successEvent);
+      emittedEvents.push(this.appendEvent(context, successEvent));
+
+      const agentOutcome = request.targetKind === 'agent'
+        ? this.getAgentOutcome(output)
+        : undefined;
+      if (agentOutcome?.status === 'waiting') {
+        emittedEvents.push(this.markAgentSessionWaiting(context, projectId, runId, agentSessionId!, agentOutcome));
+      } else if (request.targetKind === 'agent') {
+        emittedEvents.push(this.updateAgentSession(context, projectId, runId, agentSessionId!, {
+          status: 'idle',
+          context: agentOutcome?.sessionContext,
+        }));
+      }
 
       return {
         run: context.runs.get(runId)!,
         success: true,
         artifactsCreated,
-        events: [startEvent, successEvent],
+        events: context.events.slice(eventStartIndex),
       };
     } catch (error) {
       // Update run with error
@@ -257,14 +304,21 @@ export class ProjectRuntime {
         runId,
         payload: { run: failedRun },
       };
-      this.appendEvent(context, failEvent);
+      emittedEvents.push(this.appendEvent(context, failEvent));
+
+      if (request.targetKind === 'agent' && agentSessionId) {
+        emittedEvents.push(this.updateAgentSession(context, projectId, runId, agentSessionId, {
+          status: 'idle',
+          context: { lastError: failedRun.error },
+        }));
+      }
 
       return {
         run: context.runs.get(runId)!,
         success: false,
         error: failedRun.error,
         artifactsCreated: [],
-        events: [startEvent, failEvent],
+        events: context.events.slice(eventStartIndex),
       };
     }
   }
@@ -335,12 +389,12 @@ export class ProjectRuntime {
   /**
    * Execute an agent
    */
-  private executeAgent(
+  private async executeAgent(
     context: ProjectState,
     agentId: string,
-    _input?: Record<string, unknown>,
+    input?: Record<string, unknown>,
+    runId?: string,
   ): Promise<Record<string, unknown>> {
-    void _input;
     const agentInstance = context.agents.find((a) => a.agent.id === agentId);
     if (!agentInstance) {
       throw new Error(`Agent not found or not loaded: ${agentId}`);
@@ -352,26 +406,153 @@ export class ProjectRuntime {
     agentInstance.status = 'running';
 
     try {
-      // Simulate agent execution
-      // In real implementation, this would invoke the agent model
-      const result = {
-        agentId: agent.id,
-        model: agent.model ?? 'claude-opus',
-        role: agent.role,
-        toolsAvailable: agentInstance.tools.map((t) => t.id),
-        skillsAvailable: agentInstance.skills.map((s) => s.id),
+      const session = context.agentSessions.get(agentInstance.session?.id ?? '');
+      if (!session) {
+        throw new Error(`Agent session not found for agent: ${agentId}`);
+      }
+      const result = await this.agentProvider({
+        project: context.project,
+        agent,
+        tools: agentInstance.tools,
+        skills: agentInstance.skills,
+        input,
+        session,
+      });
+      agentInstance.status = 'idle';
+      return {
+        ...(result.output ?? {}),
         execution: {
-          started: new Date().toISOString(),
-          status: 'completed',
+          status: result.status ?? 'succeeded',
+          stopReason: result.stopReason,
+          sessionContext: result.sessionContext,
+          runId,
         },
       };
-
-      agentInstance.status = 'idle';
-      return Promise.resolve(result);
     } catch (error) {
       agentInstance.status = 'failed';
       throw error;
     }
+  }
+
+  private defaultAgentProvider: AgentExecutionProvider = ({ agent, tools, skills }) => Promise.resolve({
+    output: {
+      agentId: agent.id,
+      model: agent.model ?? 'claude-opus',
+      role: agent.role,
+      toolsAvailable: tools.map((tool) => tool.id),
+      skillsAvailable: skills.map((skill) => skill.id),
+    },
+  });
+
+  private getOrCreateAgentSession(
+    context: ProjectState,
+    agentId: string,
+    threadId: string | undefined,
+    runId: string,
+  ): import('@awp/types').AgentSession {
+    const agentInstance = context.agents.find((entry) => entry.agent.id === agentId);
+    if (!agentInstance) {
+      throw new Error(`Agent not found or not loaded: ${agentId}`);
+    }
+    const existing = agentInstance.session;
+    const session = existing ?? {
+      id: randomUUID(),
+      projectId: context.project.id,
+      agentId,
+      status: 'active' as const,
+      createdAt: new Date().toISOString(),
+      runs: [],
+      threads: [],
+      context: {},
+    };
+    const updated = {
+      ...session,
+      status: 'active' as const,
+      updatedAt: new Date().toISOString(),
+      runs: [...(session.runs ?? []), runId],
+      threads: threadId && !(session.threads ?? []).includes(threadId)
+        ? [...(session.threads ?? []), threadId]
+        : session.threads,
+    };
+    agentInstance.session = updated;
+    this.appendEvent(context, {
+      id: randomUUID(),
+      name: existing ? 'agent_session.updated' : 'agent_session.created',
+          timestamp: updated.updatedAt,
+      projectId: context.project.id,
+      runId,
+      agentSessionId: updated.id,
+      payload: { session: updated },
+    });
+    return updated;
+  }
+
+  private getAgentOutcome(output: Record<string, unknown>): AgentExecutionResult {
+    const execution = output.execution;
+    if (!execution || typeof execution !== 'object' || Array.isArray(execution)) {
+      return { output };
+    }
+    const details = execution as Record<string, unknown>;
+    return {
+      output,
+      status: details.status === 'waiting' ? 'waiting' : 'succeeded',
+      stopReason: typeof details.stopReason === 'string' ? details.stopReason : undefined,
+      sessionContext: details.sessionContext && typeof details.sessionContext === 'object'
+        ? details.sessionContext as Record<string, unknown>
+        : undefined,
+    };
+  }
+
+  private markAgentSessionWaiting(
+    context: ProjectState,
+    projectId: string,
+    runId: string,
+    sessionId: string,
+    outcome: AgentExecutionResult,
+  ): Event {
+    return this.updateAgentSession(context, projectId, runId, sessionId, {
+      status: 'idle',
+      context: {
+        ...(outcome.sessionContext ?? {}),
+        waitingFor: outcome.sessionContext?.waitingFor ?? 'external-event',
+        stopReason: outcome.stopReason,
+      },
+      eventName: 'agent_session.waiting',
+    });
+  }
+
+  private updateAgentSession(
+    context: ProjectState,
+    projectId: string,
+    runId: string,
+    sessionId: string,
+    updates: {
+      status: import('@awp/types').AgentSession['status'];
+      context?: Record<string, unknown>;
+      eventName?: string;
+    },
+  ): Event {
+    const current = context.agentSessions.get(sessionId);
+    if (!current) {
+      throw new Error(`Agent session not found: ${sessionId}`);
+    }
+    const session = {
+      ...current,
+      status: updates.status,
+      updatedAt: new Date().toISOString(),
+      context: updates.context ? { ...(current.context ?? {}), ...updates.context } : current.context,
+    };
+    const agentInstance = context.agents.find((entry) => entry.agent.id === session.agentId);
+    if (agentInstance) agentInstance.session = session;
+    return this.appendEvent(context, {
+      id: randomUUID(),
+      name: updates.eventName ?? 'agent_session.updated',
+      timestamp: session.updatedAt,
+      projectId,
+      runId,
+      agentSessionId: session.id,
+      payload: { session },
+    });
   }
 
   /**
