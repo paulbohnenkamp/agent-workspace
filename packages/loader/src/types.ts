@@ -107,6 +107,12 @@ export type PackageRef = {
   lineNumber?: number;
 }
 
+/** A reference whose ID exists but resolves to the wrong package kind. */
+export type IncompatiblePackageRef = {
+  reference: PackageRef;
+  actualKind: PackageKind;
+}
+
 /**
  * Result of reference resolution
  */
@@ -117,6 +123,8 @@ export type ReferenceResolutionResult = {
   resolved: number;
   /** Unresolved references */
   unresolved: PackageRef[];
+  /** References resolved to a package of the wrong kind */
+  incompatible: IncompatiblePackageRef[];
   /** Circular dependencies detected */
   circular: string[][];
 }

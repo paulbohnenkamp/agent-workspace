@@ -17,6 +17,7 @@ import {
   ReferenceResolutionResult,
   PackageKind,
   PackageRegistryStats,
+  IncompatiblePackageRef,
 } from './types';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -110,16 +111,20 @@ export class PackageRegistry {
     let resolved = 0;
     let total = 0;
     const unresolved: PackageRef[] = [];
+    const incompatible: IncompatiblePackageRef[] = [];
     const circular: string[][] = [];
 
     // Check all references
     for (const refs of this.references.values()) {
       for (const ref of refs) {
         total++;
-        if (this.has(ref.id)) {
+        const target = this.get(ref.id);
+        if (!target) {
+          unresolved.push(ref);
+        } else if (target.kind === ref.kind) {
           resolved++;
         } else {
-          unresolved.push(ref);
+          incompatible.push({ reference: ref, actualKind: target.kind as PackageKind });
         }
       }
     }
@@ -136,6 +141,7 @@ export class PackageRegistry {
       total,
       resolved,
       unresolved,
+      incompatible,
       circular,
     };
   }
@@ -185,13 +191,27 @@ export class PackageRegistry {
   /**
    * Validate all references
    */
-  validateReferences(): { id: string; missing: PackageRef[] }[] {
-    const issues: { id: string; missing: PackageRef[] }[] = [];
+  validateReferences(): {
+    id: string;
+    missing: PackageRef[];
+    incompatible: IncompatiblePackageRef[];
+  }[] {
+    const issues: {
+      id: string;
+      missing: PackageRef[];
+      incompatible: IncompatiblePackageRef[];
+    }[] = [];
 
     for (const [packageId, refs] of this.references) {
       const missing = refs.filter((ref) => !this.has(ref.id));
-      if (missing.length > 0) {
-        issues.push({ id: packageId, missing });
+      const incompatible = refs.flatMap((ref) => {
+        const target = this.get(ref.id);
+        return target && target.kind !== ref.kind
+          ? [{ reference: ref, actualKind: target.kind as PackageKind }]
+          : [];
+      });
+      if (missing.length > 0 || incompatible.length > 0) {
+        issues.push({ id: packageId, missing, incompatible });
       }
     }
 

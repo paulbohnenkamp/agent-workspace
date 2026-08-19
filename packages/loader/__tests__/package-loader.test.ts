@@ -252,6 +252,40 @@ describe('PackageRegistry', () => {
       expect(resolution.total).toBeGreaterThan(0);
       expect(resolution.resolved).toBe(resolution.total);
       expect(resolution.unresolved).toHaveLength(0);
+      expect(resolution.incompatible).toHaveLength(0);
+    });
+
+    it('should report references resolved to the wrong package kind', () => {
+      const projectWithWrongKind = {
+        kind: 'project' as const,
+        id: 'wrong-kind-project',
+        name: 'Wrong Kind Project',
+        version: '1.0.0',
+        sourcePath: '/projects/wrong-kind-project.yaml',
+        agents: [{ id: 'search' }],
+      };
+      registry.register({
+        package: projectWithWrongKind,
+        sourcePath: projectWithWrongKind.sourcePath,
+        success: true,
+      });
+
+      const resolution = registry.resolveReferences();
+      const issues = registry.validateReferences();
+
+      expect(resolution.resolved).toBe(resolution.total - 1);
+      expect(resolution.incompatible).toEqual([
+        expect.objectContaining({
+          actualKind: 'tool',
+          reference: expect.objectContaining({ id: 'search', kind: 'agent' }),
+        }),
+      ]);
+      expect(issues).toContainEqual(expect.objectContaining({
+        id: 'wrong-kind-project',
+        incompatible: expect.arrayContaining([
+          expect.objectContaining({ actualKind: 'tool' }),
+        ]),
+      }));
     });
 
     it('should detect circular dependencies', () => {

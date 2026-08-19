@@ -331,7 +331,11 @@ class PackageRegistry {
   getDependencies(packageId: string, deep?: boolean): Map<string, AnyPackage>;
   
   // Validate all references
-  validateReferences(): Array<{ id: string; missing: PackageRef[] }>;
+  validateReferences(): Array<{
+    id: string;
+    missing: PackageRef[];
+    incompatible: IncompatiblePackageRef[];
+  }>;
   
   // Resolve tool references
   resolveTools(pkg: Agent | Skill): Tool[];

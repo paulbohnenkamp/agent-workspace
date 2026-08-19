@@ -11,15 +11,15 @@ Agent Workspace explores what an agent platform needs beyond a single prompt:
 durable projects, reusable capabilities, resumable work, human review,
 auditable outcomes, and a UI projected from the underlying system.
 
-The repository includes a working React 19 and TypeScript workspace
-slice, reusable components, metadata-driven view interpretation and
-validation, typed platform packages, an event-oriented runtime model,
-tests, CI, architecture records, specifications, implementation plans,
-and working examples.
+The repository includes a working React 19 and TypeScript workspace,
+reusable components, metadata-driven view interpretation and validation,
+typed platform packages, an event-oriented runtime model, tests, CI,
+architecture records, specifications, implementation plans, and working
+examples.
 
-The repository also contains an early Next.js application slice for the
-dynamic workspace direction. It uses the land project metadata and projected
-state, a Lucide-based shell, and a Prisma/PostgreSQL persistence boundary.
+The repository also contains a Next.js application foundation for dynamic
+workspaces. It uses the land project metadata and projected state, a
+Lucide-based shell, and a Prisma/PostgreSQL persistence boundary.
 
 Run the dynamic app with:
 
@@ -34,7 +34,7 @@ available while the database repository is connected to the application
 projections.
 
 > **Project status:** Active development. The architecture, type model,
-> repository harness, and React workspace slice are substantial; the
+> repository harness, and React workspace are substantial; the
 > complete production runtime, persistence, schema enforcement,
 > scheduling, and model-provider integrations are still being built.
 
@@ -237,7 +237,7 @@ Specification
     ↓
 Execution plan
     ↓
-Small implementation slice
+Focused implementation change
     ↓
 Tests, lint, build, and example verification
     ↓
@@ -261,9 +261,8 @@ The workflow is intentionally durable:
     knowledge.
 6.  ADRs explain major architectural decisions and rejected
     alternatives.
-7.  Completed work updates the roadmap, examples, and repository
-    guidance so later human or AI contributors need less repeated
-    explanation.
+7.  Stable project behavior is reflected in the documentation and examples;
+    implementation status is maintained in the roadmap and plans.
 
 The goal is cumulative engineering knowledge: later refactors and new
 requirements should become faster and more consistent because the
@@ -345,9 +344,7 @@ agent-workspace/
 └── CHANGELOG.md
 ```
 
-## Current implementation status
-
-### Working today
+## Capabilities
 
 -   Architecture V3 and ADRs
 -   Shared TypeScript definition and runtime types
@@ -358,26 +355,17 @@ agent-workspace/
 -   Reusable component registry and catalog
 -   Metadata-driven fields, regions, bindings, and layouts
 -   Multiple named hiring-project views
--   A Next.js land workspace slice with a persistent assistant composer
+-   A Next.js land workspace with a persistent assistant composer
 -   View and component-alias validation
 -   Root-level build, lint, test, and workspace-UI verification
 -   GitHub Actions CI
--   Specs, execution plans, examples, and completion tracking
+-   Specs, execution plans, examples, and contributor guidance
 
-### Still in progress
-
--   Full JSON Schema enforcement across all packages and views
--   Complete runtime behavior aligned with the architecture
--   Rich event replay and projection recovery
--   Production database persistence
--   Complete artifact versioning and publication workflows
--   Real model-provider and agent execution integrations
--   Scheduling, wake-on-event execution, and external channels
--   Broader end-to-end and browser test coverage
--   Production hardening, authorization, observability, and deployment
-
-See [`ROADMAP.md`](ROADMAP.md) for the detailed implementation map and
-[`plans/index.md`](plans/index.md) for the current work queue.
+The project is under active development. The architecture, package model,
+workspace renderer, event-oriented runtime foundation, authorization path, and
+Next.js land workspace are implemented and tested. The remaining work is
+tracked separately in [`ROADMAP.md`](ROADMAP.md), with detailed execution
+plans listed in [`plans/index.md`](plans/index.md).
 
 ## Start here
 
