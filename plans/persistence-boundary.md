@@ -67,7 +67,12 @@ state across in-memory, file-backed, and database-backed implementations.
 
 ## Completion Notes
 
-- Work not started.
+- Initial audit complete. The runtime already has event-replay behavior for
+  in-memory and JSON file repositories, while the Prisma layer currently
+  stores a land-specific workspace projection plus application event records.
+- The next implementation must define the shared event envelope and recovery
+  contract between those paths; artifact versions and agent sessions are not
+  yet represented in the Prisma persistence model.
 
 ## Outcome Summary
 
