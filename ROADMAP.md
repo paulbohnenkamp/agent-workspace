@@ -1,1063 +1,242 @@
 # Agent Platform Roadmap
 
-Implementation roadmap for building out the Agent Platform ecosystem. Architecture V3 is complete and frozen.
+Implementation roadmap for the Agent Platform. Architecture V3 is complete and
+frozen; this document tracks implementation maturity and the order of the next
+useful slices.
 
-**Focus:** Implementation and ecosystem evolution, not architecture churn.
+Use `docs/specs/` for intended behavior, `plans/index.md` for active execution
+plans, and this file for the verified product-level status.
 
-Active implementation plans live in `plans/index.md`. Use `docs/specs/` for intended behavior and acceptance criteria. Check the matching roadmap item when the plan is done.
+**Last reviewed:** 2026-08-19
 
----
+## Current position
 
-## Current Snapshot
+The repository is a working vertical slice, not yet a complete platform:
 
-The repository is now in a good Architecture V3 state:
+- The Architecture V3 model, package vocabulary, examples, and reference docs
+  are established.
+- The TypeScript packages provide working foundations for package loading, tool
+  registries, event projections, file-backed repositories, and runtime tests.
+- The shared workspace composition is proven in React through the hiring and
+  land examples.
+- The land workspace now has a Next.js/Prisma application foundation, seeded
+  projections, action routes, and deterministic assistant behavior.
+- The main gap is production-grade runtime behavior: durable execution,
+  resumable sessions, authorization, complete validation, and persisted
+  collaboration records.
 
-- The V3 vocabulary is consistent across architecture docs, examples, posters, and root navigation.
-- `docs/README.md` is the reference-docs map for new readers, and `docs/specs/` carries intended behavior and acceptance criteria.
-- Example projects under `docs/examples/` use the V3 package layout and align to the archetype images.
-- Architecture posters are SVG-backed Markdown pages that explain runtime behavior visually.
-- Jest is wired at the workspace level and currently passes from the root test command.
-- The top-level docs still need a more polished product-story treatment and a clearer release-notes path.
+The next milestone is to make the existing dynamic workspace a durable,
+authorized, testable end-to-end slice. After that, deepen the platform runtime
+and package contracts before adding broad integrations.
 
-What this means in practice:
+## Status legend
 
-- The architecture and documentation are in better shape than the implementation.
-- Terminology cleanup, documentation consolidation, and architecture framing are largely complete.
-- The next meaningful work is turning the documented model into more complete runtime behavior and visible workspace flows.
+- **Done** — implemented and verified in the repository.
+- **In progress** — an active plan or implementation exists, with explicit
+  remaining work.
+- **Next** — the recommended next implementation slice.
+- **Backlog** — valid future work, not currently sequenced.
+- **Deferred** — intentionally postponed until the core runtime is stronger.
 
-## Recommended Next Work
+## Done
 
-If a future agent needs to choose what to do next, prefer this order:
+### Architecture and documentation foundation
 
-1. Make the runtime behavior match the architecture more closely.
-2. Build a thin end-to-end UI slice early so the filesystem model, event projections, and workspace interpretation are proven together.
-3. Add persistence and execution behavior before adding new abstractions.
-4. Improve validation and package/schema enforcement.
-5. Clean up the public-facing docs story and release flow so the repo presents professionally.
-6. Only after that, add broader integrations like channels, schedules, and richer tool providers.
+- Architecture V3 and the layered vocabulary are documented and frozen.
+- The ADR set, contributor guide, documentation map, specifications index, and
+  architecture posters are in place.
+- Example projects use the V3 filesystem package layout.
+- The repository has a root `src/` layout and package-local `packages/*/src/`
+  layouts.
 
-In other words:
+### Package and runtime foundations
 
-- Prefer implementation depth over more architecture writing.
-- Treat terminology and documentation cleanup as maintenance work, not the main roadmap driver.
-- Prefer closing spec/code gaps over adding new concepts.
-- Prefer end-to-end vertical slices that prove the model works, including at least one real UI surface.
+- Core collaboration, integration, runtime, workspace, and interpreter types
+  exist in `packages/types`.
+- Base schemas and runtime schemas exist in `packages/schemas`.
+- YAML package discovery, basic validation, registries, and reference
+  resolution foundations exist in `packages/loader`.
+- Tool providers and tool registries exist in `packages/tools`.
+- Event projection/replay, project runtime behavior, and JSON file persistence
+  exist in `packages/runtime`.
+- The repository has automated CI plus passing root build, lint, and test
+  workflows.
 
----
+### Workspace and example slices
 
-## Guiding Principles
+- The metadata-driven workspace pipeline is established:
+  project filesystem → typed model → event projection → interpreter →
+  component registry → renderer.
+- Generic workspace component aliases, primitives, composites, and registry
+  guardrails are complete.
+- The hiring workspace demonstrates multiple named views and renderer
+  overlays.
+- The land project defines eight agents, domain resources, artifact schemas,
+  schedules, and five operational workspace views.
+- The land workspace route, representative projected state, in-memory
+  coordination actions, and shared workspace composition are working.
+- The associated completed milestones are recorded in
+  `plans/land-workspace-ui-milestone.md`,
+  `plans/workspace-ui-slice-milestone.md`, and the component-catalog plans.
 
-### The Architecture is Intentionally Layered
+### Quality maintenance
 
-Agent Platform separates:
+- Root source-layout migration is complete.
+- Package lint cleanup and generated-artifact/ESLint cleanup are complete.
+- Continuous integration is complete and recorded in
+  `plans/continuous-integration.md`.
+- The durable authorized workspace slice is complete: PostgreSQL migration,
+  seeded membership, authentication, authorization, and 7 passing Playwright
+  tests are recorded in `plans/durable-authorized-workspace.md`.
 
-- collaboration and work
-- integration and capability
-- runtime records and projected state
+## In progress
 
-This is a feature. The layered model forces:
-- Clear thinking about architectural boundaries
-- Composition over inheritance
-- Configuration over code
-- Reusable patterns instead of one-off abstractions
+### Dynamic workspace UI
 
-### Future Work Must
+**Plan:** [plans/dynamic-workspace-ui.md](plans/dynamic-workspace-ui.md)
 
-1. **Prefer implementation over abstraction** - Ship working code, not new concepts
-2. **Prefer configuration over unnecessary abstraction** - Extend via YAML, projections, and package structure where possible
-3. **Prefer borrowing emerging standards over inventing terminology** - Use established protocols, interface specifications, and ecosystem conventions where they fit
-4. **Require an ADR for structural architecture changes** - No major model changes without decision record and justification
+The Next.js/Prisma land workspace foundation is implemented. Remaining work:
 
-### What Should NOT Happen
+- Complete database/browser verification for authentication, sessions, and
+  project/matter authorization.
+- Verify persisted assistant threads, messages, runs, and citations through
+  Prisma with a configured database.
+- Add browser-level coverage for PostgreSQL-backed action, assistant, and
+  access-control flows.
+- Add streaming transport to the provider-neutral live assistant adapter.
+- Add shadcn/ui primitives and accessibility coverage where useful.
 
-- Blurring filesystem definitions, runtime history, and UI projections into one layer
-- Inventing new terminology (don't create custom versions of industry concepts)
-- Over-engineering extensibility (keep it simple until needed)
-- Hard-coding domain logic in platform code (belongs in agents, tools, skills, artifact schemas)
+### Documentation story and release flow
 
----
+**Plan:** [plans/docs-story-and-release-flow-cleanup.md](plans/docs-story-and-release-flow-cleanup.md)
 
-## Phase 1: Foundation ✅ (Complete)
+The repository has strong reference documentation but the public entry point is
+still being reshaped. Remaining work is the concise product README, changelog,
+release landing page, coherent example story, and final link/content audit.
 
-### Completed
+## Next implementation sequence
 
-- ✅ Core type definitions (packages/types)
-- ✅ Base JSON schemas added (packages/schemas)
-- ✅ Package metadata structure
-- ✅ YAML parsing and basic validation
-- ✅ Architecture specification (ARCHITECTURE_V3.md)
-- ✅ 11 Architecture Decision Records
-- ✅ Contributor guide (AGENTS.md)
+These are the next slices, in order. Each should have an active plan before
+implementation and should update this roadmap when verified.
 
-### Current State
-
-The type system is complete and aligned with V3:
-- collaboration/work package and runtime types
-- connector/tool capability separation
-- event-canonical runtime state with projections
-- clean separation of definitions, runtime history, and derived current state
-
----
-
-## Phase 2: Foundation Implementation (Current)
-
-**Practical priority inside Phase 2:**
-
-- First: runtime completion
-- Second: a thin but real UI/workspace slice
-- Third: persistence
-- Fourth: schema validation and loader hardening
-
-The next high-value runtime slice should explicitly cover:
-
-- Persisted collaboration state: canonical events plus the projections and records needed to recover long-running work
-- Wake-on-event execution: agents stay idle until schedules or relevant external/project events wake them
-- Evaluation outside the core loop: assessment remains an optional subsystem, not part of the main execution loop
-
-These three areas are the highest-leverage path to turning the repository from a strong architecture/spec repo into a stronger working platform repo.
-
-### 2.0 Workspace UI Slice
+### 1. Finish the durable dynamic workspace slice
 
 **Status:** Done
 
-The platform now has a clear UI architecture:
-
-- filesystem definitions are durable truth for project structure
-- events are durable truth for runtime history
-- projections derive current workspace state
-- interpreters build renderer-neutral view trees
-- component registries map declared view nodes to concrete UI components
-- renderers surface those workspaces in React, Ink, and future clients
-
-This means UI should be developed as an early proving slice, not deferred until everything else is finished.
-
-**Work:**
-- [x] Define the minimum `views/` definition shape needed for one end-to-end example, including more than one named project view and optional renderer-specific subdirectories
-- [x] Build a project loader -> project model -> projection -> interpreter pipeline for UI consumption
-- [x] Define a component registry contract for view nodes like artifact viewers, thread timelines, queues, and activity panels
-- [ ] Define a metadata pattern for `fields` plus `layout`, borrowing what works from wizard metadata without turning workspace views into wizards
-- [x] Implement one renderer-neutral workspace/view tree format
-- [x] Build one concrete renderer first (prefer React)
-- [x] Render artifacts, threads, runs, and event-derived status in one coherent workspace
-- [x] Show dormant/wake/resume behavior in the UI using hiring-project or a similar example
-- [x] Keep the UI as a projection over project state, not a second source of truth
-- [ ] Tighten loader/schema validation for missing or mismatched view metadata
-- [ ] Expand reference validation across view fields, regions, and renderer overlays
+Complete the remaining dynamic-workspace plan items so one real project can be
+opened, authorized, acted on, and resumed with durable state.
 
-**Deliverable:** One working filesystem-native workspace UI that proves the architecture
-
-### 2.1 Package Loading
+**Acceptance signal:** authenticated users can operate the land workspace;
+assistant and coordination records survive a restart; browser and
+accessibility checks cover the primary flows.
 
-**Status:** Core framework exists, partially improved, still needs hardening
+### 2. Validate view metadata and references
 
-**Work:**
-- [ ] Add full package validation with JSON Schema
-- [ ] Validate package references and missing dependencies clearly
-- [ ] Add package caching for performance
-- [ ] Support optional packages (Sandbox, Eval)
-- [ ] Add package dependency resolution
-- [ ] Add package version conflict detection
+**Status:** In progress
 
-**Deliverable:** Robust package discovery and loading
+**Plan:** [plans/view-metadata-validation.md](plans/view-metadata-validation.md)
 
-### 2.2 YAML Schemas
+Enforce the canonical `views/` shape and report missing or mismatched view
+metadata, fields, regions, components, and renderer overlays clearly.
 
-**Status:** Basic schemas exist, but enforcement is incomplete
+**Acceptance signal:** invalid views fail during loading/validation with useful
+paths and messages, while all current hiring and land views pass.
 
-**Work:**
-- [ ] Create comprehensive JSON schemas for all package kinds
-- [ ] Validate all YAML packages against schemas
-- [ ] Add schema documentation
-- [ ] Add schema versioning
-- [ ] Create schema evolution policy
+### 3. Complete the event-canonical runtime path
 
-**Deliverable:** Complete, documented schema specifications
+**Status:** Next
 
-### 2.3 Runtime Model
+Close the gap between the runtime types and actual execution behavior:
 
-**Status:** Type definitions exist, basic implementation exists, still incomplete relative to the architecture
+- resolve agents with their tools and skills;
+- execute real bounded runs through a provider boundary;
+- emit and replay canonical run, thread, artifact, participant, and session
+  events;
+- rebuild projected state after restart;
+- represent waiting, wake, resume, and failure transitions explicitly.
 
-**Work:**
-- [ ] Replace mock execution paths with real execution flow where appropriate
-- [ ] Implement event-primary `ProjectState` projection management thoroughly
-- [ ] Implement AgentInstance resolution (load agent with tools/skills)
-- [ ] Implement Run execution model
-- [ ] Implement Artifact creation and versioning
-- [ ] Implement Thread message handling
-- [ ] Implement rich canonical event emission and projection replay
-- [ ] Align runtime README/examples with the actual current runtime API
+**Acceptance signal:** a fixture project can run, stop waiting for an event,
+resume the correct agent session, and recover its current state from events.
 
-**Deliverable:** Complete project runtime engine
+### 4. Harden package loading and schema enforcement
 
-### 2.4 Persistence Layer
+**Status:** Next
 
-**Status:** Architecture expects persistence; implementation is moving toward event-canonical recovery
+Move beyond the loader’s current basic checks:
 
-**Work:**
-- [x] Implement file-based persistence (JSON files)
-- [ ] Implement database persistence (pluggable)
-- [ ] Implement artifact versioning storage
-- [x] Implement event log persistence
-- [ ] Separate persisted event log from cached projections if needed
-- [ ] Add persistence abstraction layer (Repository pattern)
-- [ ] Add backup and recovery mechanisms
+- validate every supported package kind against JSON Schema;
+- make schema failures fatal when validation is requested, rather than warnings;
+- validate references and dependency graphs with actionable errors;
+- define package/version conflict behavior;
+- document schema versioning and evolution.
 
-**Deliverable:** Pluggable persistence implementation
+**Acceptance signal:** valid example projects load cleanly and intentionally
+broken fixtures fail with deterministic diagnostics.
 
-### 2.5 View and Interpreter Model
+### 5. Establish the persistence boundary
 
-**Status:** Not started, now near-term
+**Status:** Next
 
-**Work:**
-- [ ] Define how `views/` participate in the project filesystem without overcomplicating package kinds
-- [ ] Define interpreter inputs: project model, projected state, view metadata
-- [ ] Define how multiple named views are routed and selected within one project
-- [ ] Define how renderer-specific overrides under `views/<view-id>/react` or `views/<view-id>/ink` layer on top of the canonical view definition
-- [ ] Define renderer-neutral workspace nodes and layout primitives
-- [ ] Define the component registry boundary between declarative view metadata and concrete components
-- [ ] Define how view-level `fields` resolve route params, projections, selections, and derived values
-- [ ] Define how UI components reference artifacts, threads, runs, and agent activity
-- [ ] Keep renderer concerns separate from interpreter concerns
-- [ ] Document the boundary between package loading, event replay, interpretation, and rendering
+Unify the file-backed runtime foundation and application persistence behind a
+clear repository boundary. Add artifact version storage, projection recovery,
+event-log versus projection-cache rules, and backup/recovery behavior where
+needed.
 
-### 2.6 Documentation Story and Release Flow
+**Acceptance signal:** the same runtime operations can be tested against an
+in-memory repository and a durable repository without changing domain behavior.
 
-**Status:** Repository slice complete; external companion guide remains
+## Later backlog
 
-**Work:**
-- [ ] Shorten the root README into a product-style entry point
-- [ ] Add `CHANGELOG.md`
-- [ ] Add a release notes landing page or equivalent
-- [ ] Add a hero screenshot for the workspace example
-- [ ] Rewrite example and docs entry points so they tell one coherent story
-- [ ] Remove stale or conflicting explanations across docs
+These areas are legitimate, but should follow the five slices above rather than
+compete with them.
 
-**Deliverable:** A polished documentation front door that reads like a product and points to releases clearly
+### Collaboration and work
 
-**Deliverable:** Clear view/interpreter contract for all renderers
+- Project lifecycle, initialization, participants, resources, and
+  import/export.
+- Artifact versioning, rendering, publishing, sharing, and dependency
+  tracking.
+- Production channels and schedules, including event-triggered dormancy and
+  wake-up behavior.
+- Resource storage, retrieval, search, and indexing.
 
-### 2.6 Root `src/` Source Layout Migration
+### Integration and capability
 
-**Status:** Complete
+- Complete skill composition and validation.
+- Tool permissions, quotas, audit logging, and discovery.
+- Connector-backed tools and MCP-backed tools with authentication, retries,
+  and monitoring.
+- Native tool execution only where a real project requires it, with sandbox
+  enforcement.
 
-**Work:**
-- [x] Move root-owned authored code into `src/`
-- [x] Update imports, build entrypoints, and scripts for the new layout
-- [x] Tighten lint/format scope to source trees and ignore generated/runtime folders
-- [x] Keep package source under `packages/*/src/`
+### Developer experience and operations
 
-**Deliverable:** Root source code is clearly separated from generated output and runtime artifacts
+- CLI commands for project creation, validation, execution, inspection, and
+  export.
+- Project scaffolding and guided quickstarts.
+- Agent/tool test utilities and fixture generators.
+- Structured logs, metrics, tracing, health checks, and alerting.
 
-### 2.7 Package Types Lint Cleanup
+## Deferred exploration
 
-**Status:** Complete
+Do not treat these as core implementation priorities yet. They should be
+separate adapters, extensions, or experiments that preserve the V3 filesystem,
+event, projection, and package boundaries:
 
-**Work:**
-- [x] Normalize `packages/types/src/*` to current TypeScript lint conventions
-- [x] Remove or narrow `any` usage in the shared type model
-- [x] Re-run focused lint to confirm the package is clean
-
-**Deliverable:** Shared type declarations stop contributing avoidable lint debt
-
-### 2.8 Package Lint Cleanup
-
-**Status:** Complete
-
-**Work:**
-- [x] Clean `packages/loader/src`
-- [x] Clean `packages/runtime/src`
-- [x] Clean `packages/tools/src`
-- [x] Re-run repo-wide lint until clean
-
-**Deliverable:** Package source no longer blocks the repo lint pass
-
-### 2.9 ESLint Config and Generated Artifacts Cleanup
-
-**Status:** Complete
-
-**Work:**
-- [x] Rename the ESLint config to an ESM entrypoint
-- [x] Explicitly ignore generated schema outputs
-- [x] Re-run lint/build verification
-
-**Deliverable:** Lint stays focused on authored source and no longer emits the module warning
-
-### 2.10 Workspace Component Alias Standard
-
-**Status:** Complete
-
-**Work:**
-- [x] Define the canonical workspace component alias catalog
-- [x] Update `src/ComponentRegistry.tsx` to expose the canonical aliases
-- [x] Update `view.json` files and docs/examples to match the new aliases
-- [x] Add guardrails against unknown or duplicate component aliases
-
-**Deliverable:** Workspace view authors have one clear, generic component vocabulary
-
-### 2.11 Workspace Component Catalog
-
-**Status:** Complete
-
-**Work:**
-- [x] Inventory the full workspace primitive and composite component vocabulary
-- [x] Rename workspace/view-specific implementations to generic names
-- [x] Expand `src/ComponentRegistry.tsx` into the canonical source of truth
-- [x] Update docs/examples and tests to match the full catalog
-
-**Deliverable:** One registry answers “what can I use?” for workspace `view.json`
-
-### 2.12 Workspace Primitive Catalog Expansion
-
-**Status:** Done
-
-**Work:**
-- [x] Inventory layout, shell, and reusable content primitives separately from composites
-- [x] Add the missing generic primitive components to `src/ComponentRegistry.tsx`
-- [x] Update docs/examples/tests so the expanded catalog is the authoritative source of truth
-
-**Deliverable:** The registry exposes a fuller generic primitive catalog for workspace authors
-
----
-
-## Phase 3: Projects
-
-### 3.1 Project Lifecycle
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement project creation
-- [ ] Implement project initialization from template
-- [ ] Implement project state transitions (creation, active, archived)
-- [ ] Implement project cleanup
-- [ ] Add participant management
-- [ ] Add resource allocation
-
-**Deliverable:** Full project lifecycle management
-
-### 3.2 Project Templates
-
-**Status:** Not started
-
-**Work:**
-- [ ] Create project template format
-- [ ] Build template library (decision-making, analysis, planning, etc.)
-- [ ] Implement template instantiation
-- [ ] Add template customization
-- [ ] Document template creation
-
-**Deliverable:** Template system with reference templates
-
-### 3.3 Project Import/Export
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement project export (to archive)
-- [ ] Implement project import (from archive)
-- [ ] Handle migration between environments
-- [ ] Add compatibility checking
-- [ ] Document migration process
-
-**Deliverable:** Import/export and migration tools
-
-### 3.4 Project Validation
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement project structure validation
-- [ ] Validate all package references resolve
-- [ ] Validate no circular dependencies
-- [ ] Validate resource availability
-- [ ] Add validation reporting
-
-**Deliverable:** Comprehensive project validation
-
-### 3.5 Workspace UX
-
-**Status:** Not started
-
-**Work:**
-- [ ] Build one open-project workspace flow
-- [ ] Build one artifact review flow
-- [ ] Build one thread + approval flow for human-in-the-loop work
-- [ ] Build one activity timeline view driven by event history
-- [ ] Validate that project structure, projections, and UI states stay aligned
-
-**Deliverable:** A usable project workspace flow for one real scenario
-
-### 3.6 Land Management and Land Administration Project
-
-**Status:** Working repository slice complete; companion guide remains
-
-**Work:**
-- [x] Add the Architecture V3 land-department example project
-- [x] Add landman, acquisition, title, pooling, surface, and development workflows
-- [x] Add lease administration, division-order, royalty-owner, and records/compliance workflows
-- [x] Add WV title, pooling, unitization, and Appalachian land-domain resources
-- [x] Add shared land-management and land-administration artifact schemas
-- [x] Add acquisition, curative, lease, division-order, owner-relations, and compliance schedules
-- [x] Add acquisition, title, lease, owner-relations, and portfolio workspace views
-- [x] Add the implementation specification at `docs/specs/land-project.md`
-- [ ] Add the novice-oriented BookForge guide at `books/land-project/book.yaml` in the BookForge repository
-- [x] Validate package references, workspace views, and repository tests/build
-
-**Deliverable:** A complete educational land-management and land-administration project example with a companion domain-learning guide
-
-### 3.7 Land Workspace UI
-
-**Status:** Working repository slice complete; production hardening remains
-
-**Work:**
-- [x] Add the dedicated land workspace entrypoint and routes
-- [x] Populate all five views with representative projected state
-- [x] Preserve the shared queue, AI Assistant, artifact, and context-rail composition
-- [x] Add in-memory event and projection behavior for simulated coordination actions
-- [x] Add future-example authoring guidance to repository documentation
-- [x] Validate land routes, views, actions, tests, and builds
-
-**Deliverable:** A polished five-view land workspace supporting eight agents across shared operational surfaces
-
----
-
-## Phase 4: Agents
-
-### 4.1 Tool Registry
-
-**Status:** Basic implementation exists
-
-**Work:**
-- [ ] Implement tool registration
-- [ ] Implement tool discovery by type
-- [ ] Implement tool permissions/access control
-- [ ] Implement tool versioning
-- [ ] Add tool metadata search
-
-**Deliverable:** Complete tool registry
-
-### 4.2 Skill Loading
-
-**Status:** Basic support exists
-
-**Work:**
-- [ ] Implement skill loading with transitive tool resolution
-- [ ] Implement skill composition (skills using other skills)
-- [ ] Implement skill versioning
-- [ ] Add skill metadata and documentation
-- [ ] Implement skill validation
-
-**Deliverable:** Full skill composition support
-
-### 4.3 Channel Implementations
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement Slack channel integration
-- [ ] Implement email channel integration
-- [ ] Implement webhook channel integration
-- [ ] Implement HTTP POST channel
-- [ ] Add channel authentication handling
-- [ ] Add channel message formatting
-
-**Deliverable:** Multi-channel communication support
-
-### 4.4 Scheduling
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement cron-based scheduling
-- [ ] Implement event-based scheduling
-- [ ] Implement manual triggering
-- [ ] Implement schedule state management
-- [ ] Add schedule execution logging
-- [ ] Implement schedule enable/disable
-
-### 4.4.1 Event-Driven Dormancy
-
-**Status:** Needed for realistic long-lived agents
-
-**Work:**
-- [ ] Define dormant/idle wake-up behavior using existing AgentSession and Schedule state
-- [ ] Route project events to matching event schedules
-- [ ] Resume the correct agent/session from persisted project state
-- [ ] Prevent busy-loop polling when no triggering event exists
-- [ ] Record wake, sleep, and resume transitions in the event log
-
-**Deliverable:** Agents that stay dormant until an event or schedule activation requires work
-
-**Deliverable:** Full scheduling system
-
-### 4.5 Sandboxing Configuration
-
-**Status:** Optional package kind exists
-
-**Work:**
-- [ ] Implement sandbox policy enforcement
-- [ ] Implement resource limits (memory, CPU, timeout)
-- [ ] Implement operation allowlists/blocklists
-- [ ] Implement environment variable injection
-- [ ] Add sandbox validation
-- [ ] Document sandbox policies
-
-**Deliverable:** Sandbox configuration and enforcement
-
-### 4.6 Evaluation Support
-
-**Status:** Optional package kind exists, not implemented
-
-**Work:**
-- [ ] If/when evaluation systems needed:
-  - [ ] Keep evaluation execution separate from the primary run loop
-  - [ ] Define Eval package schema
-  - [ ] Implement evaluation execution
-  - [ ] Add evaluation result recording
-  - [ ] Implement evaluation metrics
-  - [ ] Add evaluation reporting
-
-**Deliverable:** Evaluation framework (if needed)
-
----
-
-## Phase 5: Artifacts
-
-### 5.1 Versioning
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement automatic artifact versioning
-- [ ] Implement version history storage
-- [ ] Implement version retrieval
-- [ ] Implement version comparison
-- [ ] Add version diff/delta tracking
-- [ ] Implement version pruning/cleanup
-
-**Deliverable:** Complete artifact versioning system
-
-### 5.2 Artifact Rendering
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement artifact schema to template conversion
-- [ ] Implement HTML rendering
-- [ ] Implement Markdown rendering
-- [ ] Implement custom rendering support
-- [ ] Add asset/resource handling
-
-**Deliverable:** Artifact rendering system
-
-### 5.3 Workspace Rendering
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement React renderer support for the renderer-neutral workspace tree
-- [ ] Implement Ink renderer support for the same tree where practical
-- [ ] Keep renderer-specific widgets behind a stable interpreter boundary
-- [ ] Add visual regression or snapshot coverage where useful
-
-**Deliverable:** Multiple renderers over one interpreted workspace model
-
-### 5.4 Publishing
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement artifact publication workflow
-- [ ] Implement publication status tracking
-- [ ] Implement publication access control
-- [ ] Add publication notifications
-- [ ] Implement withdrawal/archival
-
-**Deliverable:** Artifact publishing workflow
-
-### 5.5 Sharing
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement artifact sharing controls
-- [ ] Implement temporary access tokens
-- [ ] Implement share expiration
-- [ ] Implement share auditing
-- [ ] Add share notifications
-
-**Deliverable:** Artifact sharing system
-
-### 5.6 Dependency Tracking
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement artifact dependency graph
-- [ ] Implement dependency resolution
-- [ ] Implement circular dependency detection
-- [ ] Add dependency visualization
-- [ ] Implement impact analysis
-
-**Deliverable:** Artifact dependency tracking
-
----
-
-## Phase 6: Resources
-
-### 6.1 File Resources
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement file resource storage
-- [ ] Implement file versioning
-- [ ] Implement file access control
-- [ ] Implement large file handling
-- [ ] Add file compression/decompression
-
-**Deliverable:** File resource support
-
-### 6.2 Search
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement resource metadata search
-- [ ] Implement full-text search (if large deployments need it)
-- [ ] Implement search indexing
-- [ ] Add search filtering
-- [ ] Implement search performance optimization
-
-**Deliverable:** Resource search capability
-
-### 6.3 Retrieval
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement resource retrieval API
-- [ ] Implement resource caching
-- [ ] Implement resource streaming
-- [ ] Add retrieval metrics/monitoring
-- [ ] Implement retrieval failure handling
-
-**Deliverable:** Efficient resource retrieval
-
-### 6.4 Indexing
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement resource indexing strategy
-- [ ] Implement index maintenance
-- [ ] Implement index rebuilding
-- [ ] Add index statistics
-- [ ] Implement index optimization
-
-**Deliverable:** Resource indexing system
-
----
-
-## Phase 7: Tools
-
-### 7.1 Native Tools
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement JavaScript/TypeScript tool execution
-- [ ] Implement Python tool execution
-- [ ] Implement Go tool execution
-- [ ] Add code safety/sandboxing
-- [ ] Implement tool discovery from code
-- [ ] Add performance profiling
-
-**Deliverable:** Multi-language native tool support
-
-### 7.2 Connector-Backed Tools
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement database connector (SQL, NoSQL)
-- [ ] Implement SaaS connectors (Salesforce, etc.)
-- [ ] Implement data source connectors
-- [ ] Add connection pooling
-- [ ] Implement connection error handling
-- [ ] Add performance monitoring
-
-**Deliverable:** Enterprise connector support
-
-### 7.3 MCP-Backed Tools
-
-**Status:** Type definitions exist
-
-**Work:**
-- [ ] Implement MCP server client
-- [ ] Implement MCP capability discovery
-- [ ] Implement MCP request/response handling
-- [ ] Add MCP server authentication
-- [ ] Implement timeout and retry logic
-- [ ] Add MCP monitoring and logging
-
-**Deliverable:** Full MCP integration
-
-### 7.4 Tool Discovery
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement tool metadata search
-- [ ] Implement tool capability matching
-- [ ] Implement tool recommendation engine
-- [ ] Add tool usage analytics
-- [ ] Implement tool rating/feedback
-
-**Deliverable:** Tool discovery and recommendation
-
-### 7.5 Tool Permissions
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement tool-level access control
-- [ ] Implement tool capability restrictions
-- [ ] Implement tool usage quotas
-- [ ] Add tool audit logging
-- [ ] Implement tool deprecation workflow
-
-**Deliverable:** Tool permission and access system
-
----
-
-## Phase 8: Developer Experience
-
-### 8.1 CLI
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement `agent new` (create project)
-- [ ] Implement `agent add` (add agent/tool/skill)
-- [ ] Implement `agent run` (execute run)
-- [ ] Implement `agent show` (display package)
-- [ ] Implement `agent validate` (validate project)
-- [ ] Implement `agent export` (export project)
-
-**Deliverable:** Comprehensive CLI tooling
-
-### 8.2 Project Scaffolding
-
-**Status:** Not started
-
-**Work:**
-- [ ] Create project templates
-- [ ] Implement scaffolding generator
-- [ ] Add example projects
-- [ ] Create onboarding flow
-- [ ] Build quickstart guides
-
-**Deliverable:** Easy project creation and onboarding
-
-### 8.3 Validation
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement schema validation
-- [ ] Implement reference validation
-- [ ] Implement consistency checking
-- [ ] Add validation error reporting
-- [ ] Implement auto-fix for common issues
-
-**Deliverable:** Comprehensive validation tooling
-
-### 8.4 Documentation Generation
-
-**Status:** Not started
-
-**Work:**
-- [ ] Generate project documentation from packages
-- [ ] Generate agent capability documentation
-- [ ] Generate tool API documentation
-- [ ] Implement documentation rendering
-- [ ] Add documentation hosting
-
-**Deliverable:** Auto-generated documentation
-
-### 8.5 Testing Utilities
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement agent execution testing
-- [ ] Implement tool mocking
-- [ ] Implement artifact validation testing
-- [ ] Create test data generators
-- [ ] Add performance testing utilities
-
-**Deliverable:** Comprehensive testing framework
-
----
-
-## Phase 9: Observability
-
-### 9.1 Logging
-
-**Status:** Basic event system exists
-
-**Work:**
-- [ ] Implement structured logging
-- [ ] Implement log levels
-- [ ] Implement log aggregation support
-- [ ] Add log retention policies
-- [ ] Implement log searching
-
-**Deliverable:** Production logging system
-
-### 9.2 Metrics
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement execution metrics
-- [ ] Implement performance metrics
-- [ ] Implement usage metrics
-- [ ] Add metrics collection
-- [ ] Implement metrics export (Prometheus, etc.)
-
-**Deliverable:** Comprehensive metrics collection
-
-### 9.3 Tracing
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement execution tracing
-- [ ] Implement distributed tracing support
-- [ ] Add trace visualization
-- [ ] Implement trace storage
-- [ ] Add performance profiling
-
-**Deliverable:** Execution tracing system
-
-### 9.4 Monitoring
-
-**Status:** Not started
-
-**Work:**
-- [ ] Implement health checks
-- [ ] Implement alerting
-- [ ] Implement dashboards
-- [ ] Add anomaly detection
-- [ ] Implement incident response
-
-**Deliverable:** Production monitoring
-
----
-
-## Phase 10: Future Exploration
-
-### Do Not Implement Now
-
-The following are interesting areas for future exploration. Do NOT implement these as core platform features. Instead:
-1. Build as optional extensions (new package kinds)
-2. Build as separate tools/systems
-3. Build as examples showing how to use the platform
-
-### Microsoft/.NET Application and Runtime Option
-
-**Status:** Future exploration — not part of the land workspace
-
-Evaluate a Microsoft/.NET implementation path for organizations that prefer
-ASP.NET Core, Entity Framework Core, Microsoft Entra ID, Azure services, and
-Microsoft operational tooling. This is an implementation/deployment option,
-not a change to Architecture V3 or the package ontology.
-
-**Possible Future Approach:**
-
-- Keep the Next.js workspace UI initially and place an ASP.NET Core API behind
-  it.
-- Port repository and event persistence interfaces to C# implementations using
-  Entity Framework Core and PostgreSQL or Azure SQL.
-- Load the same filesystem YAML packages with a .NET YAML library; do not move
-  project, agent, skill, tool, resource, artifact, schedule, or view definitions
-  into C# classes.
-- Use Microsoft Entra ID for authentication and authorization.
-- Use ASP.NET Core SignalR for live projection, agent-run, notification, and
-  assistant updates.
-- Use Azure OpenAI behind the existing provider-neutral LLM/tool boundary.
-- Compare a future Blazor frontend only after the React/Next.js and ASP.NET
-  Core boundary is proven.
-
-**Work Required:**
-
-- Create a separate .NET solution and adapter boundary without replacing the
-  current TypeScript runtime prematurely.
-- Port package loading, view interpretation inputs, event append, projections,
-  runs, threads, and artifact persistence incrementally.
-- Define compatibility tests that render the same project/view metadata and
-  compare event and projection behavior across implementations.
-- Establish deployment, identity, secrets, telemetry, and integration guidance
-  for Azure-hosted environments.
-
-**Deliverable:** A separately deployable ASP.NET Core implementation option
-that interoperates with the Architecture V3 filesystem packages and preserves
-the same event, projection, artifact, and workspace behavior.
-
-### Multi-Agent Coordination
-
-**Rationale:** Complex, emergent behavior. Let agents/skills handle coordination via tools.
-
-**Possible Future Approach:**
-- Implement coordination agents (agents that orchestrate other agents)
-- Use existing Project/Agent/Run model
-- No new top-level architecture concepts needed
-
-**Example:**
-```yaml
-kind: agent
-id: orchestrator
-instructions: |
-  Coordinate multiple specialized agents to solve problems
-tools:
-  - id: analyst-agent
-  - id: reviewer-agent
-  - id: synthesizer-agent
-```
-
-### Distributed Execution
-
-**Rationale:** Start with single machine. Scaling is separate concern.
-
-**Possible Future Approach:**
-- Implement tool execution on remote workers
-- Add execution plan distribution
-- Implement result aggregation
-- No new top-level architecture concepts needed
-
-### Artifact Dependency Graphs
-
-**Rationale:** Interesting for complex projects, but optional.
-
-**Possible Future Approach:**
-- Track artifact dependencies in metadata
-- Build dependency visualization
-- Implement impact analysis
-- No new top-level architecture concepts needed
-
-### Hosted Runtimes
-
-**Rationale:** Self-hosted is fine for now. Hosting is infrastructure, not platform.
-
-**Possible Future Approach:**
-- Containerize runtime
-- Add cloud deployment tools
-- Implement multi-tenant isolation
-- No new top-level architecture concepts needed
-
----
-
-## Implementation Strategy
-
-### Principles
-
-1. **Build what's needed, not what's imagined** - Implement based on real projects
-2. **Keep the core minimal** - Platform should be small, tight, focused
-3. **Make extensions composable** - New capabilities should layer on top
-4. **Prefer examples over framework** - Show how to do things, don't build frameworks
-5. **Test thoroughly** - Platform code must be rock solid
-6. **Prove the architecture through a visible product slice** - Runtime, projections, and UI should meet early
-
-### Quality Gates
-
-Each phase must:
-- ✅ Have comprehensive type coverage
-- ✅ Have passing tests
-- ✅ Have documentation
-- ✅ Have at least one working example
-- ✅ Keep filesystem definitions, runtime history, and UI projections clearly separated
-
-### Release Strategy
-
-1. **Alpha:** Foundation phases complete (1-2)
-2. **Beta:** Core runtime plus one usable workspace UI slice complete (2-7)
-3. **1.0:** Developer experience solid and at least one renderer mature (1-8)
-4. **1.x:** Observability and stability (9)
-5. **2.0:** Future exploration features
-
----
-
-## Metrics for Success
-
-### Foundation
-- [ ] All package types loading correctly
-- [ ] All YAML validated against schemas
-- [ ] Project runtime executing agents and recording runs
-- [ ] Artifacts versioned and queryable
-- [ ] Persistence works with multiple backends
-
-### Projects
-- [ ] Projects can be created from templates
-- [ ] Projects can be imported/exported
-- [ ] Project validation catches all issues
-- [ ] Project lifecycle is clear and manageable
-- [ ] One project workspace can be opened and understood through the UI
-
-### Agents
-- [ ] Agents execute with full tool access
-- [ ] Skills compose correctly
-- [ ] Channels send to multiple destinations
-- [ ] Schedules trigger reliably
-- [ ] Sandboxing enforces constraints
-
-### Artifacts
-- [ ] Artifact versioning works smoothly
-- [ ] Artifacts render in multiple formats
-- [ ] Artifacts can be published and shared
-- [ ] Dependencies are tracked correctly
-- [ ] Artifacts are visible in at least one real workspace renderer
-
-### Resources
-- [ ] Resources load quickly
-- [ ] Resources are searchable
-- [ ] Resources scale to large projects
-- [ ] Retrieval is reliable
-
-### Tools
-- [ ] Multiple tool types work seamlessly
-- [ ] Tool discovery is intuitive
-- [ ] Tool permissions are enforced
-- [ ] Tool errors are handled gracefully
-
-### Developer Experience
-- [ ] CLI is intuitive and helpful
-- [ ] Scaffolding gets projects started in 5 minutes
-- [ ] Validation catches mistakes immediately
-- [ ] Documentation is auto-generated and complete
-- [ ] UI path makes the architecture understandable to new contributors quickly
-
----
-
-## What NOT to Do
-
-❌ **Do not** let UI become a second source of truth beside the filesystem and event log
-❌ **Do not** build frameworks when examples would do
-❌ **Do not** over-engineer before real usage patterns emerge
-❌ **Do not** hard-code domain logic in platform code
-❌ **Do not** invent terminology instead of borrowing from industry
-❌ **Do not** ship features without tests
-❌ **Do not** deprecate; delete or make optional
-
----
-
-## Communication
-
-This roadmap is living. As implementation progresses:
-- Update completion status regularly
-- Add new items based on learnings
-- Remove items that become irrelevant
-- Keep the guiding principles front and center
-
-The architecture is frozen. The implementation is the work.
+- multi-agent coordination;
+- distributed execution and hosted runtimes;
+- a separately deployable ASP.NET Core/.NET implementation option;
+- evaluation as a sidecar subsystem;
+- artifact dependency graphs beyond the basic model.
+
+## Working rules
+
+- Keep Architecture V3 frozen unless a substantive change is explicitly
+  approved and recorded as an ADR.
+- Prefer end-to-end slices over isolated abstractions.
+- Keep filesystem definitions, runtime events, projections, and rendered UI
+  separate.
+- Put domain behavior in YAML packages, tools, skills, resources, and artifact
+  schemas rather than hard-coding it in platform code.
+- Update the relevant spec first when intended behavior changes, then update
+  the plan and this roadmap after verification.

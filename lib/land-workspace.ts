@@ -30,8 +30,8 @@ export async function loadLandWorkspace(viewId: string, matterId?: string): Prom
   return interpretView(view, state ?? initialLandProjectState, { matterId: selectedMatterId });
 }
 
-export async function appendLandAction(actionId: string, targetId: string) {
-  return repository().appendAction(actionId, targetId);
+export async function appendLandAction(actionId: string, targetId: string, actor?: string) {
+  return repository().appendAction(actionId, targetId, actor);
 }
 
 export async function seedLandDemo(): Promise<void> {

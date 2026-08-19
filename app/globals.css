@@ -28,6 +28,13 @@ button { cursor: pointer; }
 .eyebrow { color: var(--blue); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: 0 1rem; border-radius: .5rem; font-weight: 700; }
 .button-primary, .action-primary { background: #195aa4; color: #fff; }
+.landing-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.button-secondary { border: 1px solid var(--line); background: #fff; color: var(--ink); }
+.auth-card { max-width: 30rem; }
+.auth-form { display: grid; gap: .55rem; margin: 1.5rem 0 1rem; text-align: left; }
+.auth-form input { border: 1px solid var(--line); border-radius: .5rem; padding: .7rem .8rem; }
+.auth-error { color: #a33a32; font-size: .9rem; }
+.text-button, .text-link { border: 0; background: none; color: #5367a3; cursor: pointer; padding: .35rem 0; text-align: left; }
 .workspace-frame { display: grid; grid-template-columns: 4.25rem minmax(0, 1fr); min-height: 100vh; }
 .workspace-rail { position: sticky; top: 0; display: flex; min-height: 100vh; flex-direction: column; align-items: center; gap: 1rem; padding: 1.1rem .55rem .85rem; border-right: 1px solid var(--line); background: #fff; }
 .workspace-logo { display: grid; width: 2.35rem; height: 2.35rem; place-items: center; border-radius: .75rem; background: linear-gradient(180deg, #2783df, #165ec6); color: white; font-size: 1.2rem; font-weight: 800; box-shadow: 0 .5rem 1.5rem rgba(22, 100, 210, .18); }
