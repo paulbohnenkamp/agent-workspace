@@ -2,7 +2,9 @@ import { mkdtemp, readFile, rm, writeFile } from 'fs/promises';
 import * as os from 'os';
 import * as path from 'path';
 import { FileProjectRepository, InMemoryProjectRepository } from '../src/repository';
-import { ProjectState } from '../src/types';
+import { ProjectRepository, ProjectState } from '../src/types';
+import { replayProjectEvents } from '../src/event-projection';
+import { Event } from '@awp/types';
 
 function createProjectState(projectId = 'test-project'): ProjectState {
   return {
@@ -119,6 +121,68 @@ function createProjectState(projectId = 'test-project'): ProjectState {
 }
 
 describe('Project repositories', () => {
+  async function exerciseCanonicalEventStore(repository: ProjectRepository): Promise<void> {
+    const state = createProjectState('canonical-project');
+    state.events = [];
+    state.artifacts.clear();
+    state.participants.clear();
+    const artifact = createProjectState('canonical-project').artifacts.get('artifact-001')!;
+    await repository.save(state);
+
+    const events: Event[] = [
+      {
+        id: 'canonical-participant-event',
+        name: 'participant.joined',
+        timestamp: '2026-06-24T00:00:00.000Z',
+        projectId: state.project.id,
+        participantId: 'user-001',
+        payload: {
+          participant: {
+            id: 'user-001',
+            type: 'human',
+            projectId: state.project.id,
+            role: 'owner',
+            joinedAt: '2026-06-24T00:00:00.000Z',
+          },
+        },
+      },
+      {
+        id: 'canonical-artifact-event',
+        name: 'artifact.created',
+        timestamp: '2026-06-24T00:01:00.000Z',
+        projectId: state.project.id,
+        artifactId: 'artifact-001',
+        payload: { record: artifact },
+      },
+    ];
+
+    for (const event of events) await repository.appendEvent(state.project.id, event);
+
+    const loaded = await repository.load(state.project.id);
+    expect(loaded).toBeDefined();
+    expect(await repository.listEvents(state.project.id)).toEqual(events);
+    const replayed = replayProjectEvents(loaded!.events);
+    expect(replayed.participants.get('user-001')?.role).toBe('owner');
+    expect(replayed.artifacts.get('artifact-001')?.artifact.title).toBe('Artifact');
+    expect(loaded!.participants).toEqual(replayed.participants);
+    expect(loaded!.artifacts).toEqual(replayed.artifacts);
+  }
+
+  describe('canonical event persistence parity', () => {
+    it('keeps in-memory state and event replay aligned', async () => {
+      await exerciseCanonicalEventStore(new InMemoryProjectRepository());
+    });
+
+    it('keeps file-backed state and event replay aligned', async () => {
+      const tempDir = await mkdtemp(path.join(os.tmpdir(), 'awp-runtime-parity-'));
+      try {
+        await exerciseCanonicalEventStore(new FileProjectRepository(tempDir));
+      } finally {
+        await rm(tempDir, { recursive: true, force: true });
+      }
+    });
+  });
+
   describe('InMemoryProjectRepository', () => {
     it('returns defensive copies when loading', async () => {
       const repository = new InMemoryProjectRepository();
